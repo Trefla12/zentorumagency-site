@@ -41,7 +41,7 @@
     });
     document.addEventListener('click',function(e){if(!bar.contains(e.target))closeDD()});
     document.addEventListener('keydown',function(e){if(e.key==='Escape'&&ddFor){var b=ddFor;closeDD();b.focus()}});
-    var fromHash=function(){var f=location.hash.slice(1);if(/^(web|3d|video|logo|scratch)$/.test(f)){apply(f);bar.scrollIntoView({block:'start'})}};
+    var fromHash=function(){var f=location.hash.slice(1);if(/^(web|3d|video|logo|scratch)$/.test(f)){apply(f);bar.scrollIntoView({block:'start'})}else if(/^p-/.test(f)){var c=document.getElementById(f);if(c){apply('all');c.scrollIntoView({block:'center'})}}};
     addEventListener('hashchange',fromHash);
     if(location.hash)setTimeout(fromHash,0);
   }
@@ -51,7 +51,7 @@
   var reel=document.getElementById('reel-v');
   if(reel)mk(reel.parentNode,reel,[[reel.dataset.webm,'video/webm; codecs="vp9"'],[reel.dataset.mp4,'video/mp4']]);
   var cur=null;
-  function snd(v,on){v.muted=!on;var b=v.parentNode.querySelector('.pc__snd');if(b){b.setAttribute('aria-pressed',on);b.setAttribute('aria-label',on?'Sound off':'Sound on')}}
+  function snd(v,on){v.muted=!on;var b=v.parentNode.querySelector('.pc__snd');if(b){b.setAttribute('aria-pressed',on)}}
   function stop(it){if(it&&it.vid){it.vid.pause();it.vid.classList.remove('on');if(!it.vid.muted)snd(it.vid,false)}}
   function play(it){
     if(cur===it)return;stop(cur);cur=it;
@@ -71,7 +71,9 @@
     var it=items.filter(function(x){return x.el===b.parentNode})[0];if(!it)return;
     var on=it.vid.muted||cur!==it;play(it);snd(it.vid,on);
   });
-  if(calm||saver||!('IntersectionObserver' in window))return;
+  if(!('IntersectionObserver' in window))return;
+  /* reduced motion / data saver: no autoplay, but a video started with the sound button still stops once it scrolls away */
+  if(calm||saver){var off=new IntersectionObserver(function(es){es.forEach(function(e){if(cur&&cur.el===e.target&&!e.isIntersecting){stop(cur);cur=null}})});items.forEach(function(it){off.observe(it.el)});return}
   var io=new IntersectionObserver(function(es){
     es.forEach(function(e){items.forEach(function(it){if(it.el===e.target)it.ratio=e.isIntersecting?e.intersectionRatio:0})});pick();
   },{threshold:[0,.25,.55,.75,1]});
