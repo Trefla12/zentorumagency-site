@@ -1,4 +1,4 @@
-/* Zentorum Agency: /pages/agency. Loader, smooth scroll, WebGL dream→idea→reality particles, sections, inquiry form. */
+/* Zentorum Agency: zentorumagency.com (GitHub Pages). Loader, smooth scroll, WebGL dream→idea→reality particles, sections, inquiry form. */
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const root = document.documentElement;
