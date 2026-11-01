@@ -1,6 +1,6 @@
 /* Zentorum Agency service worker: pages network-first (always fresh online), versioned assets cache-first,
    and a branded /offline/ page when there is no connection. Videos, 3D models and other sites are never cached. */
-const V = 'zta-2026-11-02d';
+const V = 'zta-2026-11-02e';
 const CORE = ['/offline/', '/assets/fonts/cg.woff2', '/assets/fonts/inter.woff2', '/assets/zta-404-car-900.webp', '/assets/zta-icon-192.png'];
 const PAGES = 'zta-pages', ASSETS = 'zta-assets';
 
