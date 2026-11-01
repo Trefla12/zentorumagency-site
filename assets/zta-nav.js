@@ -44,7 +44,7 @@ dds.forEach(d => {
     ['Industries', /^\/industries\//, [['/industries/', 'All industries'], ['/industries/auto-detailing/', 'Auto detailing'], ['/industries/clinics-dental/', 'Clinics & dental'], ['/industries/contractors-trades/', 'Contractors & trades'], ['/industries/fitness-gyms/', 'Fitness & gyms'], ['/industries/online-stores/', 'Online stores'], ['/industries/real-estate/', 'Real estate'], ['/industries/restaurants-cafes/', 'Restaurants & cafés'], ['/industries/salons-barbers/', 'Salons & barbers']]],
     ['/packages/', 'Prices'],
     ['Resources', /^\/(blog|tools|glossary|faq|process)\//, [['/blog/', 'Blog'], ['/tools/', 'Free tools'], ['/glossary/', 'Glossary'], ['/faq/', 'FAQ'], ['/process/', 'Process']]],
-    ['Studio', /^\/(team|collab|contact)\//, [['/team/', 'Team'], ['/contact/', 'Get a quote'], ['/collab/', 'Work with us']]]
+    ['Studio', /^\/(team|collab|contact|free-mockup)\//, [['/team/', 'Team'], ['/contact/', 'Get a quote'], ['/free-mockup/', 'Free mockup'], ['/collab/', 'Work with us']]]
   ];
   const RN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX'];
   const here = p => (p === location.pathname ? ' aria-current="page"' : '');
