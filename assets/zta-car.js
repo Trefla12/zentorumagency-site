@@ -27,7 +27,7 @@
     if(btn)btn.hidden=true;load.hidden=false;
     var A='three/addons/';
     /* warm the cache in parallel: model + Draco decoder download while Three.js itself is still loading */
-    try{var D='https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/libs/draco/gltf/';fetch(stage.dataset.model);fetch(D+'draco_wasm_wrapper.js');fetch(D+'draco_decoder.wasm')}catch(e){}
+    try{var D='/assets/vendor/three/jsm/libs/draco/gltf/';fetch(stage.dataset.model);fetch(D+'draco_wasm_wrapper.js');fetch(D+'draco_decoder.wasm')}catch(e){}
     Promise.all([import('three'),import(A+'controls/OrbitControls.js'),import(A+'loaders/GLTFLoader.js'),import(A+'loaders/DRACOLoader.js'),import(A+'environments/RoomEnvironment.js')]).then(function(m){
       var T=m[0],OC=m[1].OrbitControls,GL=m[2].GLTFLoader,DL=m[3].DRACOLoader,RE=m[4].RoomEnvironment;
       var cv=document.createElement('canvas');cv.className='car__cv';
@@ -64,7 +64,7 @@
         ['r','m','cc','ccr'].forEach(function(p){var map={r:'roughness',m:'metalness',cc:'clearcoat',ccr:'clearcoatRoughness'}[p],v=paint[map];if(Math.abs(v-fin[p])>.002){paint[map]=v+(fin[p]-v)*k;moving=true}else paint[map]=fin[p]});
         return moving;
       }
-      var dl=new DL();dl.setDecoderPath('https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/libs/draco/gltf/');
+      var dl=new DL();dl.setDecoderPath('/assets/vendor/three/jsm/libs/draco/gltf/');
       var gl=new GL();gl.setDRACOLoader(dl);
       function fail(){r.dispose();ctl.dispose();removeEventListener('resize',size);io.disconnect();vis=false;cv.remove();started=false;load.hidden=true;if(btn)btn.hidden=false}
       gl.load(stage.dataset.model,function(g){try{
