@@ -154,3 +154,20 @@ textarea.in-t{min-height:120px;resize:vertical}
 @media (max-width:900px){.nav__book{padding:9px 14px;font-size:13px}}
 @media (max-width:480px){.nav__acts{gap:8px}.nav__bk-x{display:none}.nav__book{padding:9px 12px;gap:6px}}
 .play__mount{min-height:420px;margin-bottom:28px}.play__fallback{color:var(--muted)}
+/* services dropdown */
+.nav__dd{position:relative;display:flex;align-items:center}
+.nav__ddb{display:inline-flex;align-items:center;gap:6px;font:inherit;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:#d9ccb6;background:none;border:0;padding:6px 0;cursor:pointer;transition:color .3s}
+.nav__ddb svg{width:10px;height:10px;fill:none;stroke:currentColor;stroke-width:2;transition:transform .3s}
+.nav__ddb:hover,.nav__dd.is-open .nav__ddb,.nav__ddb[data-current]{color:var(--cream)}
+.nav__dd.is-open .nav__ddb svg{transform:rotate(180deg)}
+.nav__ddp{position:absolute;left:-18px;top:calc(100% + 14px);min-width:240px;display:grid;gap:2px;padding:10px;background:#150a1a;border:1px solid var(--line);border-radius:18px;box-shadow:0 24px 60px -20px rgba(0,0,0,.85);opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .25s,transform .25s,visibility 0s .25s;z-index:60}
+.nav__ddp::before{content:"";position:absolute;left:0;right:0;top:-16px;height:16px}
+.nav__dd.is-open .nav__ddp{opacity:1;visibility:visible;transform:none;transition:opacity .25s,transform .25s}
+@media (hover:hover){.nav__dd:hover .nav__ddp{opacity:1;visibility:visible;transform:none;transition:opacity .25s,transform .25s}.nav__dd:hover .nav__ddb svg{transform:rotate(180deg)}}
+.nav__links .nav__ddp a{display:block;padding:11px 14px;border-radius:10px;border:0;font-size:12px;letter-spacing:.14em;color:#d9ccb6;white-space:nowrap;transition:background .2s,color .2s}
+.nav__links .nav__ddp a::after{display:none}
+.nav__links .nav__ddp a:hover,.nav__links .nav__ddp a:focus-visible,.nav__links .nav__ddp a[aria-current]{background:rgba(230,201,140,.09);color:var(--cream)}
+.nav__links .nav__ddp a.nav__ddall{color:var(--gold)}
+.nav__menu .nav__sub{padding-left:28px;font-size:14px;color:#b3a692}
+@media (prefers-reduced-motion:reduce){.nav__ddp,.nav__ddb svg{transition:none}}
+@media (max-width:900px){.nav__menu div{position:fixed;left:12px;right:12px;top:70px;min-width:0;max-height:calc(100dvh - 90px);overflow:auto;overscroll-behavior:contain;box-shadow:0 24px 60px -20px rgba(0,0,0,.85)}}
