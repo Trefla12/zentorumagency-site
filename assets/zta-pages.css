@@ -231,3 +231,4 @@ html.mnav-on{overflow:hidden}
 .pc__snd:hover{transform:scale(1.06);background:rgba(40,22,50,.75)}.pc__snd:focus-visible{outline:2px solid var(--gold,#d8b26a);outline-offset:2px}
 .pc__snd svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .pc__snd .s-on{display:none}.pc__snd[aria-pressed="true"] .s-on{display:inline}.pc__snd[aria-pressed="true"] .s-off{display:none}
+.pc .pc__cr{font-size:11px;line-height:1.5;color:var(--muted);margin-top:8px}.pc__cr a{color:inherit}
