@@ -20,8 +20,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/zta-agency.css?v=20261031c">
+<link rel="stylesheet" href="/assets/zta-agency.css?v=20261101a">
 <link rel="stylesheet" href="/assets/zta-tycoon.css">
+<link rel="stylesheet" href="/assets/zta-chat.css?v=20261101a">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"ProfessionalService","name":"Zentorum Agency","url":"https://zentorumagency.com/","telephone":"+1-512-241-5531","email":"zentorum1@gmail.com","slogan":"We turn dream ideas into reality","areaServed":"US","parentOrganization":{"@type":"Organization","name":"Zentorum LLC"},"sameAs":["https://www.instagram.com/zentorumagency/"],"knowsAbout":["Marketing","SEO","Web development","Blender 3D animation","Video editing","Motion design"]}
 </script>
@@ -50,7 +51,7 @@
     <span>Zentorum <b>Agency</b></span>
   </a>
   <nav class="nav__links" aria-label="Sections">
-    <a href="#services">Services</a><a href="#projects">Projects</a><a href="#process">Process</a><a href="#play">Play</a><a href="#contact">Contact</a>
+    <a href="#services">Services</a><a href="#projects">Projects</a><a href="#process">Process</a><a href="#play">Play</a><a href="/packages/">Prices</a><a href="#contact">Contact</a>
   </nav>
   <a class="nav__call magnetic" href="tel:+15122415531" data-cursor="Call"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg><span>512-241-5531</span></a>
 </header>
@@ -264,6 +265,146 @@
     <div class="play__mount" data-game><p class="play__fallback">Loading the game…</p></div>
   </section>
 
+  <!-- QUOTE ESTIMATOR -->
+  <section class="quote" id="quote" aria-labelledby="qt-title">
+    <div class="sec-head">
+      <p class="eyebrow">Price estimator</p>
+      <h2 id="qt-title" class="h2">Build your quote <em>in 60 seconds</em></h2>
+      <p class="lede">Pick what you need. See an honest range and timeline. Send it to us in one tap.</p>
+    </div>
+    <div class="qt" data-quote>
+      <fieldset class="qt__list">
+        <legend class="sr">Choose your services</legend>
+        <label class="qs"><input type="checkbox" value="logo" data-lo="300" data-hi="500" data-d1="1" data-d2="4" data-chip="Logo & motion"><span class="qs__box" aria-hidden="true"></span><span class="qs__txt"><b>Logo + mini brand kit</b><small>Logo, colors and fonts, ready to use</small></span><span class="qs__meta"><b>$300–$500</b><small>1–4 days</small></span></label>
+        <label class="qs"><input type="checkbox" value="web5" data-lo="1250" data-hi="2500" data-d1="3" data-d2="7" data-chip="Website / store" data-grp="web"><span class="qs__box" aria-hidden="true"></span><span class="qs__txt"><b>Website, 1–5 pages</b><small>A fast, polished site for a small business</small></span><span class="qs__meta"><b>$1,250–$2,500</b><small>3–7 days</small></span></label>
+        <label class="qs"><input type="checkbox" value="web15" data-lo="2500" data-hi="4000" data-d1="7" data-d2="11" data-chip="Website / store" data-grp="web"><span class="qs__box" aria-hidden="true"></span><span class="qs__txt"><b>Website, 6–15 pages or store</b><small>More pages, or a store that sells</small></span><span class="qs__meta"><b>$2,500–$4,000</b><small>7–11 days</small></span></label>
+        <label class="qs"><input type="checkbox" value="seo" data-lo="200" data-hi="1200" data-mo="1" data-chip="SEO"><span class="qs__box" aria-hidden="true"></span><span class="qs__txt"><b>SEO (monthly)</b><small>Help people find you on Google. 2-month minimum</small></span><span class="qs__meta"><b>$200–$1,200/mo</b><small>ongoing</small></span></label>
+        <label class="qs"><input type="checkbox" value="social" data-lo="500" data-hi="1500" data-mo="1" data-chip="Social media"><span class="qs__box" aria-hidden="true"></span><span class="qs__txt"><b>Social media (monthly)</b><small>Posts and reels, managed for you</small></span><span class="qs__meta"><b>$500–$1,500/mo</b><small>ongoing</small></span></label>
+        <label class="qs"><input type="checkbox" value="video" data-lo="75" data-hi="300" data-d1="2" data-d2="5" data-chip="Video editing"><span class="qs__box" aria-hidden="true"></span><span class="qs__txt"><b>Video editing (per video)</b><small>Raw footage to a clean, ready-to-post video</small></span><span class="qs__meta"><b>$75–$300</b><small>2–5 days</small></span></label>
+        <label class="qs"><input type="checkbox" value="three" data-lo="200" data-hi="800" data-d1="3" data-d2="5" data-chip="Blender 3D"><span class="qs__box" aria-hidden="true"></span><span class="qs__txt"><b>3D product shot or animation</b><small>A Blender render or spin of your product</small></span><span class="qs__meta"><b>$200–$800</b><small>3–5 days</small></span></label>
+        <label class="qs"><input type="checkbox" value="motion" data-lo="150" data-hi="500" data-d1="2" data-d2="2" data-chip="Logo & motion"><span class="qs__box" aria-hidden="true"></span><span class="qs__txt"><b>Motion logo</b><small>Your logo, animated</small></span><span class="qs__meta"><b>$150–$500</b><small>2 days</small></span></label>
+      </fieldset>
+      <div class="qt__vis">
+        <div class="qph-wrap" aria-hidden="true">
+          <div class="qph" data-phone>
+            <div class="qph__scr">
+              <div class="ph-head"><i class="ph-logo ph-l" data-ly="logo motion"></i><span class="ph-name">Your Brand</span><i class="ph-bag ph-l" data-ly="web15"></i></div>
+              <div class="ph-tabs ph-l" data-ly="web5 web15"><b>Home</b><b>About</b><b>Prices</b><b>Contact</b></div>
+              <div class="ph-hero"><span class="ph-line"></span><span class="ph-line"></span><span class="ph-line"></span><i class="ph-play ph-l" data-ly="video"></i><i class="ph-prod ph-l" data-ly="three"></i></div>
+              <div class="ph-seo ph-l" data-ly="seo"><em>#1</em><span>Your Brand<small>yourbrand.com</small></span></div>
+              <div class="ph-cards ph-l" data-ly="web15"><i></i><i></i><i></i></div>
+              <div class="ph-grid ph-l" data-ly="social"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+              <div class="ph-reel ph-l" data-ly="video"><i></i><i></i><i></i></div>
+            </div>
+          </div>
+        </div>
+        <div class="qt__out">
+          <div class="qt__res" aria-live="polite">
+            <p class="qt__k">Estimated range</p><p class="qt__v" data-q-range>Pick a service</p>
+            <p class="qt__mo" data-q-mo hidden></p>
+            <p class="qt__k">Estimated time</p><p class="qt__v qt__v--s" data-q-time>-</p>
+          </div>
+          <p class="qt__fine">Estimates only. Your final quote comes after a quick call, and depends on your scope.</p>
+          <a class="btn btn--gold" href="#contact" data-q-lock><span>Lock this quote</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a>
+          <p class="qt__ok" role="status" data-q-ok></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BRAND IN 10 SECONDS -->
+  <section class="brand" id="brand" aria-labelledby="br-title">
+    <div class="sec-head">
+      <p class="eyebrow">Live preview</p>
+      <h2 id="br-title" class="h2">See your brand <em>in 10 seconds</em></h2>
+      <p class="lede">Type your name. Pick a vibe. Watch it appear.</p>
+    </div>
+    <div class="br" data-brand>
+      <div class="br__ctl">
+        <label class="br__lab" for="br-name">Brand name</label>
+        <input class="br__in" id="br-name" maxlength="40" placeholder="e.g. Moonlight Candles" autocomplete="off" autocapitalize="words" enterkeyhint="done">
+        <div class="chips chips--sm" role="radiogroup" aria-label="Vibe">
+          <label class="chip"><input type="radio" name="vibe" value="luxury" checked><span>Luxury</span></label>
+          <label class="chip"><input type="radio" name="vibe" value="bold"><span>Bold</span></label>
+          <label class="chip"><input type="radio" name="vibe" value="playful"><span>Playful</span></label>
+        </div>
+        <p class="br__cap">A quick sketch, not the finished brand.</p>
+        <a class="btn btn--gold" href="#contact" data-brand-cta><span>Like it? Let's build the real one</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="bcard" data-bcard data-vibe="luxury">
+        <div class="bcard__in">
+          <div class="bcard__mark"><b data-b-init>M</b></div>
+          <div class="bcard__name" data-b-name>Moonlight Candles</div>
+          <div class="bcard__sw" aria-hidden="true"><i></i><i></i><i></i></div>
+          <p class="bcard__font" data-b-font>Elegant serif, gold on deep plum</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BEFORE / AFTER -->
+  <section class="ba" id="before-after" aria-labelledby="ba-title">
+    <div class="sec-head">
+      <p class="eyebrow">Same business. New website.</p>
+      <h2 id="ba-title" class="h2">Before and after: <em>SFC Detailing</em></h2>
+    </div>
+    <div class="bas" data-ba style="--p:50%">
+      <div class="bas__box">
+        <picture><source media="(max-width:700px)" srcset="/assets/zta-sfc-before-phone.webp" width="390" height="844"><img src="/assets/zta-sfc-before-desk.webp" width="1200" height="750" alt="SFC Detailing's old website" loading="lazy" decoding="async"></picture>
+        <div class="bas__after"><picture><source media="(max-width:700px)" srcset="/assets/zta-sfc-after-phone.webp" width="390" height="844"><img src="/assets/zta-sfc-after-desk.webp" width="1200" height="750" alt="SFC Detailing's new website by Zentorum Agency" loading="lazy" decoding="async"></picture></div>
+        <span class="bas__line" aria-hidden="true"><i><svg viewBox="0 0 24 24"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6"/></svg></i></span>
+        <span class="bas__tag bas__tag--l" aria-hidden="true">Before</span><span class="bas__tag bas__tag--r" aria-hidden="true">After</span>
+        <input class="bas__range" type="range" min="0" max="100" value="50" aria-label="Before and after: drag to compare the old and new SFC Detailing website" aria-valuetext="Showing half before, half after">
+      </div>
+      <p class="bas__cta"><a class="btn btn--gold" href="#quote"><span>Want this for your business? Get a quote</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a></p>
+    </div>
+  </section>
+
+  <!-- DREAM WALL -->
+  <section class="wall" id="wall" aria-labelledby="wl-title">
+    <div class="sec-head">
+      <p class="eyebrow">Dream wall</p>
+      <h2 id="wl-title" class="h2">Dreams people <em>have shared</em></h2>
+      <p class="lede">Real ideas, shown only with permission. No names.</p>
+      <p class="wall__ex"><b>Examples</b> These are examples. Real dreams will appear here, with permission.</p>
+    </div>
+    <div class="wall__rail" data-wall>
+      <ul class="wall__row">
+        <li>A website where my customers can book a cake without calling.</li>
+        <li>A logo for my dog-grooming van that people remember.</li>
+        <li>More bookings for my cleaning business, without chasing leads.</li>
+        <li>A short video that shows what my candles feel like.</li>
+      </ul>
+    </div>
+    <p class="wall__cta"><a class="btn btn--ghost" href="#contact"><span>Add your dream</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a></p>
+  </section>
+
+  <!-- ROAST + BOOK -->
+  <section class="duo" id="roast" aria-label="Free website roast and booking">
+    <article class="dc roast" aria-labelledby="rs-title">
+      <p class="eyebrow">Free, no strings</p>
+      <h2 id="rs-title" class="h3">Free 60-second website roast</h2>
+      <p class="lede">Send us your link. Within 48 hours you get a short video with what works and what to fix. Free, no strings.</p>
+      <form class="rf" data-roast novalidate>
+        <div class="field"><input id="rs-name" name="name" maxlength="60" placeholder=" " autocomplete="given-name"><label for="rs-name">First name</label></div>
+        <div class="field"><input id="rs-site" name="website" maxlength="120" placeholder=" " inputmode="url" autocomplete="url"><label for="rs-site">Your website link</label></div>
+        <div class="field"><input id="rs-mail" name="email" type="email" maxlength="120" placeholder=" " autocomplete="email"><label for="rs-mail">Your email</label></div>
+        <input class="hp" type="text" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button class="btn btn--gold" type="submit"><span>Roast my site</span></button>
+        <p class="qf__legal">We'll email you the video and one follow-up. Unsubscribe anytime.</p>
+        <p class="rf__msg" role="status" data-roast-msg></p>
+        <noscript><p class="rf__msg">Turn on JavaScript to send this form, or call 512-241-5531.</p></noscript>
+      </form>
+    </article>
+    <article class="dc book" id="book" aria-labelledby="bk-title">
+      <p class="eyebrow">30 minutes, no pressure</p>
+      <h2 id="bk-title" class="h3">Prefer to talk? <em>Pick a time.</em></h2>
+      <p class="lede">30 minutes, no pressure.</p>
+      <p><a class="btn btn--gold" data-book href="https://cal.com/zentorumagency/30min" target="_blank" rel="noopener"><span>Book a call</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a></p>
+      <p class="book__or">Or call <a class="link" href="tel:+15122415531">512-241-5531</a></p>
+    </article>
+  </section>
+
   <!-- CONTACT -->
   <section class="contact" id="contact" aria-labelledby="ct-title">
     <div class="sec-head">
@@ -289,6 +430,7 @@
           <b>512-241-5531</b>
           <span class="callcard__sub">Tap to call. Texts welcome too.</span>
         </a>
+        <a class="btn btn--ghost ct__book" data-book href="https://cal.com/zentorumagency/30min" target="_blank" rel="noopener"><span>Book a call</span></a>
       </aside>
 
       <form class="qf" id="zta-form" data-endpoint="https://script.google.com/macros/s/AKfycbzsNUGEs45W60Yx-EF95xi5CX0CcK8MYEizo3FUSoJ8qrPrVDP-tZn1UMdAFfXO486b/exec" novalidate>
@@ -361,6 +503,7 @@
             </div>
           </div>
           <input class="hp" type="text" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <label class="qf__wall"><input type="checkbox" name="wall" value="1"><span>You may show the first line of my dream on the site, anonymously. (Optional)</span></label>
           <p class="qf__legal">We only use your details to reply to this inquiry. No spam, no lists.</p>
         </fieldset>
 
@@ -375,7 +518,8 @@
           <svg class="qf__check" viewBox="0 0 80 80" aria-hidden="true"><circle cx="40" cy="40" r="36"/><path d="M24 41 l11 11 22-24"/></svg>
           <h3 class="qf__title">Your dream is in our hands<span data-done-name></span>.</h3>
           <p>We've sent a confirmation to your email. Expect a reply from us soon, usually within 24 hours.</p>
-          <a class="btn btn--gold" href="tel:+15122415531"><span>Can't wait? Call 512-241-5531</span></a>
+          <p class="qf__next"><a class="btn btn--gold" href="/thank-you/" data-thanks><span>See what happens next</span></a></p>
+          <a class="btn btn--ghost" href="tel:+15122415531"><span>Can't wait? Call 512-241-5531</span></a>
         </div>
       </form>
     </div>
@@ -389,6 +533,7 @@
     <a href="mailto:zentorum1@gmail.com">zentorum1@gmail.com</a>
     <a href="https://www.instagram.com/zentorumagency/" target="_blank" rel="noopener">Instagram @zentorumagency</a>
   </div>
+  <nav class="foot__links" aria-label="More pages"><a href="/packages/">Packages</a><a href="/services/web-design/">Services</a><a href="/work/">Work</a><a href="/faq/">FAQ</a><a href="/process/">Process</a><a href="/tools/">Free tools</a><a href="/collab/">Work with us</a></nav>
   <p class="foot__legal">© <span data-year>2026</span> Zentorum LLC · Zentorum Agency · <a href="https://zentorum.com/">Zentorum store</a></p>
 </footer>
 
@@ -402,6 +547,8 @@
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.4/dist/lenis.min.js" defer></script>
 <script src="/assets/zta-tycoon.js" defer></script>
-<script type="module" src="/assets/zta-agency.js?v=20261031c"></script>
+<script type="module" src="/assets/zta-agency.js?v=20261101a"></script>
+<script type="module" src="/assets/zta-features.js?v=20261101a"></script>
+<script src="/assets/zta-chat.js?v=20261101a" defer></script>
 </body>
 </html>

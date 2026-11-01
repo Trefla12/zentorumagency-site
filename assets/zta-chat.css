@@ -1,0 +1,43 @@
+/* Zentorum Agency chat launcher, instant answers, exit offer. Self-contained (no site CSS needed). */
+.zc{--g:#e6c98c;--gg:linear-gradient(100deg,#c9a565 0%,#e6c98c 38%,#fff6df 50%,#e6c98c 62%,#b8924c 100%);--c:#F7ECD6;--m:#a99c88;--ln:rgba(230,201,140,.25);font:400 14px/1.5 Inter,system-ui,-apple-system,sans-serif;color:var(--c)}
+.zc *{box-sizing:border-box}
+.zc button,.zc input,.zc textarea{font:inherit}
+.zc [hidden]{display:none!important}
+.zc-launch{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:max(16px,env(safe-area-inset-bottom));z-index:70;display:flex;align-items:center;gap:8px;min-height:48px;padding:0 20px 0 16px;border:0;border-radius:999px;background:var(--gg);color:#1a0c1e;font-weight:600;letter-spacing:.02em;cursor:pointer;box-shadow:0 10px 30px -8px rgba(230,201,140,.7);transition:transform .3s}
+.zc-launch:hover{transform:translateY(-2px)}
+.zc-launch svg{width:18px;height:18px;fill:currentColor}
+.zc button:focus-visible,.zc a:focus-visible,.zc input:focus-visible,.zc textarea:focus-visible{outline:2px solid var(--g);outline-offset:2px}
+.zc-p{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:max(16px,env(safe-area-inset-bottom));z-index:72;width:min(380px,calc(100vw - 24px));max-height:calc(100vh - 32px);max-height:calc(100dvh - 32px);display:flex;flex-direction:column;background:#140818;border:1px solid var(--ln);border-radius:20px;box-shadow:0 30px 80px -20px #000;opacity:0;transform:translateY(16px);transition:opacity .3s,transform .3s}
+.zc-p.is-in{opacity:1;transform:none}
+.zc-hd{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--ln)}
+.zc-hd b{font:600 17px Georgia,serif;letter-spacing:.02em}
+.zc-x{color:var(--c);width:36px;height:36px;border:0;border-radius:50%;background:rgba(255,255,255,.06);cursor:pointer;font-size:20px;line-height:1}
+.zc-bd{overflow-y:auto;overscroll-behavior:contain;padding:14px 16px 16px;display:flex;flex-direction:column;gap:12px}
+.zc-tag{align-self:flex-start;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--g);border:1px solid var(--ln);border-radius:999px;padding:3px 10px}
+.zc-log{display:flex;flex-direction:column;gap:8px}
+.zc-m{max-width:88%;padding:9px 13px;border-radius:14px;background:rgba(255,255,255,.07);align-self:flex-start}
+.zc-m.u{align-self:flex-end;background:rgba(230,201,140,.18)}
+.zc-m a{color:var(--g);text-decoration:underline}
+.zc-ch{display:flex;flex-wrap:wrap;gap:8px}
+.zc-ch button,.zc-act a{color:var(--c);min-height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--ln);background:rgba(255,255,255,.03);cursor:pointer;display:inline-flex;align-items:center;text-decoration:none;color:var(--c)}
+.zc-ch button:hover,.zc-act a:hover{border-color:var(--g)}
+.zc-h{margin:4px 0 0;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--m)}
+.zc-act{display:flex;gap:8px}
+.zc-act a{flex:1;justify-content:center;font-weight:500}
+.zc-f{display:flex;flex-direction:column;gap:10px}
+.zc-l{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--m)}
+.zc-l input,.zc-l textarea{width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--ln);background:rgba(255,255,255,.04);font-size:16px;color:var(--c)}
+.zc-l textarea{min-height:76px;resize:vertical}
+.zc-b{min-height:46px;border:0;border-radius:999px;background:var(--gg);color:#1a0c1e;font-weight:600;cursor:pointer}
+.zc-b[disabled]{opacity:.6}
+.zc-s{margin:0;min-height:1.4em;font-size:13px;color:var(--g)}
+.zc-s a{color:inherit}
+.zc-hp{position:absolute!important;left:-9999px;width:1px;height:1px;opacity:0}
+.zc-ov{position:fixed;inset:0;z-index:75;display:grid;place-items:center;padding:16px;background:rgba(5,2,8,.72);opacity:0;transition:opacity .3s}
+.zc-ov.is-in{opacity:1}
+.zc-dlg{width:min(440px,100%);max-height:calc(100vh - 32px);max-height:calc(100dvh - 32px);overflow:auto;padding:26px;background:#140818;border:1px solid var(--ln);border-radius:22px;box-shadow:0 30px 80px -20px #000}
+.zc-dlg h2{margin:0 0 8px;font:500 28px/1.1 Georgia,serif}
+.zc-dlg>p{margin:0 0 16px;color:var(--m)}
+.zc-no{margin-top:10px;width:100%;min-height:44px;border:0;background:none;color:var(--m);cursor:pointer;text-decoration:underline}
+@media (max-width:900px){.zc.has-mbar .zc-launch{bottom:calc(76px + env(safe-area-inset-bottom))}.zc-p{right:12px;left:12px;width:auto;bottom:max(12px,env(safe-area-inset-bottom))}}
+@media (prefers-reduced-motion:reduce){.zc-p,.zc-ov,.zc-launch{transition:none}}

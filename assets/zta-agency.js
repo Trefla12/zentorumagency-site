@@ -781,7 +781,7 @@ function setupForm(form) {
     const m = check(4);
     if (m) { setErr(m); shake(); return; }
     const data = {
-      services: val('services'), stage: val('stage'), budget: BUDGETS[+range.value], timeline: val('timeline'),
+      services: (val('services') + (form.elements.wall?.checked ? '; Dream wall: OK' : '')).replace(/^; /, ''), stage: val('stage'), budget: BUDGETS[+range.value], timeline: val('timeline'),
       brand: val('brand'), website: val('website'), dream: val('dream'),
       name: val('name'), email: val('email'), phone: val('phone'), contact: val('contact'),
       botcheck: form.elements.botcheck.value, page: location.href.split('?')[0], referrer: document.referrer.slice(0, 200), sid, t: Date.now() - t0, ...utm
@@ -829,6 +829,9 @@ function setupForm(form) {
       done.focus({ preventScroll: true });
       burst(form);
       scrollToEl(form);
+      try { sessionStorage.setItem('zta_sent', '1'); } catch {}
+      // offer /thank-you/ and auto-redirect after ~4 s, only if that page exists (else stay on the inline success)
+      fetch('/thank-you/', { method: 'HEAD' }).then(r => { if (r.ok) setTimeout(() => { location.href = '/thank-you/'; }, 4000); }).catch(() => {});
     }, RM ? 0 : 500);
   }
 }
