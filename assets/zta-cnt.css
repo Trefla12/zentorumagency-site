@@ -119,3 +119,9 @@
 .cs-hero{margin-top:clamp(28px,4vw,44px)}
 @media (max-width:760px){.cs-k{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .ind h1{font-size:clamp(40px,4.4vw,62px);line-height:1.04}
+.mkv{margin:0;border-radius:18px;overflow:hidden;border:1px solid rgba(255,255,255,.12);background:#0d0610;box-shadow:0 50px 100px -40px #000,0 0 0 1px rgba(0,0,0,.4);transition:transform .6s var(--ease,ease),box-shadow .6s}
+.mkv__m{position:relative;aspect-ratio:16/10;overflow:hidden;background:#140818}
+.mkv__m img,.mkv__m video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.mkv__m video{opacity:0;transition:opacity .5s}.mkv__m video.on{opacity:1}
+.mkv .mk__bar span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.mkv__tag{flex:none;font-style:normal;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold,#e6c98c);opacity:.85}
+.ic:hover .mkv{transform:translateY(-4px);box-shadow:0 60px 110px -40px #000,0 0 0 1px rgba(230,201,140,.35)}
