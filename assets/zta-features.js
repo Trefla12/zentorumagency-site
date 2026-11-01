@@ -71,9 +71,9 @@ function quote(root) {
 
 // ---------- B. brand in 10 seconds ----------
 function brand(root) {
-  const card = $('[data-bcard]', root), nameEl = $('[data-b-name]', card), init = $('[data-b-init]', card), font = $('[data-b-font]', card);
+  const card = $('[data-bcard]', root), nameEl = $('[data-b-name]', card), init = $('[data-b-init]', card), font = $('[data-b-font]', card), ring = $('[data-b-ring]', card);
   const input = $('#br-name', root);
-  const FONTS = { luxury: 'Elegant serif, gold on deep plum', bold: 'Heavy sans, black on bright yellow', playful: 'Rounded and friendly, pink and mint' };
+  const FONTS = { luxury: 'Serif · gold foil · monogram seal', bold: 'Heavy sans, black on bright yellow', playful: 'Rounded and friendly, pink and mint' };
   let vibe = 'luxury';
   function draw(bump) {
     const n = input.value.trim().replace(/\s+/g, ' ') || 'Moonlight Candles';
@@ -82,6 +82,7 @@ function brand(root) {
     card.style.setProperty('--k', Math.max(0.5, Math.min(1, 13 / n.length)).toFixed(2));
     card.dataset.vibe = vibe;
     font.textContent = FONTS[vibe];
+    if (ring) ring.textContent = `${n.slice(0, 18).toUpperCase()} · MAISON · MMXXVI · `;
     if (bump && !RM) { card.classList.remove('pop'); void card.offsetWidth; card.classList.add('pop'); }
   }
   input.addEventListener('input', () => draw(false));

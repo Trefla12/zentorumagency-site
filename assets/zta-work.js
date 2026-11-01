@@ -1,4 +1,4 @@
-/* Zentorum Agency · /work/: filters + lazy video (one plays at a time) + showreel. */
+/* Zentorum Agency · /projects/: filters + lazy video (one plays at a time) + showreel. */
 (function(){
   var calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
   var saver=navigator.connection&&navigator.connection.saveData;
@@ -16,7 +16,7 @@
   }
   var items=[]; /* {el, vid, ratio} */
   function mk(el,vid,srcs){var it={el:el,vid:vid,srcs:srcs,ratio:0,loaded:false};items.push(it);return it}
-  cards.forEach(function(c){var v=c.querySelector('video');if(v)mk(c.querySelector('.pc__m'),v,[[v.dataset.src,'video/mp4']])});
+  cards.forEach(function(c){var v=c.querySelector('video');if(v)mk(c.querySelector('.pc__m'),v,(v.dataset.webm?[[v.dataset.webm,'video/webm; codecs="vp9"']]:[]).concat([[v.dataset.src,'video/mp4']]))});
   var reel=document.getElementById('reel-v');
   if(reel)mk(reel.parentNode,reel,[[reel.dataset.webm,'video/webm; codecs="vp9"'],[reel.dataset.mp4,'video/mp4']]);
   var cur=null;
