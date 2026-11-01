@@ -82,7 +82,7 @@ function brand(root) {
     card.style.setProperty('--k', Math.max(0.5, Math.min(1, 13 / n.length)).toFixed(2));
     card.dataset.vibe = vibe;
     font.textContent = FONTS[vibe];
-    if (ring) ring.textContent = `${n.slice(0, 18).toUpperCase()} · MAISON · MMXXVI · `;
+    if (ring) { const N = n.slice(0, 18).toUpperCase(); let r = `${N} · MAISON · MMXXVI · `; while (r.length < 34) r += `${N} · `; ring.textContent = r; }
     if (bump && !RM) { card.classList.remove('pop'); void card.offsetWidth; card.classList.add('pop'); }
   }
   input.addEventListener('input', () => draw(false));

@@ -148,5 +148,5 @@ textarea.in-t{min-height:120px;resize:vertical}
 .nav__book:hover{background-position:100% 0}
 .nav__book svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2}
 @media (max-width:900px){.nav__book{padding:9px 14px;font-size:13px}}
-@media (max-width:480px){.nav__acts{gap:8px}.nav__book span{display:none}.nav__book{padding:9px 11px}}
+@media (max-width:480px){.nav__acts{gap:8px}.nav__bk-x{display:none}.nav__book{padding:9px 12px;gap:6px}}
 .play__mount{min-height:420px;margin-bottom:28px}.play__fallback{color:var(--muted)}

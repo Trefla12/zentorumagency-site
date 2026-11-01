@@ -80,7 +80,7 @@ section{position:relative;z-index:2}
 .nav__book:hover{background-position:100% 0;box-shadow:0 10px 36px -10px rgba(230,201,140,.85)}
 .nav__book svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2}
 @media (max-width:900px){.nav__links{display:none}.nav__logo span{display:none}.nav__call{padding:9px 14px;font-size:13px}.nav__book{padding:9px 14px;font-size:13px}}
-@media (max-width:480px){.nav__acts{gap:8px}.nav__book span{display:none}.nav__book{padding:9px 11px}}
+@media (max-width:480px){.nav__acts{gap:8px}.nav__bk-x{display:none}.nav__book{padding:9px 12px;gap:6px}}
 
 /* buttons */
 .btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:54px;padding:0 30px;border-radius:999px;border:1px solid transparent;font:500 14px var(--sans);letter-spacing:.14em;text-transform:uppercase;cursor:pointer;overflow:hidden;transition:transform .35s var(--ease),box-shadow .35s,border-color .3s,background .3s;isolation:isolate;-webkit-tap-highlight-color:transparent}

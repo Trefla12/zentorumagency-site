@@ -391,7 +391,7 @@ function setupScroll() {
     gsap.to(el, { opacity: 1, y: 0, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 88%' } });
   });
   if (gsap && ST && !RM) {
-    $$('.sec-head .h2, .card, .num, .cmp, .qf, .ct__side > *').forEach(el => {
+    $$('.sec-head .h2, .card, .num, .qf, .ct__side > *').forEach(el => {
       gsap.from(el, { opacity: 0, y: 40, duration: 1.1, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 90%' } });
     });
   }
@@ -450,7 +450,6 @@ function setupScroll() {
 
   setupMarquee();
   setupWork();
-  setupCompare();
   setupProcess();
   setupCounters();
 }
@@ -534,20 +533,6 @@ function setupWork() {
   });
 }
 
-function setupCompare() {
-  const c = $('[data-cmp]');
-  if (!c) return;
-  const r = $('.cmp__range', c);
-  const set = v => { c.style.setProperty('--p', v + '%'); r.value = v; };
-  r.addEventListener('input', () => set(r.value));
-  if (RM || !gsap) return;
-  const o = { v: 88 };
-  set(88);
-  gsap.to(o, {
-    v: 50, duration: 1.8, ease: 'power3.inOut', onUpdate: () => set(o.v.toFixed(1)),
-    scrollTrigger: { trigger: c, start: 'top 70%', once: true }
-  });
-}
 
 function setupProcess() {
   const steps = $('[data-steps]');
@@ -627,19 +612,6 @@ if (FINE && !RM) {
   });
 }
 
-/* ---------- game ---------- */
-function mountGame() {
-  const el = $('[data-game]');
-  if (!el) return;
-  if (window.ZTATycoon?.mount) {
-    el.innerHTML = '';
-    window.ZTATycoon.mount(el, { onCTA: () => scrollToEl($('#contact')) });
-  } else {
-    const f = $('.play__fallback', el);
-    if (f) f.innerHTML = 'The game is taking a break. <a class="link" href="#contact">Start your project instead</a>.';
-  }
-}
-mountGame();
 
 /* ---------- inquiry form ---------- */
 const BUDGETS = ['Under $1K', '$1K – $3K', '$3K – $7K', '$7K – $15K', '$15K+'];
