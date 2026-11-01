@@ -44,8 +44,11 @@ document.addEventListener('click', e => {
 /* ---------- split headline ---------- */
 function split(el) {
   const t = el.textContent;
-  el.setAttribute('aria-label', t);
   el.textContent = '';
+  const sr = document.createElement('span');
+  sr.className = 'sr';
+  sr.textContent = t;
+  el.appendChild(sr);
   for (const c of t) {
     const s = document.createElement('span');
     s.className = 'ch';
