@@ -19,12 +19,36 @@
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter.woff2" crossorigin>
 <link rel="stylesheet" href="/assets/zta-pages.css?v=20261101t">
 <link rel="stylesheet" href="/assets/zta-chat.css?v=20261101e" media="print" onload="this.media='all'">
-<style>.e404{padding:clamp(110px,14vw,170px) 0 20px;text-align:center}.e404__in{display:flex;flex-direction:column;align-items:center}.e404 .lede{margin-left:auto;margin-right:auto}.e404 .ctas{justify-content:center}
-.e404__car{position:relative;width:min(760px,100%);aspect-ratio:16/9;margin-bottom:10px;border-radius:26px;overflow:hidden;-webkit-mask-image:radial-gradient(ellipse 70% 70% at 50% 50%,#000 55%,transparent 100%);mask-image:radial-gradient(ellipse 70% 70% at 50% 50%,#000 55%,transparent 100%)}
-.e404__car video{width:100%;height:100%;object-fit:cover;display:block}
-.e404__n{position:absolute;left:0;right:0;top:4%;font:300 clamp(80px,16vw,190px)/1 var(--serif);letter-spacing:.06em;color:transparent;-webkit-text-stroke:1px rgba(230,201,140,.35);pointer-events:none}
+<style>.e404{padding:clamp(100px,12vw,150px) 0 20px;text-align:center;overflow-x:clip}.e404__in{display:flex;flex-direction:column;align-items:center}.e404 .lede{margin-left:auto;margin-right:auto}.e404 .ctas{justify-content:center}
+.e404__stage{position:relative;width:100%;display:grid;place-items:center;padding:clamp(70px,12vw,150px) 0 26px;margin-bottom:8px}
+.e404__n{position:absolute;left:0;right:0;top:0;font:300 clamp(110px,22vw,260px)/1 var(--serif);letter-spacing:.06em;color:transparent;-webkit-text-stroke:1px rgba(230,201,140,.4);pointer-events:none;user-select:none}
+.e404__road{position:absolute;left:-50vw;right:-50vw;bottom:26px;height:1px;background:linear-gradient(90deg,transparent,rgba(230,201,140,.35) 30%,rgba(230,201,140,.35) 70%,transparent)}
+.e404__road::after{content:"";position:absolute;left:0;right:0;top:14px;height:2px;background:repeating-linear-gradient(90deg,rgba(247,236,214,.1) 0 34px,transparent 34px 78px);-webkit-mask-image:linear-gradient(90deg,transparent,#000 35%,#000 65%,transparent);mask-image:linear-gradient(90deg,transparent,#000 35%,#000 65%,transparent)}
+.e404__lot{position:relative;width:min(820px,92vw);aspect-ratio:3008/896}
+.e404__car{position:absolute;inset:0;display:block;width:100%;padding:0;border:0;background:none;cursor:pointer;will-change:transform;-webkit-tap-highlight-color:transparent}
+.e404__car:focus-visible{outline:2px solid var(--gold);outline-offset:10px;border-radius:12px}
+.e404__body{position:absolute;inset:0;width:100%;height:100%;max-width:none;transform-origin:52% 78%;will-change:transform}
+.e404__w{position:absolute;top:74.53%;width:15.625%;height:auto;aspect-ratio:1;margin:-7.8125% 0 0 -7.8125%;will-change:transform}
+.e404__w--r{left:25.81%}.e404__w--f{left:78.14%}
+.e404__sh{position:absolute;left:3%;right:3%;bottom:-3.5%;height:12%;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.75),rgba(0,0,0,.35) 60%,transparent);filter:blur(4px)}
+.e404__beam{position:absolute;left:96%;top:44%;width:70%;height:40%;background:radial-gradient(ellipse 100% 50% at 0 50%,rgba(255,236,190,.28),rgba(255,236,190,.08) 45%,transparent 75%);-webkit-mask-image:linear-gradient(90deg,#000,transparent);mask-image:linear-gradient(90deg,#000,transparent);pointer-events:none;transform-origin:0 50%;transform:perspective(400px) rotateY(-10deg)}
+.e404__trail{position:absolute;right:100%;top:30%;width:60%;height:50%;opacity:0;background:repeating-linear-gradient(180deg,transparent 0 9px,rgba(247,236,214,.16) 9px 10px);-webkit-mask-image:linear-gradient(90deg,transparent,#000);mask-image:linear-gradient(90deg,transparent,#000);pointer-events:none}
+.e404__skid{position:absolute;bottom:-.6%;height:5px;width:30%;border-radius:3px;background:linear-gradient(90deg,transparent,rgba(0,0,0,.55) 40%,rgba(10,6,12,.85));transform-origin:100% 50%;transform:scaleX(0);filter:blur(.6px)}
+.e404__skid--r{right:calc(100% - 25.81%)}.e404__skid--f{right:calc(100% - 78.14%)}
+.e404__dust{position:absolute;bottom:0;width:22%;aspect-ratio:2;pointer-events:none}
+.e404__dust--r{left:12%}.e404__dust--f{left:65%}
+.e404__dust i{position:absolute;bottom:0;width:36%;aspect-ratio:1;border-radius:50%;background:radial-gradient(closest-side,rgba(247,236,214,.22),transparent);opacity:0}
+.e404__dust i:nth-child(2){left:28%;width:46%}.e404__dust i:nth-child(3){left:60%;width:30%}
+.e404.is-stop .e404__dust i{animation:e4Dust 1.1s cubic-bezier(.2,.7,.3,1) both}
+.e404.is-stop .e404__dust i:nth-child(2){animation-delay:.05s}.e404.is-stop .e404__dust i:nth-child(3){animation-delay:.1s}
+@keyframes e4Dust{0%{opacity:0;transform:translate(0,0) scale(.4)}25%{opacity:1}100%{opacity:0;transform:translate(-40%,-50%) scale(1.6)}}
+.e404__tip{margin:6px 0 0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:rgba(247,236,214,.45)}
+.e404__dym{margin:18px 0 0;font-size:17px}.e404__dym a{color:var(--gold);text-decoration:underline;text-underline-offset:4px}
+.e404__find{display:inline-flex;align-items:center;gap:10px;margin-top:22px;min-height:48px;padding:0 20px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.03);color:var(--cream);font:inherit;font-size:15px;cursor:pointer;transition:border-color .3s,background .3s}
+.e404__find:hover{border-color:var(--gold);background:rgba(230,201,140,.08)}
+.e404__find svg{width:17px;height:17px;fill:none;stroke:var(--gold);stroke-width:2;stroke-linecap:round}
 .e404__l{list-style:none;display:flex;flex-wrap:wrap;justify-content:center;gap:10px 22px;margin:34px 0 0;padding:0;font-size:14px}.e404__l a{color:var(--muted)}.e404__l a:hover{color:var(--gold)}
-@media (prefers-reduced-motion:reduce){.e404__car video{display:none}.e404__car{background:url(/assets/zta-3d-930.webp) center/cover}}</style>
+@media (prefers-reduced-motion:reduce){.e404__car{cursor:default}.e404__tip{display:none}}</style>
 <link rel="stylesheet" href="/assets/zta-x.css?v=20261101f">
 </head>
 <body>
@@ -36,13 +60,93 @@
 </header>
 <main id="main">
 <section class="e404"><div class="wrap e404__in">
-<div class="e404__car"><video autoplay muted loop playsinline preload="metadata" poster="/assets/zta-3d-930.webp" aria-hidden="true"><source src="/assets/zta-3d-930.webm" type="video/webm"><source src="/assets/zta-3d-930.mp4" type="video/mp4"></video><span class="e404__n" aria-hidden="true">404</span></div>
+<div class="e404__stage"><span class="e404__n" aria-hidden="true">404</span><span class="e404__road" aria-hidden="true"></span>
+<div class="e404__lot"><i class="e404__skid e404__skid--r" aria-hidden="true"></i><i class="e404__skid e404__skid--f" aria-hidden="true"></i>
+<button class="e404__car" type="button" aria-label="Send the car out to look for your page"><i class="e404__sh"></i><i class="e404__beam"></i><i class="e404__trail"></i>
+<img class="e404__body" src="/assets/zta-404-car-1600.webp" srcset="/assets/zta-404-car-900.webp 900w, /assets/zta-404-car-1600.webp 1600w" sizes="min(820px, 92vw)" width="1600" height="477" alt="" fetchpriority="high">
+<img class="e404__w e404__w--r" src="/assets/zta-404-wr.webp" width="250" height="250" alt=""><img class="e404__w e404__w--f" src="/assets/zta-404-wf.webp" width="250" height="250" alt="">
+<span class="e404__dust e404__dust--r"><i></i><i></i><i></i></span><span class="e404__dust e404__dust--f"><i></i><i></i><i></i></span></button></div>
+<p class="e404__tip" aria-hidden="true">Tap the car</p></div>
 <p class="eyebrow">Wrong turn</p><h1>This page <em class="gold">drove off.</em></h1><p class="lede">Let&rsquo;s get you home. Or pick a road below.</p>
-<div class="ctas"><a class="btn btn--gold" href="/">Take me home</a><a class="btn btn--ghost" href="/projects/">See our work</a></div>
+<p class="e404__dym" hidden></p><button class="e404__find" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM20 20l-4-4"/></svg>Search the site</button>
+<div class="ctas" style="margin-top:26px"><a class="btn btn--gold" href="/">Take me home</a><a class="btn btn--ghost" href="/projects/">See our work</a></div>
 <ul class="e404__l"><li><a href="/packages/">Prices</a></li><li><a href="/blog/">Blog</a></li><li><a href="/tools/">Free tools</a></li><li><a href="/contact/">Contact</a></li><li><a href="sms:+15122415531">Text 512-241-5531</a></li></ul>
 <p class="note" style="margin-top:28px;font-size:12px">Car model: <a href="https://sketchfab.com/3d-models/free-1975-porsche-911-930-turbo-8568d9d14a994b9cae59499f0dbed21e" rel="noopener" target="_blank">1975 Porsche 911 (930) Turbo</a> by Lionsharp Studios, <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener" target="_blank">CC BY 4.0</a>, via Sketchfab. Rendered by Zentorum.</p>
 </div></section>
 </main>
+<script>
+(() => {
+  const sec = document.querySelector('.e404'), car = sec.querySelector('.e404__car'), body = car.querySelector('.e404__body'), lot = car.parentNode;
+  const wh = car.querySelectorAll('.e404__w'), trail = car.querySelector('.e404__trail'), skid = lot.querySelectorAll('.e404__skid');
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // "Did you mean": match the words in the broken address against the site index
+  const words = decodeURIComponent(location.pathname).toLowerCase().split(/[^a-z0-9]+/).filter(w => w.length > 2 && !/^(html?|index|php|www)$/.test(w));
+  const dym = sec.querySelector('.e404__dym'), find = sec.querySelector('.e404__find');
+  const sim = (a, b) => { const g = s => new Set([...Array(Math.max(s.length - 2, 1))].map((_, i) => s.slice(i, i + 3))); const A = g(a), B = g(b); let n = 0; A.forEach(x => B.has(x) && n++); return 2 * n / (A.size + B.size); };
+  if (words.length) fetch('/assets/zta-search.json?v=20261101a').then(r => r.json()).then(all => {
+    let best, top = 0;
+    for (const x of all) {
+      if (x.u[0] !== '/') continue;
+      const hay = (x.u + ' ' + x.t).toLowerCase(), parts = hay.split(/[^a-z0-9]+/).filter(Boolean);
+      let s = 0;
+      for (const w of words) s += hay.includes(w) ? 3 : Math.max(0, ...parts.map(p => sim(w, p))) > .5 ? 1.5 : 0;
+      s -= x.u.length / 400;
+      if (s > top) { top = s; best = x; }
+    }
+    if (best && top >= 1.4) { dym.innerHTML = 'Did you mean <a href="' + best.u + '">' + best.t.replace(/</g, '&lt;') + '</a>?'; dym.hidden = false; }
+  }).catch(() => {});
+  find.addEventListener('click', () => {
+    const b = document.querySelector('.nav__srch'); if (!b) return location.href = '/';
+    b.click();
+    const i = document.querySelector('.srch input'); if (i && words.length) { i.value = words.join(' '); i.dispatchEvent(new Event('input')); }
+  });
+  if (still) return;
+  // drive: x(t) with constant braking or acceleration; wheels turn by distance / radius, the body pitches with the g-force
+  let x = 0, pitch = 0, pv = 0, raf, busy = false;
+  const put = (v, a) => {
+    const r = lot.offsetWidth * 0.0745, ang = x / r * 57.2958;
+    wh.forEach(w => w.style.transform = 'rotate(' + ang + 'deg)');
+    car.style.transform = 'translate3d(' + x + 'px,0,0)';
+    trail.style.opacity = Math.min(1, Math.abs(v) / 2.2);
+    pv += (-(a / lot.offsetWidth * 4e5) - pitch) * .12 - pv * .18; pitch += pv;
+    body.style.transform = 'rotate(' + Math.max(-1, Math.min(1, pitch)).toFixed(3) + 'deg)';
+  };
+  const run = (from, to, dur, brake, done) => {
+    const t0 = performance.now(), D = to - from, a = (brake ? -2 : 2) * D / dur / dur;
+    cancelAnimationFrame(raf);
+    const f = now => {
+      const t = Math.min(1, (now - t0) / dur), k = brake ? 1 - (1 - t) * (1 - t) : t * t;
+      x = from + D * k;
+      const v = 2 * D / dur * (brake ? 1 - t : t);
+      if (brake) skid.forEach(s => s.style.transform = 'scaleX(' + Math.max(0, (t - .45) / .55) + ')');
+      put(v, t < 1 ? a : 0);
+      if (t < 1) raf = requestAnimationFrame(f); else settle(done);
+    };
+    raf = requestAnimationFrame(f);
+  };
+  const settle = done => {
+    let n = 0;
+    const f = () => { put(0, 0); if (++n < 60 && (Math.abs(pitch) > .005 || Math.abs(pv) > .005)) raf = requestAnimationFrame(f); else { body.style.transform = ''; done && done(); } };
+    raf = requestAnimationFrame(f);
+  };
+  const enter = () => {
+    const start = -(lot.getBoundingClientRect().right + 40);
+    skid.forEach(s => s.style.transform = 'scaleX(0)');
+    sec.classList.remove('is-stop');
+    run(start, 0, 1500, true, () => { busy = false; });
+    setTimeout(() => sec.classList.add('is-stop'), 1250);
+  };
+  car.addEventListener('click', () => {
+    if (busy) return; busy = true;
+    sec.classList.remove('is-stop');
+    run(0, innerWidth - lot.getBoundingClientRect().left + 40, 1100, false, () => setTimeout(enter, 500));
+  });
+  busy = true; x = -(lot.getBoundingClientRect().right + 40); put(0, 0);
+  const go = () => setTimeout(enter, 250);
+  body.complete ? go() : body.addEventListener('load', go, { once: true });
+})();
+</script>
+
 <footer class="foot">
   <a class="foot__big" href="/contact/">Let&rsquo;s build <em class="gold">your dream.</em></a>
   <div class="foot__cols">
