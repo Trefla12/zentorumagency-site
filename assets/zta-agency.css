@@ -128,7 +128,7 @@ body.is-ready .real::after{transform:scaleX(1)}
 .js .reveal-up{opacity:0;transform:translateY(26px)}
 
 /* dream (pinned morph) */
-.dreamsec{height:320vh}
+.dreamsec{height:400vh}
 .dream__pin{position:sticky;top:0;height:100svh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 var(--pad) 9vh;pointer-events:none}
 .dream__captions{list-style:none;margin:0;padding:0;position:relative;height:120px}
 .dream__captions li{position:absolute;left:0;bottom:0;max-width:640px;opacity:0;transform:translateY(20px);transition:opacity .6s,transform .8s var(--ease)}
@@ -658,3 +658,4 @@ html.mnav-on{overflow:hidden}
 @media (max-width:560px){.cways{grid-template-columns:1fr;gap:12px}.cway{padding:20px;flex-direction:column}.chero{padding-top:110px}}
 .cway b.cway__em{font-size:clamp(18px,1.45vw,21px);overflow-wrap:normal;white-space:nowrap;font-family:var(--sans);font-weight:500;letter-spacing:-.01em;padding-top:3px}
 @media (max-width:560px){.cway{display:grid;grid-template-columns:46px 1fr;column-gap:16px;row-gap:2px;padding:18px 44px 18px 18px}.cway__i{grid-row:1/4;margin:0;align-self:center}.cway .eyebrow{margin:0}.cway__go{top:50%;right:18px;transform:translateY(-50%)}.cway:hover .cway__go{transform:translate(4px,-50%)}}
+@media (max-width:760px){.dream__pin{padding-bottom:calc(150px + env(safe-area-inset-bottom))}}

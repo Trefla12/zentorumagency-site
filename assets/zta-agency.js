@@ -143,13 +143,14 @@ async function initGL() {
   const cam = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.1, 100);
   cam.position.z = 10;
   const geo = new THREE.BufferGeometry();
-  const p0 = new Float32Array(N * 3), p1 = new Float32Array(N * 3), p2 = new Float32Array(N * 3), p3 = new Float32Array(N * 3), rnd = new Float32Array(N * 4);
+  const p0 = new Float32Array(N * 3), p1 = new Float32Array(N * 3), p2 = new Float32Array(N * 3), p3 = new Float32Array(N * 3), p4 = new Float32Array(N * 3), rnd = new Float32Array(N * 4);
   for (let i = 0; i < N * 4; i++) rnd[i] = Math.random();
   geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(N * 3), 3));
   geo.setAttribute('p0', new THREE.BufferAttribute(p0, 3));
   geo.setAttribute('p1', new THREE.BufferAttribute(p1, 3));
   geo.setAttribute('p2', new THREE.BufferAttribute(p2, 3));
   geo.setAttribute('p3', new THREE.BufferAttribute(p3, 3));
+  geo.setAttribute('p4', new THREE.BufferAttribute(p4, 3));
   geo.setAttribute('rnd', new THREE.BufferAttribute(rnd, 4));
   const uni = {
     uT: { value: 0 }, uTime: { value: 0 }, uSize: { value: MOBILE() ? 2.4 : 2.6 }, uPR: { value: PR },
@@ -158,7 +159,7 @@ async function initGL() {
   const mat = new THREE.ShaderMaterial({
     uniforms: uni, transparent: true, depthWrite: false, depthTest: false, blending: THREE.AdditiveBlending,
     vertexShader: `
-      attribute vec3 p0; attribute vec3 p1; attribute vec3 p2; attribute vec3 p3; attribute vec4 rnd;
+      attribute vec3 p0; attribute vec3 p1; attribute vec3 p2; attribute vec3 p3; attribute vec3 p4; attribute vec4 rnd;
       uniform float uT, uTime, uSize, uPR, uMouseOn, uExplode, uIntro; uniform vec2 uMouse;
       varying vec3 vC; varying float vA;
       float seg(float a){ return smoothstep(0.0, 1.0, clamp((uT - a - rnd.x * 0.35) / 0.65, 0.0, 1.0)); }
@@ -168,9 +169,9 @@ async function initGL() {
         float cs = cos(ang), sn = sin(ang);
         c.xy = mat2(cs, -sn, sn, cs) * c.xy;
         c *= 0.15 + 0.85 * uIntro;
-        float s1 = seg(0.0), s2 = seg(1.0), s3 = seg(2.0);
-        vec3 p = mix(c, p1, s1); p = mix(p, p2, s2); p = mix(p, p3, s3);
-        float tr = s1 * (1.0 - s1) + s2 * (1.0 - s2) + s3 * (1.0 - s3);
+        float s1 = seg(0.0), s2 = seg(1.0), s3 = seg(2.0), s4 = seg(3.0);
+        vec3 p = mix(c, p1, s1); p = mix(p, p2, s2); p = mix(p, p3, s3); p = mix(p, p4, s4);
+        float tr = s1 * (1.0 - s1) + s2 * (1.0 - s2) + s3 * (1.0 - s3) + s4 * (1.0 - s4);
         p.xy += vec2(sin(uTime * 0.7 + rnd.y * 6.28), cos(uTime * 0.6 + rnd.z * 6.28)) * tr * 1.6;
         p.z += sin(rnd.w * 6.28 + uTime) * tr * 2.5;
         float inText = s1;
@@ -188,8 +189,9 @@ async function initGL() {
         vec3 dream = rnd.z > 0.85 ? white : lilac;
         vec3 idea = rnd.z > 0.8 ? gold : cream;
         vec3 real = rnd.z > 0.8 ? white : gold;
-        float w0 = 1.0 - s1, w1 = s1 * (1.0 - s2), w2 = s2 * (1.0 - s3), w3 = s3;
-        vC = cloud * w0 + dream * w1 + idea * w2 + real * w3;
+        vec3 brand = rnd.z > 0.55 ? gold : (rnd.z > 0.1 ? cream : lilac);
+        float w0 = 1.0 - s1, w1 = s1 * (1.0 - s2), w2 = s2 * (1.0 - s3), w3 = s3 * (1.0 - s4), w4 = s4;
+        vC = cloud * w0 + dream * w1 + idea * w2 + real * w3 + brand * w4;
         vC = mix(vC, cloud, uExplode);
         float tw = 0.55 + 0.45 * sin(uTime * 2.0 + rnd.w * 30.0);
         vA = mix(tw * 0.75, 0.55 + 0.2 * tw, inText * (1.0 - uExplode)) * uIntro;
@@ -229,16 +231,33 @@ async function initGL() {
     geo.attributes.p0.needsUpdate = true;
   }
   function sampleWord(word, font, out) {
+    sampleShape(x => {
+      x.font = font;
+      const m = x.measureText(word).width;
+      const fs = Math.min(300 * (1400 * 0.92) / m, 300);
+      x.font = font.replace('300px', fs + 'px');
+      x.textAlign = 'center'; x.textBaseline = 'middle';
+      x.fillText(word, 700, 230);
+    }, out, 0.34);
+  }
+  // the Z‿A mark from the nav logo (64×40 viewBox), drawn 10× on the sampling canvas
+  function sampleLogo(out) {
+    sampleShape(x => {
+      x.translate(380, 30); x.scale(10, 10);
+      x.font = `600 30px ${FONT}`; x.textBaseline = 'alphabetic';
+      x.fillText('Z', 2, 31); x.fillText('A', 44, 31);
+      x.lineWidth = 2.4; x.lineCap = x.lineJoin = 'round';
+      x.beginPath(); x.moveTo(10, 34); x.bezierCurveTo(10, 38, 18, 38, 30, 37); x.lineTo(44, 37);
+      x.moveTo(40, 34); x.lineTo(44, 37); x.lineTo(40, 40); x.stroke();
+    }, out, 0.5);
+  }
+  function sampleShape(draw, out, hFrac) {
     const W = 1400, H = 460;
     const cv = document.createElement('canvas');
     cv.width = W; cv.height = H;
     const x = cv.getContext('2d', { willReadFrequently: true });
-    x.font = font;
-    const m = x.measureText(word).width;
-    const fs = Math.min(300 * (W * 0.92) / m, 300);
-    x.font = font.replace('300px', fs + 'px');
-    x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillStyle = '#fff';
-    x.fillText(word, W / 2, H / 2);
+    x.fillStyle = x.strokeStyle = '#fff';
+    draw(x);
     const d = x.getImageData(0, 0, W, H).data;
     const pts = [];
     let minX = W, maxX = 0, minY = H, maxY = 0;
@@ -252,7 +271,7 @@ async function initGL() {
     const { hw, hh } = view();
     const mob = MOBILE();
     const tw = hw * 2 * (mob ? 0.88 : 0.6);
-    const sc = Math.min(tw / (maxX - minX), (hh * 2 * 0.34) / (maxY - minY));
+    const sc = Math.min(tw / (maxX - minX), (hh * 2 * hFrac) / (maxY - minY));
     const cx = (minX + maxX) / 2, cy = (minY + maxY) / 2;
     const yOff = hh * (mob ? 0.22 : 0.12);
     const jit = sc * 1.4;
@@ -268,7 +287,8 @@ async function initGL() {
     sampleWord('dream', `italic 500 300px ${FONT}`, p1);
     sampleWord('idea', `500 300px ${FONT}`, p2);
     sampleWord('reality', `600 300px ${FONT}`, p3);
-    geo.attributes.p1.needsUpdate = geo.attributes.p2.needsUpdate = geo.attributes.p3.needsUpdate = true;
+    sampleLogo(p4);
+    geo.attributes.p1.needsUpdate = geo.attributes.p2.needsUpdate = geo.attributes.p3.needsUpdate = geo.attributes.p4.needsUpdate = true;
   }
   let lastW = 0, lastH = 0;
   function resize(force) {
@@ -404,7 +424,7 @@ function setupScroll() {
   // dream → idea → reality
   const caps = $$('.dream__captions li');
   const bar = $('[data-dream-bar]');
-  const keys = [[0, 0], [0.1, 0], [0.3, 1], [0.42, 1], [0.6, 2], [0.72, 2], [0.9, 3], [1, 3]];
+  const keys = [[0, 0], [0.08, 0], [0.24, 1], [0.34, 1], [0.48, 2], [0.58, 2], [0.72, 3], [0.8, 3], [0.94, 4], [1, 4]];
   const mapT = p => {
     for (let i = 1; i < keys.length; i++) {
       if (p <= keys[i][0]) {
@@ -412,7 +432,7 @@ function setupScroll() {
         return va + ((p - a) / (b - a || 1)) * (vb - va);
       }
     }
-    return 3;
+    return 4;
   };
   let capIdx = 0;
   const setCap = i => {
@@ -427,7 +447,7 @@ function setupScroll() {
       onUpdate(self) {
         gl.target = mapT(self.progress);
         if (bar) bar.style.transform = `scaleX(${self.progress})`;
-        setCap(gl.target < 0.6 ? 0 : gl.target < 1.6 ? 1 : 2);
+        setCap(gl.target < 0.6 ? 0 : gl.target < 1.6 ? 1 : gl.target < 2.6 ? 2 : 3);
       },
       onLeaveBack() { gl.target = 0; setCap(0); }
     });
@@ -446,11 +466,11 @@ function setupScroll() {
       const r = dream.getBoundingClientRect();
       const p = Math.min(Math.max(-r.top / (r.height - innerHeight), 0), 1);
       gl.target = mapT(p);
-      setCap(gl.target < 0.6 ? 0 : gl.target < 1.6 ? 1 : 2);
+      setCap(gl.target < 0.6 ? 0 : gl.target < 1.6 ? 1 : gl.target < 2.6 ? 2 : 3);
       gl.explodeTarget = r.bottom < innerHeight * 0.5 ? 1 : 0;
     }, { passive: true });
   } else {
-    gl.target = 3;
+    gl.target = 4;
   }
 
   setupMarquee();
