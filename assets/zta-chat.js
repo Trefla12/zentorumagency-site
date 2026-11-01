@@ -133,7 +133,7 @@
     x.onclick = close;
   }
   // Esc is listened for on the document while the panel is open: Safari does not focus buttons on click, so focus can be on <body>.
-  const onKey = e => { if (e.key === 'Escape' && isOpen && !e.defaultPrevented) close(); };
+  const onKey = e => { if (e.key === 'Escape' && isOpen && !e.defaultPrevented && !d.querySelector('[aria-modal="true"]:not([hidden])')) close(); };
   function open() {
     if (!panel) build();
     isOpen = true; d.addEventListener('keydown', onKey); panel.hidden = false; L.hidden = true; L.setAttribute('aria-expanded', 'true');
