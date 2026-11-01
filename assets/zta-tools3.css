@@ -52,3 +52,9 @@
 .tdx__m{margin-top:30px}
 #td-ok{outline:0;margin-top:26px}
 @media (prefers-reduced-motion:reduce){.tdx.is-on .tdx__beam,.tdx.is-on .tdx__sk>*,.tdx__ring circle.v,.tdx__fix li,.tdx__log li{animation:none}}
+.tlc{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.tlc__c{display:block;margin-top:0;color:inherit;text-decoration:none;transition:border-color .25s,transform .25s}
+.tlc__c:hover,.tlc__c:focus-visible{border-color:var(--gold);transform:translateY(-3px)}
+.tlc__c h2{margin:6px 0 10px;font:400 clamp(26px,3.4vw,36px)/1.1 var(--serif)}
+.tlc__c .gold{display:inline-block;margin-top:12px;font-weight:500}
+@media (prefers-reduced-motion:reduce){.tlc__c{transition:none}.tlc__c:hover{transform:none}}
