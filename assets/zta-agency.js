@@ -55,6 +55,16 @@ function split(el) {
   }
 }
 $$('.split').forEach(split);
+// gold words: one gradient spread across the letters (each letter is its own layer, so it needs its own clip)
+function goldSpread() {
+  $$('.split.gold').forEach(el => {
+    const r = el.getBoundingClientRect(); // letters only move vertically, so x positions are stable
+    $$('.ch', el).forEach(c => { c.style.setProperty('--gw', r.width + 'px'); c.style.setProperty('--gx', r.left - c.getBoundingClientRect().left + 'px'); });
+  });
+}
+goldSpread();
+document.fonts?.ready.then(goldSpread);
+addEventListener('resize', goldSpread);
 
 /* ---------- hero comet (Z → A) ---------- */
 const comet = $('[data-comet]');

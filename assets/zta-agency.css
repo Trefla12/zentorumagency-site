@@ -35,15 +35,18 @@ section{position:relative;z-index:2}
 @keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-5%,3%)}40%{transform:translate(3%,-4%)}60%{transform:translate(-2%,5%)}80%{transform:translate(4%,2%)}100%{transform:translate(0,0)}}
 
 /* loader */
-.loader{position:fixed;inset:0;z-index:90;display:grid;place-items:center;background:radial-gradient(ellipse 60% 60% at 50% 50%,#22102a,#0b050e 70%,#030104);transition:clip-path 1.1s var(--ease);clip-path:inset(0 0 0 0)}
+.loader{position:fixed;inset:0;z-index:90;display:grid;place-items:center;align-content:center;gap:clamp(22px,4vh,40px);background:radial-gradient(ellipse 60% 60% at 50% 50%,#22102a,#0b050e 70%,#030104);transition:clip-path 1.1s var(--ease);clip-path:inset(0 0 0 0)}
 .loader.is-out{clip-path:inset(0 0 100% 0)}
-.loader__mark{position:relative;width:240px;height:150px}
-.loader__z,.loader__a{position:absolute;font:500 84px/1 var(--serif)}
-.loader__z{left:8px;top:-10px;color:var(--cream)}
-.loader__a{right:-6px;top:58px;background:var(--goldg);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.loader__svg{position:absolute;inset:20px 30px 0 0;width:240px;height:120px;overflow:visible}
-.loader__svg path{fill:none;stroke:var(--gold);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:260;stroke-dashoffset:260;animation:draw 1.4s .2s var(--ease) forwards;filter:drop-shadow(0 0 6px rgba(230,201,140,.6))}
-.loader__head{stroke-dasharray:40!important;stroke-dashoffset:40!important;animation-delay:1.3s!important;animation-duration:.4s!important}
+.loader__mark{position:relative;width:4em;height:2em;font:500 clamp(40px,11vw,96px)/1 var(--serif);letter-spacing:-.015em}
+.loader__z,.loader__a{position:absolute;white-space:nowrap}
+.loader__z{left:0;top:0;color:var(--cream);animation:ldIn .9s .1s var(--ease) both}
+.loader__a{left:1.95em;top:1.05em;background:var(--goldg);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:ldIn .9s 1.35s var(--ease) both}
+.loader__svg{position:absolute;left:0;top:0;width:4em;height:2em;overflow:visible}
+.loader__svg path{fill:none;stroke:var(--gold);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.1s .3s var(--ease) forwards;filter:drop-shadow(0 0 6px rgba(230,201,140,.6))}
+.loader__head{animation-delay:1.25s!important;animation-duration:.35s!important}
+.loader__slogan{margin:0;font:400 clamp(18px,3.2vw,26px)/1.3 var(--serif);color:var(--cream);text-align:center;animation:ldIn .9s 1.5s var(--ease) both}
+.loader__slogan span{color:var(--gold)}
+@keyframes ldIn{from{opacity:0;transform:translateY(.35em)}to{opacity:1;transform:none}}
 @keyframes draw{to{stroke-dashoffset:0}}
 .loader__pct{position:absolute;bottom:9vh;left:50%;transform:translateX(-50%);margin:0;font:300 12px var(--sans);letter-spacing:.5em;color:var(--muted)}
 
@@ -97,6 +100,8 @@ section{position:relative;z-index:2}
 .hero__line .gold{filter:drop-shadow(0 0 30px rgba(230,201,140,.2))}
 .split{display:inline-block}
 .split .ch{display:inline-block}
+.split.gold{background:none;-webkit-text-fill-color:currentColor}
+.split.gold .ch{background:var(--goldg);background-size:var(--gw,100%) 100%;background-position:var(--gx,0) 0;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 .js .split .ch{transform:translateY(110%);will-change:transform}
 .hero__comet{position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none}
 .hero__slogan{margin:.2em 0 0;padding-left:clamp(60px,26vw,520px);font:400 clamp(24px,3vw,44px)/1.3 var(--serif);color:#e9dcc6}
@@ -337,6 +342,7 @@ body.is-ready .real::after{transform:scaleX(1)}
 @media (max-width:900px){.mbar{display:flex}.foot{padding-bottom:140px}}
 
 @media (prefers-reduced-motion:reduce){
+  .loader *{animation-delay:0s!important}
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
   .reveal-up,.split .ch{opacity:1!important;transform:none!important}
   .dreamsec{height:auto}.dream__pin{position:relative;height:auto;padding:80px var(--pad)}.dream__captions{height:auto}.dream__captions li{position:relative;opacity:1;transform:none;margin-bottom:30px}
