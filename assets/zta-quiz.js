@@ -18,7 +18,7 @@
   };
   var KEYS = ['launch', 'website', 'grow', 'create'];
   var CEIL = [300, 1250, 2500, Infinity];
-  var BUDGET_IDX = [0, 0, 1, 1];
+  var BUDGET_IDX = [0, 0, 1, 2];
   var TIMES = ['ASAP', 'Within a month', '2–3 months', 'Flexible'];
   var NEED = ['a logo and brand', 'a website or online store', 'more people finding you each month', 'video, 3D or motion content', 'help choosing'];
   var PKG = {
@@ -192,7 +192,7 @@
     var ul = el('ul', 'qz__opts'); ul.setAttribute('role', d.multi ? 'group' : 'radiogroup'); ul.setAttribute('aria-label', d.q);
     var pre = ans[i];
     d.o.forEach(function (t, k) {
-      var li = el('li'), b = el('button', 'qz__o'); b.type = 'button';
+      var li = el('li'), b = el('button', 'qz__o'); li.setAttribute('role', 'presentation'); b.type = 'button';
       b.append(el('kbd', '', String(k + 1)), el('span', '', t));
       if (d.multi) {
         b.setAttribute('aria-pressed', pre != null && (k === d.o.length - 1 ? pre === 0 : (pre & (1 << k)) > 0) ? 'true' : 'false');

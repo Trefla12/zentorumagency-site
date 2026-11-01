@@ -130,6 +130,7 @@ html.mm-on .mm-dim{opacity:1;visibility:visible;transition:opacity .3s}
 @media (max-width:1360px){.nav__srch{width:40px;padding:0;justify-content:center}.nav__srch kbd{display:none}}
 @media (max-width:900px){.nav__srch{width:44px;height:44px}}
 @media (max-width:359px){.nav__acts{gap:6px}}
+.srch[hidden]{display:none}
 .srch{position:fixed;inset:0;z-index:200;display:flex;justify-content:center;align-items:flex-start;padding:min(14vh,120px) 16px 16px}
 .srch__bg{position:absolute;inset:0;background:rgba(10,6,12,.62);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);opacity:0;transition:opacity .25s}
 .srch__box{position:relative;width:min(640px,100%);max-height:min(560px,calc(100dvh - 32px));display:flex;flex-direction:column;border:1px solid rgba(230,201,140,.28);border-radius:20px;background:#140d16;box-shadow:0 40px 120px -30px #000,0 0 0 1px rgba(255,255,255,.02) inset;overflow:hidden;opacity:0;transform:translateY(-10px) scale(.98);transition:opacity .25s,transform .35s cubic-bezier(.2,.8,.2,1)}
@@ -246,3 +247,5 @@ html.srch-on{overflow:hidden}
 @media (prefers-reduced-motion:no-preference) and (min-height:621px) and (max-width:820px){
   .js .zs__vis{display:block;max-height:32svh;aspect-ratio:auto;height:32svh}
 }
+
+main:focus{outline:0}

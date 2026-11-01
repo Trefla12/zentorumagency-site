@@ -22,8 +22,16 @@
     if(api)api.apply();else{go=true;tryStart()}
   });
 
+  function hasGL(){try{var c=document.createElement('canvas');return !!(c.getContext('webgl2')||c.getContext('webgl'))}catch(e){return false}}
+  /* No WebGL: keep the photo, say so, and switch the controls off instead of leaving buttons that do nothing */
+  function noGL(){
+    started=true;if(btn)btn.hidden=true;if(load)load.hidden=true;
+    ui.querySelectorAll('button').forEach(function(b){b.disabled=true});ui.setAttribute('aria-disabled','true');
+    if(!stage.querySelector('.car__nogl')){var p=document.createElement('p');p.className='car__nogl';p.setAttribute('role','status');p.textContent='3D is not available in this browser, so you are seeing the photo. The paint, finish and wheel options need 3D.';p.style.cssText='position:absolute;left:12px;right:12px;bottom:12px;margin:0;padding:10px 14px;border-radius:12px;background:rgba(11,5,14,.82);color:#f7ecd6;font-size:.85rem;text-align:center';stage.appendChild(p)}
+  }
   function start(){
     if(started)return;started=true;
+    if(!hasGL())return noGL();
     if(btn)btn.hidden=true;load.hidden=false;
     var A='three/addons/';
     /* warm the cache in parallel: model + Draco decoder download while Three.js itself is still loading */
@@ -32,7 +40,7 @@
       var T=m[0],OC=m[1].OrbitControls,GL=m[2].GLTFLoader,DL=m[3].DRACOLoader,RE=m[4].RoomEnvironment;
       var cv=document.createElement('canvas');cv.className='car__cv';
       cv.tabIndex=0;cv.setAttribute('role','application');cv.setAttribute('aria-roledescription','3D viewer');cv.setAttribute('aria-label','Interactive 3D sports car. Drag or use the arrow keys to rotate, pinch, scroll or press plus and minus to zoom. Use the buttons to change paint, finish and wheels.');
-      var r=new T.WebGLRenderer({canvas:cv,antialias:true,alpha:true,powerPreference:'high-performance'});
+      var r;try{r=new T.WebGLRenderer({canvas:cv,antialias:true,alpha:true,powerPreference:'high-performance'})}catch(e){return noGL()}
       r.setPixelRatio(Math.min(devicePixelRatio||1,innerWidth<700?1.75:2));r.toneMapping=T.ACESFilmicToneMapping;r.toneMappingExposure=.92;
       var sc=new T.Scene(),pm=new T.PMREMGenerator(r);sc.environment=pm.fromScene(new RE(),.04).texture;sc.environmentIntensity=.55;
       var key=new T.DirectionalLight(0xfff0dc,2);key.position.set(4,6,3);sc.add(key);

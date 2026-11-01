@@ -7,8 +7,8 @@
     e.preventDefault();
     var g=function(n){return (f.elements[n].value||'').trim()};
     var name=g('name'),email=g('email');
-    if(name.length<2){say('Please tell us your name.','err');f.elements.name.focus();return}
-    if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){say('That email does not look right.','err');f.elements.email.focus();return}
+    if(!(window.ZTA?ZTA.isName(name):name.length>=2)){say('Please tell us your name.','err');f.elements.name.focus();return}
+    if(!(window.ZTA?ZTA.isEmail(email):/^\S+@\S+\.\S{2,}$/.test(email))){say('That email does not look right.','err');f.elements.email.focus();return}
     var what=g('what');
     var data={name:name,email:email,website:g('portfolio').slice(0,120),services:('Collab: '+what).slice(0,200),dream:what,botcheck:f.elements.botcheck.value,page:location.href.split('?')[0],referrer:document.referrer.slice(0,200)};
     if(data.botcheck){done();return}

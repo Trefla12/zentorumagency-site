@@ -3,7 +3,7 @@
   var d=document,$=function(i){return d.getElementById(i)},t0=Date.now();
   var EP='https://script.google.com/macros/s/AKfycbzsNUGEs45W60Yx-EF95xi5CX0CcK8MYEizo3FUSoJ8qrPrVDP-tZn1UMdAFfXO486b/exec';
   var PSI_KEY=''; // optional free Google API key (PageSpeed Insights API, restricted to zentorumagency.com); without it Google's shared quota is often used up
-  var okMail=function(e){return /^[^\s@,;<>"'()\[\]\\]+@[^\s@,;<>"'()\[\]\\]+\.[a-z]{2,}$/i.test(e)};
+  var okName=function(n){return window.ZTA?ZTA.isName(n):n.trim().length>=2},okMail=function(e){return window.ZTA?ZTA.isEmail(e):/^\S+@\S+\.\S{2,}$/.test(e)};
   function send(data){
     var body=Object.assign({page:location.href.split('?')[0],referrer:d.referrer.slice(0,200),t:Math.max(4100,Date.now()-t0),contact:'Email'},data);
     return fetch(EP,{method:'POST',body:JSON.stringify(body),redirect:'follow'}).then(function(r){return r.json().catch(function(){return{}})}).then(function(j){if(!j.ok)throw new Error(j.error||'send');return j});
@@ -49,7 +49,7 @@
   var LOG=['Opening the site on a mid-range phone','Measuring how fast the first content shows','Checking image sizes and formats','Looking for code that slows the page','Reading titles and Google tags','Checking text contrast and tap sizes'];
 
   function norm(v){
-    v=v.trim();if(!v)return '';
+    v=v.trim();if(!v||/\s/.test(v))return '';
     if(!/^https?:\/\//i.test(v))v='https://'+v;
     try{var u=new URL(v);if(!/\.[a-z]{2,}$/i.test(u.hostname))return '';return u.origin+u.pathname}catch(e){return ''}
   }
@@ -124,7 +124,7 @@
   var m=$('td-m');
   m.addEventListener('submit',function(e){
     e.preventDefault();var nm=$('td-n').value.trim(),em=$('td-e').value.trim(),er=$('td-merr'),b=m.querySelector('button');
-    if(nm.length<2)return err(er,'Please add your first name.');
+    if(!okName(nm))return err(er,'Please add your first name.');
     if(!okMail(em))return err(er,'Please check your email address.');
     err(er,'');b.disabled=true;b.querySelector('span').textContent='Sending…';
     send({name:nm,email:em,website:url,services:'Free website teardown',dream:out.dataset.sum||'',botcheck:$('td-bc').value})

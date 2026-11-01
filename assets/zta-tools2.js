@@ -2,7 +2,7 @@
 (function(){
   var d=document,$=function(i){return d.getElementById(i)},t0=Date.now();
   var EP='https://script.google.com/macros/s/AKfycbzsNUGEs45W60Yx-EF95xi5CX0CcK8MYEizo3FUSoJ8qrPrVDP-tZn1UMdAFfXO486b/exec';
-  var okMail=function(e){return /^[^\s@,;<>"'()\[\]\\]+@[^\s@,;<>"'()\[\]\\]+\.[a-z]{2,}$/i.test(e)};
+  var okName=function(n){return window.ZTA?ZTA.isName(n):n.trim().length>=2},okMail=function(e){return window.ZTA?ZTA.isEmail(e):/^\S+@\S+\.\S{2,}$/.test(e)};
   function send(data){
     var body=Object.assign({page:location.href.split('?')[0],referrer:d.referrer.slice(0,200),t:Math.max(4100,Date.now()-t0),contact:'Email'},data);
     return fetch(EP,{method:'POST',body:JSON.stringify(body),redirect:'follow'}).then(function(r){return r.json().catch(function(){return{}})}).then(function(j){if(!j.ok)throw new Error(j.error||'send');return j});
@@ -88,7 +88,7 @@
     ig.addEventListener('submit',function(e){
       e.preventDefault();var h=$('ig-h').value.trim().replace(/^@/,''),em=$('ig-e').value.trim(),nm=$('ig-n').value.trim(),er=$('ig-err');
       if(!/^[A-Za-z0-9._]{1,30}$/.test(h))return err(er,'Please enter your Instagram handle, like @yourbrand.');
-      if(nm.length<2)return err(er,'Please add your first name.');
+      if(!okName(nm))return err(er,'Please add your first name.');
       if(!okMail(em))return err(er,'Please check your email address.');
       err(er,'');
       var v=function(n){var c=ig.querySelector('[name='+n+']:checked');return c?c.value:''},pf=v('ig1'),rl=v('ig2'),lk=v('ig3'),tips=[];
@@ -98,7 +98,7 @@
       else tips.push(['Hook in the first second.','Open each Reel with the result or a bold line on screen, then show how you got there. Add captions: many people watch with the sound off.']);
       if(lk!=='site')tips.push(['Send your bio link to a real page.','Point the link in your bio to a fast page with your offer, prices and a booking button, not just a list of links. That is where followers become customers.']);
       else tips.push(['Make the bio say who, what and where to start.','One line on what you do, one on who it is for, and a clear call to action that matches the first thing people see on your site.']);
-      var out=$('ig-out');out.innerHTML='<h3>3 tips for <em class="gold">@'+h.replace(/[<>&"]/g,'')+'</em></h3><ol class="tips tips--n"></ol><p class="note">Based on your answers. We will also look at your profile ourselves and email you within 6 hours.</p>';
+      var out=$('ig-out');out.innerHTML='<h3>3 tips for <em class="gold">@'+h.replace(/[<>&"]/g,'')+'</em></h3><ol class="tips tips--n"></ol><p class="note">Based on your answers. We will also look at your profile ourselves and email you within 24 hours.</p>';
       var ol=out.querySelector('ol');tips.forEach(function(t){var li=d.createElement('li');li.innerHTML='<b></b> <span></span>';li.firstChild.textContent=t[0];li.lastChild.textContent=t[1];ol.appendChild(li)});
       out.hidden=false;out.scrollIntoView({behavior:'smooth',block:'nearest'});
       send({name:nm,email:em,brand:'@'+h,services:'Free Instagram review',dream:'Instagram review request for @'+h+'. Posts per week: '+(pf||'?')+'. Uses Reels: '+(rl||'?')+'. Bio link: '+(lk||'?')+'.',botcheck:$('ig-bc').value}).catch(function(){});
@@ -110,7 +110,7 @@
   if(pd){
     pd.addEventListener('submit',function(e){
       e.preventDefault();var nm=$('pdf-n').value.trim(),em=$('pdf-e').value.trim(),er=$('pdf-err'),b=pd.querySelector('button');
-      if(nm.length<2)return err(er,'Please add your first name.');
+      if(!okName(nm))return err(er,'Please add your first name.');
       if(!okMail(em))return err(er,'Please check your email address.');
       err(er,'');b.disabled=true;b.textContent='One moment…';
       var done=function(){pd.hidden=true;$('pdf-ok').hidden=false;$('pdf-ok').querySelector('a').focus()};

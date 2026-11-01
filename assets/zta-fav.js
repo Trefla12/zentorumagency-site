@@ -11,7 +11,7 @@
     return {mode:form.elements.mode.value,text:Array.from($('fv-t').value.trim()).slice(0,2).join(''),font:$('fv-font').value,bg:$('fv-bg').value,fg:$('fv-fg').value,
       clear:$('fv-clear').checked,round:+$('fv-round').value,pad:+$('fv-pad').value,name:$('fv-name').value.trim()};
   }
-  function ready(s){return s.mode==='text'?s.text.length>0:!!img}
+  function ready(s){return s.mode==='text'?s.text.length>0:!!(img&&(img.naturalWidth||img.width))}
 
   /* fit text into a box; returns font size + baseline offset for visual centering, in a 'size' px square */
   var mc=document.createElement('canvas').getContext('2d');
@@ -66,8 +66,11 @@
     draw($('fv-mask'),192,s,'mask');
     $('fv-snip').textContent=snippet(s);
   }
+  /* WebKit may not match :focus-visible on these visually hidden radios: mirror keyboard focus with a class */
+  form.addEventListener('keyup',function(e){if(e.key==='Tab'||e.key.indexOf('Arrow')===0){var t=e.target;form.querySelectorAll('.fv__seg input.is-kb').forEach(function(i){i.classList.remove('is-kb')});if(t&&t.matches&&t.matches('.fv__seg input'))t.classList.add('is-kb')}});
+  form.addEventListener('focusout',function(e){if(e.target.classList)e.target.classList.remove('is-kb')});
   function queue(){if(!raf) raf=requestAnimationFrame(paint)}
-  ['input','change'].forEach(function(ev){form.addEventListener(ev,queue)});
+  ['input','change','click'].forEach(function(ev){form.addEventListener(ev,queue)});
   form.addEventListener('submit',function(e){e.preventDefault()});
 
   $('fv-file').addEventListener('change',function(){
@@ -89,9 +92,17 @@
     L.push('<meta name="theme-color" content="'+s.bg+'">');
     return L.join('\n');
   }
+  /* short_name: at most 12 characters, cut on a word boundary when possible and never through an emoji/surrogate pair */
+  function shortName(n){
+    var c=Array.from(String(n).replace(/[\u0000-\u001f]/g,' ').replace(/\s+/g,' ').trim());
+    if(c.length<=12)return c.join('');
+    var cut=c.slice(0,12),sp=cut.lastIndexOf(' ');
+    if(c[12]!==' '&&sp>=3)cut=cut.slice(0,sp);
+    return cut.join('').trim();
+  }
   function manifest(s){
     var n=s.name||(s.mode==='text'?s.text:'My site');
-    return JSON.stringify({name:n,short_name:n.slice(0,12),icons:[{src:'/icon-192.png',sizes:'192x192',type:'image/png'},{src:'/icon-512.png',sizes:'512x512',type:'image/png'},{src:'/maskable-512.png',sizes:'512x512',type:'image/png',purpose:'maskable'}],theme_color:s.bg,background_color:s.bg,display:'standalone'},null,2)+'\n';
+    return JSON.stringify({name:n,short_name:shortName(n),icons:[{src:'/icon-192.png',sizes:'192x192',type:'image/png'},{src:'/icon-512.png',sizes:'512x512',type:'image/png'},{src:'/maskable-512.png',sizes:'512x512',type:'image/png',purpose:'maskable'}],theme_color:s.bg,background_color:s.bg,display:'standalone'},null,2)+'\n';
   }
   function png(c){return new Promise(function(res,rej){c.toBlob(function(b){b?b.arrayBuffer().then(function(a){res(new Uint8Array(a))}):rej(new Error('png'))},'image/png')})}
   function u16(a,v){a.push(v&255,v>>8&255)} function u32(a,v){a.push(v&255,v>>8&255,v>>16&255,v>>>24&255)}

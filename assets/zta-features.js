@@ -65,7 +65,7 @@ function quote(root) {
     if (s.mo) bits.push(`Plus ${span(s.mlo, s.mhi)}/month.`);
     if (s.days !== '-') bits.push(`Estimated time: ${s.days}.`);
     prefill({ services: [...new Set(s.on.map(i => i.dataset.chip))], budget: idx, dream: bits.join(' ') });
-    out.ok.textContent = 'Quote ready. Finish the form below and send it, and we\'ll reply within 6 hours.';
+    out.ok.textContent = 'Quote ready. Finish the form below and send it, and we\'ll reply within 24 hours.';
   });
 }
 
@@ -127,7 +127,7 @@ function roast(form) {
     const z = window.ZTA, f = form.elements, btn = $('button', form);
     const name = f.name.value.trim(), site = f.website.value.trim(), mail = f.email.value.trim();
     msg.classList.remove('is-ok');
-    if (name.length < 2) { msg.textContent = 'Please add your first name.'; f.name.focus(); return; }
+    if (z ? !z.isName(name) : name.length < 2) { msg.textContent = 'Please add your first name.'; f.name.focus(); return; }
     if (!site) { msg.textContent = 'Please add your website link.'; f.website.focus(); return; }
     if (!z || !z.EMAIL.test(mail)) { msg.textContent = z ? 'That email doesn\'t look right.' : 'Chat is still loading. Please try again in a moment.'; if (z) f.email.focus(); return; }
     if (f.botcheck.value) { msg.textContent = 'Got it. Your video is coming by email.'; msg.classList.add('is-ok'); return; }

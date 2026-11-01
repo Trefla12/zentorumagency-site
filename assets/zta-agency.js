@@ -39,6 +39,10 @@ document.addEventListener('click', e => {
   if (!el) return;
   e.preventDefault();
   scrollToEl(el);
+  // Keep the URL hash and move keyboard focus to the target, so the skip link (#main) and in-page links work for keyboard and screen-reader users.
+  try { if (location.hash !== id) history.pushState(null, '', id); } catch {}
+  if (!el.hasAttribute('tabindex') && !/^(A|BUTTON|INPUT|SELECT|TEXTAREA)$/.test(el.tagName)) el.setAttribute('tabindex', '-1');
+  el.focus({ preventScroll: true });
   if (id === '#contact') setTimeout(() => $('#zta-form input')?.focus({ preventScroll: true }), RM ? 0 : 1300);
 });
 
@@ -668,7 +672,7 @@ function setupForm(form) {
   let step = 1;
   const t0 = Date.now();
   const sid = Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
-  const EMAIL_RE = /^[^\s@,;<>"'()[\]\\]+@[^\s@,;<>"'()[\]\\]+\.[A-Za-z]{2,}$/;
+  const EMAIL_RE = { test: e => (window.ZTA ? window.ZTA.isEmail(e) : /^\S+@\S+\.\S{2,}$/.test(e)) };
 
   // first-touch attribution (no personal data)
   const qs = new URLSearchParams(location.search);
@@ -719,7 +723,7 @@ function setupForm(form) {
       const name = val('name'), email = val('email');
       $$('.field', steps[3]).forEach(f => f.classList.remove('is-bad'));
       ['name', 'email'].forEach(k => form.elements[k].removeAttribute('aria-invalid'));
-      if (name.length < 2) return bad('name', 'What should we call you?');
+      if (window.ZTA ? !window.ZTA.isName(name) : name.length < 2) return bad('name', 'What should we call you?');
       if (email.length > 254 || !EMAIL_RE.test(email)) return bad('email', 'That email doesn\'t look right.');
     }
     return '';

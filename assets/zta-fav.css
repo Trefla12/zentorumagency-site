@@ -10,7 +10,7 @@
 .fv__seg input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
 .fv__seg span{display:flex;align-items:center;justify-content:center;min-height:44px;padding:0 10px;border-radius:999px;color:var(--muted);font:500 14px var(--sans);text-align:center;cursor:pointer;transition:background .25s,color .25s}
 .fv__seg input:checked+span{background:var(--goldg);color:#1a0c1e}
-.fv__seg input:focus-visible+span{outline:2px solid var(--gold);outline-offset:2px}
+.fv__seg input:focus-visible+span,.fv__seg input.is-kb+span{outline:2px solid var(--gold);outline-offset:2px}
 .fv__row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .fv__col{display:flex;align-items:center;gap:10px;min-height:54px;padding:6px 12px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.04)}
 .fv__col input{width:40px;height:40px;padding:0;border:0;border-radius:8px;background:none;cursor:pointer}

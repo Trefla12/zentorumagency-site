@@ -7,7 +7,18 @@
   const d = document;
   const ss = (k, v) => { try { return v === undefined ? sessionStorage.getItem(k) : sessionStorage.setItem(k, v); } catch (e) {} };
   const h = (t, c, x) => { const e = d.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
-  const EMAIL = /^[^\s@,;<>"'()[\]\\]+@[^\s@,;<>"'()[\]\\]+\.[A-Za-z]{2,}$/;
+  // One shared, stricter email + name check for every form on the site (window.ZTA.isEmail / isName).
+  const isEmail = e => {
+    e = String(e == null ? '' : e);
+    if (e.length > 254 || /\s/.test(e)) return false;
+    const i = e.lastIndexOf('@');
+    if (i < 1 || e.indexOf('@') !== i) return false;
+    const l = e.slice(0, i), ls = e.slice(i + 1).split('.');
+    if (l.length > 64 || l[0] === '.' || l.endsWith('.') || l.includes('..') || !/^[A-Za-z0-9!#$%&'*+\/=?^_`{|}~\u00A0-\uFFFF.-]+$/.test(l)) return false;
+    return ls.length >= 2 && ls.every(x => /^[A-Za-z0-9\u00A0-\uFFFF](?:[A-Za-z0-9\u00A0-\uFFFF-]{0,61}[A-Za-z0-9\u00A0-\uFFFF])?$/.test(x)) && /^(?:[A-Za-z]{2,}|xn--[A-Za-z0-9-]+)$/.test(ls[ls.length - 1]);
+  };
+  const isName = n => { n = String(n == null ? '' : n).trim(); return n.length >= 2 && /\p{L}/u.test(n); };
+  const EMAIL = { test: isEmail };
   const t0 = Date.now();
   const utm = {};
   try {
@@ -30,7 +41,7 @@
         .finally(() => clearTimeout(to));
     });
   }
-  window.ZTA = { post, EMAIL, BOOK };
+  window.ZTA = { post, EMAIL, BOOK, isEmail, isName };
   d.querySelectorAll('a[data-book]').forEach(a => { a.href = BOOK; });
 
   // Small form builder used by the chat message form and the exit offer.
@@ -54,7 +65,7 @@
     f.addEventListener('submit', async e => {
       e.preventDefault();
       const v = Object.fromEntries(new FormData(f));
-      const bad = !v.name || v.name.trim().length < 2 ? 'Please add your first name.' : !EMAIL.test(v.email || '') ? 'That email doesn\'t look right.'
+      const bad = !isName(v.name) ? 'Please add your first name.' : !EMAIL.test(v.email || '') ? 'That email doesn\'t look right.'
         : 'website' in v && !v.website.trim() ? 'Please add your website link.' : 'msg' in v && !v.msg.trim() ? 'Please write a short message.' : '';
       if (bad) { s.textContent = bad; return; }
       if (v.botcheck) { s.textContent = okText; return; }
@@ -81,7 +92,7 @@
     cost: ['A website with 1–5 pages is about $1,250–$2,500. 6–15 pages or a store: $2,500–$4,000. Estimates only: your final quote comes after a quick call.', ['Build your quote', '/#quote']],
     prices: ['Logos start at $300, websites at $1,250, video at $75. Use the quote builder for your range.', ['Build your quote', '/#quote']],
     time: ['Logos 1–4 days, 1–5 page websites 3–7 days, bigger sites or stores 7–11 days.'],
-    process: ['1. You tell us your idea (the form takes about 2 minutes). 2. We reply by email or phone within 6 hours. 3. We agree the plan and price on a short call. 4. We build it, and you approve before launch.'],
+    process: ['1. You tell us your idea (the form takes about 2 minutes). 2. We reply by email or phone within 24 hours. 3. We agree the plan and price on a short call. 4. We build it, and you approve before launch.'],
     contact: ['Call or text ' + PH + ', or leave a message below.'],
     book: ['30 minutes, no pressure. Pick a time that suits you.', ['Book a call', BOOK, 1]]
   };
@@ -120,15 +131,16 @@
     root.append(panel);
     say('Hi! Tell us your dream idea, or ask about prices.', 0);
     x.onclick = close;
-    panel.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
   }
+  // Esc is listened for on the document while the panel is open: Safari does not focus buttons on click, so focus can be on <body>.
+  const onKey = e => { if (e.key === 'Escape' && isOpen && !e.defaultPrevented) close(); };
   function open() {
     if (!panel) build();
-    isOpen = true; panel.hidden = false; L.hidden = true; L.setAttribute('aria-expanded', 'true');
+    isOpen = true; d.addEventListener('keydown', onKey); panel.hidden = false; L.hidden = true; L.setAttribute('aria-expanded', 'true');
     requestAnimationFrame(() => { panel.classList.add('is-in'); panel.querySelector('.zc-x').focus(); });
   }
   function close() {
-    isOpen = false; panel.classList.remove('is-in'); panel.hidden = true; L.hidden = false; L.setAttribute('aria-expanded', 'false'); L.focus();
+    isOpen = false; d.removeEventListener('keydown', onKey); panel.classList.remove('is-in'); panel.hidden = true; L.hidden = false; L.setAttribute('aria-expanded', 'false'); L.focus();
   }
   L.onclick = open;
   d.addEventListener('click', e => { if (e.target.closest('[data-chat-open]')) { e.preventDefault(); open(); } });

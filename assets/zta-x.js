@@ -11,6 +11,12 @@
     a.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4h13A1.5 1.5 0 0 1 20 5.5v9a1.5 1.5 0 0 1-1.5 1.5H10l-4.5 4v-4h0A1.5 1.5 0 0 1 4 14.5z"/><path d="M8 9h8M8 12h5"/></svg><span>Text us</span>';
     b.appendChild(a);
   }
+  /* 1b. Skip link: also move focus into <main> (a plain #main jump only moves the scroll position in some browsers) */
+  d.addEventListener('click',function(e){
+    var a=e.target.closest&&e.target.closest('a[href="#main"]'),m=a&&d.getElementById('main');if(!m)return;
+    if(!m.hasAttribute('tabindex'))m.setAttribute('tabindex','-1');
+    m.focus({preventScroll:true});
+  });
   /* 2. Gold spotlight: follows the cursor on desktop, phone tilt on Android (iOS needs a permission prompt, so it is skipped) */
   if(!calm){
     var s=d.createElement('div');s.className='zx-spot';s.setAttribute('aria-hidden','true');b.appendChild(s);
@@ -85,14 +91,31 @@
 /* "Online now" badge: schedule-based (Mon-Fri 9:00-17:00 America/Chicago), computed in the visitor's browser. NOT a live presence signal. */
 (function(){
   var d=document,badges=[];
+  /* US federal holidays (observed dates) are offline days: Sat -> Fri, Sun -> Mon. Computed for the years around today. */
+  var hol={};
+  function addHol(y){
+    var U=function(m,dd){return new Date(Date.UTC(y,m-1,dd))};
+    var nth=function(m,wd,n){var f=U(m,1).getUTCDay();return 1+((wd-f+7)%7)+(n-1)*7};
+    var last=function(m,wd){var e=new Date(Date.UTC(y,m,0));return e.getUTCDate()-((e.getUTCDay()-wd+7)%7)};
+    [[1,1],[1,nth(1,1,3)],[2,nth(2,1,3)],[5,last(5,1)],[6,19],[7,4],[9,nth(9,1,1)],[10,nth(10,1,2)],[11,11],[11,nth(11,4,4)],[12,25]].forEach(function(x){
+      var t=U(x[0],x[1]),wd=t.getUTCDay();
+      if(wd===6)t=new Date(t.getTime()-864e5);else if(wd===0)t=new Date(t.getTime()+864e5);
+      hol[t.toISOString().slice(0,10)]=1;
+    });
+  }
+  function isBiz(t){var wd=t.getUTCDay();return wd>=1&&wd<=5&&!hol[t.toISOString().slice(0,10)]}
+  var DN=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
   function state(){
     try{
-      var p={};new Intl.DateTimeFormat('en-US',{timeZone:'America/Chicago',weekday:'short',hour:'numeric',minute:'numeric',hourCycle:'h23'}).formatToParts(new Date()).forEach(function(x){p[x.type]=x.value});
-      var day=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].indexOf(p.weekday),h=+p.hour;
-      if(day<0||isNaN(h))return null;
-      var wk=day>=1&&day<=5;
-      if(wk&&h>=9&&h<17)return{on:1};
-      return{on:0,mon:(day===5&&h>=17)||day===6||day===0};
+      var p={};new Intl.DateTimeFormat('en-US',{timeZone:'America/Chicago',year:'numeric',month:'numeric',day:'numeric',hour:'numeric',minute:'numeric',hourCycle:'h23'}).formatToParts(new Date()).forEach(function(x){p[x.type]=x.value});
+      var y=+p.year,h=+p.hour;
+      if(isNaN(y)||isNaN(h))return null;
+      [y-1,y,y+1].forEach(function(k){if(!hol[k+'-']){hol[k+'-']=1;addHol(k)}});
+      var today=new Date(Date.UTC(y,+p.month-1,+p.day)),biz=isBiz(today);
+      if(biz&&h>=9&&h<17)return{on:1};
+      var n=0,t=today;
+      if(!(biz&&h<9)){do{t=new Date(t.getTime()+864e5);n++}while(!isBiz(t)&&n<14)}
+      return{on:0,when:n===0?'at 9 AM CT':n===1?'tomorrow at 9 AM CT':DN[t.getUTCDay()]+' at 9 AM CT'};
     }catch(e){return null}
   }
   function paint(el){
@@ -100,10 +123,10 @@
     el.hidden=false;
     var short=el.classList.contains('zx-on--nav');
     el.classList.toggle('is-on',!!s.on);
-    var when=s.mon?'Back Mon at 9 AM CT':'Back at 9 AM CT';
+    var when='Back '+s.when;
     el.lastChild.textContent=s.on?(short?'':' · replies within minutes'):(short?'':' · leave a message, we reply within 24 hours');
     el.firstChild.nextSibling.textContent=s.on?'Online now':when;
-    el.title=s.on?'Based on our hours: Mon-Fri 9 AM-5 PM Central. Not a live status.':'Our hours: Mon-Fri 9 AM-5 PM Central. We reply within 24 hours.';
+    el.title=s.on?'Based on our hours: Mon-Fri 9 AM-5 PM Central, closed on US federal holidays. Not a live status.':'Our hours: Mon-Fri 9 AM-5 PM Central, closed on US federal holidays. We reply within 24 hours.';
   }
   window.ZXOnline=function(host,mode,where){
     if(!host||host.querySelector('.zx-on'))return;
