@@ -81,3 +81,107 @@ dds.forEach(d => {
   });
   matchMedia('(min-width: 901px)').addEventListener('change', e => e.matches && set(false));
 })();
+
+/* Site search: ⌘K / Ctrl+K or "/" opens it; the index loads on first open */
+(() => {
+  const acts = document.querySelector('.nav__acts');
+  if (!acts) return;
+  const IC = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM20 20l-4-4"/></svg>';
+  const mac = /Mac|iP(hone|ad)/.test(navigator.platform || navigator.userAgent);
+  const btn = document.createElement('button');
+  btn.type = 'button'; btn.className = 'nav__srch'; btn.setAttribute('aria-label', 'Search the site');
+  btn.setAttribute('aria-keyshortcuts', mac ? 'Meta+K' : 'Control+K');
+  btn.innerHTML = IC + `<kbd>${mac ? '⌘' : 'Ctrl '}K</kbd>`;
+  acts.prepend(btn);
+  const POP = [['/tools/#teardown', 'Free website teardown', 'Tool'], ['/packages/', 'Packages & prices', 'Page'], ['https://cal.com/zentorumagency/30min', 'Book a free 30-minute call', 'Action'],
+    ['/services/web-design/', 'Web design', 'Service'], ['/industries/', 'Websites for your trade', 'Page'], ['/blog/', 'Blog', 'Page']];
+  let d, inp, list, idx, sel = 0, items = [], last;
+  const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const norm = s => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/&/g, ' and ');
+  const mark = (s, q) => { let h = esc(s); q.forEach(w => { if (w.length > 1) h = h.replace(new RegExp('(' + w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'ig'), '<mark>$1</mark>'); }); return h; };
+  const build = () => {
+    d = document.createElement('div');
+    d.className = 'srch'; d.hidden = true;
+    d.innerHTML = `<div class="srch__bg" data-x></div><div class="srch__box" role="dialog" aria-modal="true" aria-label="Search the site">
+<div class="srch__in">${IC}<input type="search" placeholder="Search services, prices, guides…" aria-label="Search" role="combobox" aria-expanded="true" aria-controls="srch-l" aria-autocomplete="list" autocomplete="off" spellcheck="false" enterkeyhint="go"><button type="button" class="srch__x" data-x aria-label="Close search">Esc</button></div>
+<ul class="srch__l" id="srch-l" role="listbox" aria-label="Results"></ul>
+<p class="srch__ft"><span><kbd>↑</kbd><kbd>↓</kbd> move</span><span><kbd>↵</kbd> open</span><span><kbd>esc</kbd> close</span></p></div>`;
+    document.body.appendChild(d);
+    inp = d.querySelector('input'); list = d.querySelector('.srch__l');
+    d.addEventListener('click', e => { if (e.target.closest('[data-x]')) close(); });
+    inp.addEventListener('input', run);
+    inp.addEventListener('keydown', e => {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); pick(sel + (e.key === 'ArrowDown' ? 1 : -1)); }
+      else if (e.key === 'Enter' && items[sel]) { e.preventDefault(); list.children[sel].querySelector('a').click(); }
+    });
+    list.addEventListener('mousemove', e => { const li = e.target.closest('li[data-i]'); if (li && +li.dataset.i !== sel) pick(+li.dataset.i, true); });
+    list.addEventListener('click', e => { if (e.target.closest('a')) close(true); });
+    d.addEventListener('keydown', e => { if (e.key === 'Tab') { e.preventDefault(); inp.focus(); } });
+  };
+  const load = () => idx || (idx = fetch('/assets/zta-search.json?v=20261101a').then(r => r.json()).then(a => a.map(x => ({ ...x, n: norm(x.t), hn: norm(x.h), b: norm(x.h + ' ' + x.d + ' ' + x.u) }))).catch(() => (idx = null, [])));
+  // every word must match; when nothing does, fall back to results that match most of the words
+  const score = (x, q, loose) => {
+    let s = 0, miss = 0;
+    for (const w of q) {
+      const t = x.n.indexOf(w);
+      if (t === 0) s += 100; else if (t > 0) s += x.n[t - 1] === ' ' ? 40 : 15;
+      else if (x.b.includes(w)) s += x.hn.includes(w) ? 10 : 5;
+      else if (loose) miss++; else return 0;
+    }
+    return miss === q.length ? 0 : s + (x.k === 'Service' || x.k === 'Tool' ? 3 : x.k === 'Page' ? 2 : 0);
+  };
+  const row = (x, i, q) => {
+    const ext = /^https?:/.test(x.u);
+    return `<li role="option" id="srch-${i}" data-i="${i}" aria-selected="${i === sel}"><a href="${esc(x.u)}"${ext ? ' target="_blank" rel="noopener"' : ''} tabindex="-1"><span class="srch__k srch__k--${x.k.toLowerCase()}">${x.k}</span><span class="srch__t"><b>${mark(x.t, q)}</b>${x.d ? `<small>${mark(x.d, q)}</small>` : ''}</span><i aria-hidden="true">${ext || /^(tel|sms):/.test(x.u) ? '↗' : '→'}</i></a></li>`;
+  };
+  async function run() {
+    const raw = inp.value.trim(), q = norm(raw).split(/\s+/).filter(Boolean);
+    sel = 0;
+    if (!q.length) {
+      items = POP.map(([u, t, k]) => ({ u, t, k, d: '' }));
+      list.innerHTML = '<li class="srch__h" role="presentation">Popular</li>' + items.map((x, i) => row(x, i, [])).join('');
+      return pick(0);
+    }
+    const all = await load();
+    if (inp.value.trim() !== raw) return;
+    const rank = loose => all.map(x => [score(x, q, loose), x]).filter(a => a[0]).sort((a, b) => b[0] - a[0]).slice(0, 8).map(a => a[1]);
+    items = rank(false);
+    if (!items.length && q.length > 1) items = rank(true);
+    list.innerHTML = items.length ? items.map((x, i) => row(x, i, q)).join('')
+      : `<li class="srch__no" role="presentation">No results for “${esc(raw)}”. <a href="/contact/">Ask us directly →</a></li>`;
+    pick(0);
+  }
+  function pick(i, mouse) {
+    if (!items.length) return inp.removeAttribute('aria-activedescendant');
+    sel = (i + items.length) % items.length;
+    [...list.querySelectorAll('li[data-i]')].forEach(li => li.setAttribute('aria-selected', +li.dataset.i === sel));
+    inp.setAttribute('aria-activedescendant', 'srch-' + sel);
+    if (!mouse) list.querySelector(`[data-i="${sel}"]`)?.scrollIntoView({ block: 'nearest' });
+  }
+  function open() {
+    if (!d) build();
+    if (!d.hidden) return;
+    last = document.activeElement;
+    document.querySelector('.mnav.is-open .mnav__x')?.click();
+    d.hidden = false; requestAnimationFrame(() => d.classList.add('is-on'));
+    document.documentElement.classList.add('srch-on');
+    if (window.lenis) window.lenis.stop();
+    inp.value = ''; run(); inp.focus(); load();
+  }
+  function close(nav) {
+    if (!d || d.hidden) return;
+    d.classList.remove('is-on'); d.hidden = true;
+    document.documentElement.classList.remove('srch-on');
+    if (window.lenis) window.lenis.start();
+    if (!nav && last) last.focus({ preventScroll: true });
+  }
+  btn.addEventListener('click', open);
+  btn.addEventListener('pointerenter', load, { once: true });
+  addEventListener('keydown', e => {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); d && !d.hidden ? close() : open(); return; }
+    if (e.key === 'Escape' && d && !d.hidden) { e.stopPropagation(); return close(); }
+    const t = e.target;
+    if (e.key === '/' && !e.metaKey && !e.ctrlKey && !e.altKey && !(t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) { e.preventDefault(); open(); }
+  }, true);
+  addEventListener('pageshow', e => e.persisted && close(true));
+})();
