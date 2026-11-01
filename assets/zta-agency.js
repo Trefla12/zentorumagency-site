@@ -704,6 +704,7 @@ function setupForm(form) {
     back.hidden = n === 1;
     next.hidden = n === 4;
     submit.hidden = n !== 4;
+    const pv = $('[data-qf-priv]', form); if (pv) pv.hidden = n !== 4;
     setErr('');
     const t = $('.qf__title', cur);
     if (t) { t.setAttribute('tabindex', '-1'); t.focus({ preventScroll: true }); }

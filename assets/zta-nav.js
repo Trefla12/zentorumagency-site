@@ -118,7 +118,7 @@ dds.forEach(d => {
     list.addEventListener('click', e => { if (e.target.closest('a')) close(true); });
     d.addEventListener('keydown', e => { if (e.key === 'Tab') { e.preventDefault(); inp.focus(); } });
   };
-  const load = () => idx || (idx = fetch('/assets/zta-search.json?v=20261102b').then(r => r.json()).then(a => a.map(x => ({ ...x, n: norm(x.t), hn: norm(x.h), b: norm(x.h + ' ' + x.d + ' ' + x.u) }))).catch(() => (idx = null, [])));
+  const load = () => idx || (idx = fetch('/assets/zta-search.json?v=20261102e').then(r => r.json()).then(a => a.map(x => ({ ...x, n: norm(x.t), hn: norm(x.h), b: norm(x.h + ' ' + x.d + ' ' + x.u) }))).catch(() => (idx = null, [])));
   // every word must match; when nothing does, fall back to results that match most of the words
   const score = (x, q, loose) => {
     let s = 0, miss = 0;
