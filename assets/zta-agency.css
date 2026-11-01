@@ -590,7 +590,7 @@ body.is-ready .real::after{transform:scaleX(1)}
 .nav__ddp{position:absolute;left:-18px;top:calc(100% + 14px);min-width:240px;display:grid;gap:2px;padding:10px;background:#150a1a;border:1px solid var(--line);border-radius:18px;box-shadow:0 24px 60px -20px rgba(0,0,0,.85);opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .25s,transform .25s,visibility 0s .25s;z-index:60}
 .nav__ddp::before{content:"";position:absolute;left:0;right:0;top:-16px;height:16px}
 .nav__dd.is-open .nav__ddp{opacity:1;visibility:visible;transform:none;transition:opacity .25s,transform .25s}
-@media (hover:hover){.nav__dd:hover .nav__ddp{opacity:1;visibility:visible;transform:none;transition:opacity .25s,transform .25s}.nav__dd:hover .nav__ddb svg{transform:rotate(180deg)}}
+
 .nav__links .nav__ddp a{display:block;padding:11px 14px;border-radius:10px;border:0;font-size:12px;letter-spacing:.14em;color:#d9ccb6;white-space:nowrap;transition:background .2s,color .2s}
 .nav__links .nav__ddp a::after{display:none}
 .nav__links .nav__ddp a:hover,.nav__links .nav__ddp a:focus-visible,.nav__links .nav__ddp a[aria-current]{background:rgba(230,201,140,.09);color:var(--cream)}
