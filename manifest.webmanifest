@@ -1,0 +1,23 @@
+{
+  "name": "Zentorum Agency",
+  "short_name": "Zentorum",
+  "description": "Websites, SEO, 3D, video and logos for small businesses.",
+  "id": "/",
+  "start_url": "/?source=app",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0b050e",
+  "theme_color": "#0b050e",
+  "categories": ["business", "design"],
+  "icons": [
+    {"src": "/assets/zta-icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "/assets/zta-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "/assets/zta-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"},
+    {"src": "/assets/zta-favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any"}
+  ],
+  "shortcuts": [
+    {"name": "Get a quote", "url": "/contact/?source=app", "icons": [{"src": "/assets/zta-icon-192.png", "sizes": "192x192"}]},
+    {"name": "Free homepage mockup", "url": "/free-mockup/?source=app", "icons": [{"src": "/assets/zta-icon-192.png", "sizes": "192x192"}]},
+    {"name": "Free tools", "url": "/tools/?source=app", "icons": [{"src": "/assets/zta-icon-192.png", "sizes": "192x192"}]}
+  ]
+}

@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>You are offline | Zentorum Agency</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0b050e">
+<link rel="icon" href="/assets/zta-favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/assets/zta-icon-180.png">
+<meta name="apple-mobile-web-app-title" content="Zentorum">
+<style>
+@font-face{font-family:CG;src:url(/assets/fonts/cg.woff2) format('woff2');font-display:swap}
+@font-face{font-family:In;src:url(/assets/fonts/inter.woff2) format('woff2');font-display:swap;font-weight:100 900}
+*{box-sizing:border-box}
+html{color-scheme:dark}
+body{margin:0;min-height:100vh;min-height:100dvh;display:grid;place-items:center;padding:28px 20px calc(28px + env(safe-area-inset-bottom));background:radial-gradient(90% 60% at 50% 0%,#24102a,#0b050e 70%);color:#f7ecd6;font:400 16px/1.6 In,system-ui,-apple-system,sans-serif;text-align:center}
+main{max-width:620px;width:100%}
+.logo{display:inline-flex;gap:8px;align-items:center;font:400 20px CG,Georgia,serif;letter-spacing:.02em;color:#f7ecd6;text-decoration:none}
+.logo b{font-weight:400;color:#e6c98c}
+.car{position:relative;margin:22px auto 6px;width:min(100%,460px);aspect-ratio:900/268}
+.car img{width:100%;height:100%;object-fit:contain;filter:saturate(.6) brightness(.8);animation:idle 3.2s ease-in-out infinite}
+.car::after{content:"";position:absolute;left:12%;right:12%;bottom:6%;height:10%;background:radial-gradient(closest-side,rgba(0,0,0,.6),transparent);z-index:-1}
+@keyframes idle{50%{transform:translateY(-3px)}}
+.sig{display:inline-flex;align-items:center;gap:10px;padding:6px 14px;border:1px solid rgba(247,236,214,.16);border-radius:999px;font:600 11px In,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#e6c98c}
+.sig i{width:8px;height:8px;border-radius:50%;background:#ff6b5a;box-shadow:0 0 0 0 rgba(255,107,90,.6);animation:pulse 1.6s infinite}
+.on .sig i{background:#5fd68f;box-shadow:none;animation:none}
+@keyframes pulse{to{box-shadow:0 0 0 10px rgba(255,107,90,0)}}
+h1{margin:16px 0 10px;font:400 clamp(36px,8vw,58px)/1.04 CG,Georgia,serif}
+h1 em{font-style:italic;color:#e6c98c}
+p.lede{margin:0 auto;max-width:44ch;color:rgba(247,236,214,.75)}
+.ctas{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:26px 0 0}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:0 22px;border-radius:999px;border:1px solid rgba(247,236,214,.22);background:rgba(255,255,255,.04);color:#f7ecd6;font:600 15px In,sans-serif;text-decoration:none;cursor:pointer}
+.btn--gold{border:0;background:linear-gradient(135deg,#f3dca6,#c99a4e);color:#1a0c1e}
+.btn:focus-visible{outline:2px solid #e6c98c;outline-offset:3px}
+.saved{margin:34px auto 0;max-width:480px;text-align:left}
+.saved h2{margin:0 0 10px;font:600 11px In,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:rgba(247,236,214,.6);text-align:center}
+.saved ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.saved a{display:flex;justify-content:space-between;gap:12px;padding:12px 16px;border:1px solid rgba(247,236,214,.12);border-radius:14px;color:#f7ecd6;text-decoration:none;background:rgba(255,255,255,.03)}
+.saved a::after{content:"→";color:#e6c98c}
+.saved a:hover{border-color:#e6c98c}
+.note{margin-top:22px;font-size:13px;color:rgba(247,236,214,.5)}
+@media (prefers-reduced-motion:reduce){.car img,.sig i{animation:none}}
+</style>
+</head>
+<body>
+<main>
+<a class="logo" href="/">Zentorum <b>Agency</b></a>
+<div class="car"><img src="/assets/zta-404-car-900.webp" width="900" height="268" alt=""></div>
+<p class="sig" id="sig" role="status"><i></i><span>No connection</span></p>
+<h1>You are offline. <em>We are not.</em></h1>
+<p class="lede">This page could not load because your device has no internet right now. Your phone line still works: call or text us, or try again in a moment.</p>
+<div class="ctas"><button class="btn btn--gold" type="button" id="retry">Try again</button><a class="btn" href="tel:+15122415531">Call 512-241-5531</a><a class="btn" href="sms:+15122415531">Text us</a></div>
+<section class="saved" id="saved" hidden><h2>Saved on this device</h2><ul id="list"></ul></section>
+<p class="note">We reload this page for you as soon as you are back online.</p>
+</main>
+<script>
+(function(){
+  var go=function(){location.reload()};
+  document.getElementById('retry').addEventListener('click',go);
+  addEventListener('online',function(){document.body.classList.add('on');document.querySelector('#sig span').textContent='Back online';setTimeout(go,600)});
+  var NAMES={'/':'Home','/contact/':'Get a quote','/packages/':'Packages and prices','/tools/':'Free tools','/blog/':'Blog','/faq/':'FAQ','/team/':'Team','/projects/':'Projects','/compare/':'Compare your options','/free-mockup/':'Free homepage mockup','/playground/':'3D Playground'};
+  if(!('caches' in window))return;
+  caches.open('zta-pages').then(function(c){return c.keys()}).then(function(keys){
+    var here=location.pathname,ul=document.getElementById('list'),n=0;
+    keys.map(function(r){return new URL(r.url).pathname}).filter(function(p){return p!==here&&p!=='/offline/'}).reverse().slice(0,8).forEach(function(p){
+      var a=document.createElement('a');a.href=p;
+      a.textContent=NAMES[p]||p.replace(/^\/|\/$/g,'').split('/').pop().replace(/-/g,' ').replace(/^./,function(x){return x.toUpperCase()});
+      var li=document.createElement('li');li.appendChild(a);ul.appendChild(li);n++;
+    });
+    if(n)document.getElementById('saved').hidden=false;
+  }).catch(function(){});
+})();
+</script>
+</body>
+</html>

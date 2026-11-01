@@ -185,3 +185,6 @@ dds.forEach(d => {
   }, true);
   addEventListener('pageshow', e => e.persisted && close(true));
 })();
+
+/* installable app + offline page (service worker at /sw.js) */
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
