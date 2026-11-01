@@ -146,6 +146,17 @@ function roast(form) {
   });
 }
 
+// Pre-fill handed over by the quizzes (sessionStorage), same fields the quote estimator fills
+try {
+  const raw = sessionStorage.getItem('zta-prefill');
+  if (raw && $('#zta-form')) {
+    const p = JSON.parse(raw);
+    prefill(p);
+    if (p.timeline) $$('input[name="timeline"]').forEach(i => { if (i.value === p.timeline) { i.checked = true; i.dispatchEvent(new Event('change', { bubbles: true })); } });
+    sessionStorage.removeItem('zta-prefill');
+  }
+} catch {}
+
 const q = $('[data-quote]'); if (q) quote(q);
 const b = $('[data-brand]'); if (b) brand(b);
 const s = $('[data-ba]'); if (s) ba(s);

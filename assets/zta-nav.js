@@ -43,7 +43,7 @@ dds.forEach(d => {
     ['Projects', /^\/(projects|playground)\//, [['/projects/', 'All projects'], ['/projects/#web', 'Websites'], ['/projects/#3d', '3D'], ['/projects/#video', 'Video'], ['/projects/#logo', 'Logo'], ['/projects/#scratch', 'Video from scratch'], ['/projects/sfc-detailing/', 'Case study: SFC Detailing'], ['/projects/daqverse/', 'Case study: Daqverse'], ['/projects/zentorum-store/', 'Case study: Zentorum store'], ['/playground/', '3D Playground']]],
     ['Industries', /^\/industries\//, [['/industries/', 'All industries'], ['/industries/auto-detailing/', 'Auto detailing'], ['/industries/clinics-dental/', 'Clinics & dental'], ['/industries/contractors-trades/', 'Contractors & trades'], ['/industries/fitness-gyms/', 'Fitness & gyms'], ['/industries/online-stores/', 'Online stores'], ['/industries/real-estate/', 'Real estate'], ['/industries/restaurants-cafes/', 'Restaurants & cafés'], ['/industries/salons-barbers/', 'Salons & barbers']]],
     ['/packages/', 'Prices'],
-    ['Resources', /^\/(blog|tools|glossary|faq|process|compare|27-things|style-guide)\//, [['/blog/', 'Blog'], ['/tools/', 'Free tools'], ['/glossary/', 'Glossary'], ['/faq/', 'FAQ'], ['/process/', 'Process'], ['/compare/', 'Compare options'], ['/27-things/', '27 things checklist'], ['/style-guide/', 'Style guide'], ['/tools/favicon-generator/', 'Favicon generator'], ['/tools/roi-calculator/', 'Is a website worth it?']]],
+    ['Resources', /^\/(blog|tools|glossary|faq|process|compare|27-things|style-guide)\//, [['/blog/', 'Blog'], ['/tools/', 'Free tools'], ['/glossary/', 'Glossary'], ['/faq/', 'FAQ'], ['/process/', 'Process'], ['/compare/', 'Compare options'], ['/27-things/', '27 things checklist'], ['/style-guide/', 'Style guide'], ['/tools/favicon-generator/', 'Favicon generator'], ['/tools/roi-calculator/', 'Is a website worth it?'], ['/tools/which-package/', 'Which package fits you?'], ['/tools/how-outdated/', 'How outdated is my site?']]],
     ['Studio', /^\/(team|collab|contact|free-mockup)\//, [['/team/', 'Team'], ['/contact/', 'Get a quote'], ['/free-mockup/', 'Free mockup'], ['/collab/', 'Work with us']]]
   ];
   const RN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX'];
@@ -118,7 +118,7 @@ dds.forEach(d => {
     list.addEventListener('click', e => { if (e.target.closest('a')) close(true); });
     d.addEventListener('keydown', e => { if (e.key === 'Tab') { e.preventDefault(); inp.focus(); } });
   };
-  const load = () => idx || (idx = fetch('/assets/zta-search.json?v=20261102a').then(r => r.json()).then(a => a.map(x => ({ ...x, n: norm(x.t), hn: norm(x.h), b: norm(x.h + ' ' + x.d + ' ' + x.u) }))).catch(() => (idx = null, [])));
+  const load = () => idx || (idx = fetch('/assets/zta-search.json?v=20261102b').then(r => r.json()).then(a => a.map(x => ({ ...x, n: norm(x.t), hn: norm(x.h), b: norm(x.h + ' ' + x.d + ' ' + x.u) }))).catch(() => (idx = null, [])));
   // every word must match; when nothing does, fall back to results that match most of the words
   const score = (x, q, loose) => {
     let s = 0, miss = 0;
