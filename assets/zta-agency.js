@@ -478,7 +478,7 @@ function setupWork() {
     ens.forEach(en => {
       const v = en.target;
       if (en.isIntersecting) {
-        if (!v.src) { v.src = v.dataset.src; v.load(); }
+        if (!v.src) { v.src = v.dataset.webm && v.canPlayType('video/webm; codecs="vp9"') ? v.dataset.webm : v.dataset.src; v.load(); }
         if (!RM) v.play().catch(() => {});
       } else v.pause();
     });
@@ -495,6 +495,16 @@ function setupWork() {
   if (RM || !gsap || !ST) { if (pin) pin.style.overflowX = 'auto'; return; }
   const mm = gsap.matchMedia();
   mm.add('(min-width: 900px)', () => {
+    // size the media so the whole card, caption included, fits on screen while pinned
+    const work = $('.work');
+    const fit = () => {
+      for (let i = 0; i < 2; i++) { // captions rewrap once widths change, so measure twice
+        const top = track.getBoundingClientRect().top - work.getBoundingClientRect().top;
+        const cap = Math.max(...$$('.piece figcaption', track).map(c => c.offsetHeight));
+        track.style.setProperty('--mh', Math.max(innerHeight - top - cap - 44, 160) + 'px');
+      }
+    };
+    fit(); ST.addEventListener('refreshInit', fit);
     const dist = () => Math.max(track.scrollWidth - innerWidth, 0);
     const tween = gsap.to(track, {
       x: () => -dist(), ease: 'none',
@@ -516,6 +526,7 @@ function setupWork() {
     addEventListener('pointerup', pu);
     return () => {
       tween.scrollTrigger?.kill(); tween.kill();
+      ST.removeEventListener('refreshInit', fit); track.style.removeProperty('--mh');
       track.removeEventListener('pointerdown', pd);
       removeEventListener('pointermove', pm);
       removeEventListener('pointerup', pu);
