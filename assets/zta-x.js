@@ -63,3 +63,21 @@
   var c=/[?&]code=DREAM\b/i.test(location.search)?'DREAM':'';try{c=c||sessionStorage.getItem('zta-code')||''}catch(_){}
   if(c&&!f.value)f.value='Code '+c+' (10% off). My idea: ';
 })();
+
+/* 7. Gold cursor on every page (same look as the homepage). Home + contact run it from zta-agency.js. */
+(function(){
+  var d=document,w=window,r=d.documentElement;
+  if(!w.matchMedia||!matchMedia('(hover:hover) and (pointer:fine)').matches)return;
+  var cur=d.querySelector('.cursor');
+  if(!cur){cur=d.createElement('div');cur.className='cursor';cur.setAttribute('aria-hidden','true');cur.innerHTML='<span class="cursor__dot"></span><span class="cursor__ring"><em data-cursor-label></em></span>';d.body.appendChild(cur)}
+  r.classList.add('zx-cur');
+  r.addEventListener('mouseleave',function(){cur.classList.add('is-out')});
+  r.addEventListener('mouseenter',function(){cur.classList.remove('is-out')});
+  if(d.querySelector('script[src*="zta-agency.js"]'))return;
+  var dot=cur.querySelector('.cursor__dot'),ring=cur.querySelector('.cursor__ring'),lab=cur.querySelector('[data-cursor-label]');
+  var calm=matchMedia('(prefers-reduced-motion: reduce)').matches,mx=-99,my=-99,rx=mx,ry=my,on=0;
+  var tick=function(){rx+=(mx-rx)*.18;ry+=(my-ry)*.18;ring.style.transform='translate('+rx+'px,'+ry+'px)';if(Math.abs(mx-rx)+Math.abs(my-ry)>.2)requestAnimationFrame(tick);else on=0};
+  addEventListener('pointermove',function(e){if(e.pointerType&&e.pointerType!=='mouse')return;mx=e.clientX;my=e.clientY;dot.style.transform='translate('+mx+'px,'+my+'px)';if(calm){rx=mx;ry=my;ring.style.transform=dot.style.transform}else if(!on){on=1;requestAnimationFrame(tick)}},{passive:true});
+  d.addEventListener('pointerover',function(e){var t=e.target.closest&&e.target.closest('[data-cursor]');if(t){lab.textContent=t.getAttribute('data-cursor');cur.classList.add('is-big')}});
+  d.addEventListener('pointerout',function(e){var t=e.target.closest&&e.target.closest('[data-cursor]');if(t&&!t.contains(e.relatedTarget))cur.classList.remove('is-big')});
+})();
