@@ -81,3 +81,57 @@
   d.addEventListener('pointerover',function(e){var t=e.target.closest&&e.target.closest('[data-cursor]');if(t){lab.textContent=t.getAttribute('data-cursor');cur.classList.add('is-big')}});
   d.addEventListener('pointerout',function(e){var t=e.target.closest&&e.target.closest('[data-cursor]');if(t&&!t.contains(e.relatedTarget))cur.classList.remove('is-big')});
 })();
+
+/* "Online now" badge: schedule-based (Mon-Fri 9:00-17:00 America/Chicago), computed in the visitor's browser. NOT a live presence signal. */
+(function(){
+  var d=document,badges=[];
+  function state(){
+    try{
+      var p={};new Intl.DateTimeFormat('en-US',{timeZone:'America/Chicago',weekday:'short',hour:'numeric',minute:'numeric',hourCycle:'h23'}).formatToParts(new Date()).forEach(function(x){p[x.type]=x.value});
+      var day=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].indexOf(p.weekday),h=+p.hour;
+      if(day<0||isNaN(h))return null;
+      var wk=day>=1&&day<=5;
+      if(wk&&h>=9&&h<17)return{on:1};
+      return{on:0,mon:(day===5&&h>=17)||day===6||day===0};
+    }catch(e){return null}
+  }
+  function paint(el){
+    var s=state();if(!s){el.hidden=true;return}
+    el.hidden=false;
+    var short=el.classList.contains('zx-on--nav');
+    el.classList.toggle('is-on',!!s.on);
+    var when=s.mon?'Back Mon at 9 AM CT':'Back at 9 AM CT';
+    el.lastChild.textContent=s.on?(short?'':' · replies within minutes'):(short?'':' · leave a message, we reply within 24 hours');
+    el.firstChild.nextSibling.textContent=s.on?'Online now':when;
+    el.title=s.on?'Based on our hours: Mon-Fri 9 AM-5 PM Central. Not a live status.':'Our hours: Mon-Fri 9 AM-5 PM Central. We reply within 24 hours.';
+  }
+  window.ZXOnline=function(host,mode,where){
+    if(!host||host.querySelector('.zx-on'))return;
+    var el=d.createElement('span');el.className='zx-on'+(mode?' zx-on--'+mode:'');
+    el.innerHTML='<i aria-hidden="true"></i><b></b><span></span>';
+    el.setAttribute('role','status');
+    where==='first'?host.insertBefore(el,host.firstChild):host.appendChild(el);
+    badges.push(el);paint(el);return el;
+  };
+  var acts=d.querySelector('.nav__acts');if(acts)ZXOnline(acts,'nav','first');
+  var side=d.querySelector('.callcard');if(side&&side.parentNode)(function(){var w=d.createElement('div');side.parentNode.insertBefore(w,side);ZXOnline(w,'side');})();
+  setInterval(function(){badges.forEach(paint)},60000);
+})();
+
+/* Homepage scroll story: sentinel blocks drive data-step (works in every browser; static stacked version when CSS pinning is off). */
+(function(){
+  var d=document,vis=d.querySelector('[data-zs-vis]');if(!vis)return;
+  var items=[].slice.call(d.querySelectorAll('.zs__item')),bar=d.querySelector('[data-zs-bar]'),marks=d.querySelectorAll('.zs__track i');
+  if(!('IntersectionObserver' in window)||!marks.length)return;
+  var cur=-1;
+  function set(i){
+    if(i===cur)return;cur=i;vis.setAttribute('data-step',i);
+    items.forEach(function(el,k){el.classList.toggle('is-on',k===i)});
+    if(bar)bar.style.transform='scaleX('+((i+1)/items.length)+')';
+  }
+  set(0);
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){if(e.isIntersecting)set([].indexOf.call(marks,e.target))});
+  },{rootMargin:'-50% 0px -50% 0px'});
+  marks.forEach(function(m){io.observe(m)});
+})();

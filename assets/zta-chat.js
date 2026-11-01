@@ -115,6 +115,7 @@
       mkForm([['name', 'First name', 'text', 'given-name'], ['email', 'Email', 'email', 'email'], ['msg', 'Message', 'textarea']], 'Send message',
         v => ({ name: v.name.trim(), email: v.email.trim(), services: 'Chat message', dream: v.msg.trim().slice(0, 1500), botcheck: v.botcheck }),
         'Got it. We\'ll reply by email.'));
+    if (window.ZXOnline) window.ZXOnline(bd, 'side', 'first');
     panel.append(hd, bd);
     root.append(panel);
     say('Hi! Tell us your dream idea, or ask about prices.', 0);
