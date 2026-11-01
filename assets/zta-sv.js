@@ -2,6 +2,7 @@
 (()=>{
 const rm=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const els=document.querySelectorAll('.sv');if(!els.length)return;
+document.documentElement.classList.add('sv-js');
 const load=v=>{if(v.dataset.ok)return;v.dataset.ok=1;
  if(v.dataset.webm&&v.canPlayType('video/webm; codecs="vp9"')){v.src=v.dataset.webm}else{v.src=v.dataset.src}
  v.addEventListener('playing',()=>v.classList.add('is-play'),{once:true})};
