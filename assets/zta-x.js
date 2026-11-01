@@ -9,7 +9,7 @@
     a.href='sms:+15122415531'+sep+'body='+encodeURIComponent("Hi Zentorum, I have a dream idea: ");
     a.setAttribute('aria-label','Text us at 512-241-5531');
     a.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4h13A1.5 1.5 0 0 1 20 5.5v9a1.5 1.5 0 0 1-1.5 1.5H10l-4.5 4v-4h0A1.5 1.5 0 0 1 4 14.5z"/><path d="M8 9h8M8 12h5"/></svg><span>Text us</span>';
-    b.appendChild(a);
+    var w=d.createElement('aside');w.setAttribute('aria-label','Quick contact');w.appendChild(a);b.appendChild(w); /* landmark, so the floating link is not outside all regions */
   }
   /* 1b. Skip link: also move focus into <main> (a plain #main jump only moves the scroll position in some browsers) */
   d.addEventListener('click',function(e){
