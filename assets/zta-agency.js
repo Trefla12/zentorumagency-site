@@ -477,7 +477,13 @@ function setupWork() {
     ens.forEach(en => {
       const v = en.target;
       if (en.isIntersecting) {
-        if (!v.src) { v.src = v.dataset.webm && v.canPlayType('video/webm; codecs="vp9"') ? v.dataset.webm : v.dataset.src; v.load(); }
+        if (!v.src) {
+          if (v.dataset.webm && v.canPlayType('video/webm; codecs="vp9"')) {
+            v.addEventListener('error', () => { v.src = v.dataset.src; v.load(); if (!RM) v.play().catch(() => {}); }, { once: true });
+            v.src = v.dataset.webm;
+          } else v.src = v.dataset.src;
+          v.load();
+        }
         if (!RM) v.play().catch(() => {});
       } else v.pause();
     });
