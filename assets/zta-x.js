@@ -18,7 +18,7 @@
     var q=function(){if(!raf)raf=requestAnimationFrame(set)};
     if(mm('(pointer: fine)')){
       w.addEventListener('pointermove',function(e){x=e.clientX/innerWidth*100;y=e.clientY/innerHeight*100;s.classList.add('on');q()},{passive:true});
-      d.addEventListener('pointerleave',function(){s.classList.remove('on')});
+      d.documentElement.addEventListener('mouseleave',function(){s.classList.remove('on')});
     }else if(w.DeviceOrientationEvent&&typeof DeviceOrientationEvent.requestPermission!=='function'){
       w.addEventListener('deviceorientation',function(e){if(e.gamma==null)return;x=50+Math.max(-30,Math.min(30,e.gamma))*1.4;y=35+Math.max(-30,Math.min(30,(e.beta||45)-45))*1.2;s.classList.add('on');q()},{passive:true});
     }
@@ -35,12 +35,12 @@
     var last=d.activeElement;
     if(!calm)confetti();
     var m=d.createElement('div');m.className='zx-egg';m.setAttribute('role','dialog');m.setAttribute('aria-modal','true');m.setAttribute('aria-labelledby','zx-egg-h');
-    m.innerHTML='<p class="zx-egg__k">You found it</p><h2 id="zx-egg-h">Dreamers get <em style="color:#e6c98c">10% off</em></h2><p class="zx-egg__s">Use this code on your first project.</p><button class="zx-egg__c" type="button" aria-label="Copy code DREAM">DREAM</button><p class="zx-egg__s" aria-live="polite">Tap the code to copy it.</p><div class="zx-egg__a"><a href="/contact/?code=DREAM">Claim it</a><button type="button" data-x>Close</button></div>';
+    m.innerHTML='<p class="zx-egg__k">You found it</p><h2 id="zx-egg-h">Dreamers get <em style="color:#e6c98c">10% off</em></h2><p class="zx-egg__s">Use this code on your first project. One per client.</p><button class="zx-egg__c" type="button" aria-label="Copy code DREAM">DREAM</button><p class="zx-egg__s" aria-live="polite">Tap the code to copy it.</p><div class="zx-egg__a"><a href="/contact/?code=DREAM">Claim it</a><button type="button" data-x>Close</button></div>';
     b.appendChild(m);requestAnimationFrame(function(){m.classList.add('on')});
     var code=m.querySelector('.zx-egg__c'),msg=m.querySelectorAll('.zx-egg__s')[1];
     code.addEventListener('click',function(){try{navigator.clipboard.writeText('DREAM').then(function(){msg.textContent='Copied. Paste it in your message.'})}catch(_){msg.textContent='Your code: DREAM'}});
     var close=function(){m.classList.remove('on');setTimeout(function(){m.remove();shown=0;if(last&&last.focus)last.focus()},400);d.removeEventListener('keydown',esc)};
-    var esc=function(e){if(e.key==='Escape')close()};
+    var esc=function(e){if(e.key==='Escape')return close();if(e.key!=='Tab')return;var f=m.querySelectorAll('button,a[href]'),a=f[0],z=f[f.length-1],ae=d.activeElement;if(!m.contains(ae)){e.preventDefault();a.focus()}else if(e.shiftKey&&ae===a){e.preventDefault();z.focus()}else if(!e.shiftKey&&ae===z){e.preventDefault();a.focus()}};
     d.addEventListener('keydown',esc);m.querySelector('[data-x]').addEventListener('click',close);
     code.focus();
     try{sessionStorage.setItem('zta-code','DREAM')}catch(_){}

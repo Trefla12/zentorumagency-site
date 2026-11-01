@@ -38,7 +38,7 @@
   var orb=document.querySelector('[data-orb]');
   if(orb){
     var cards=[].slice.call(orb.querySelectorAll('.orb__c')),n=cards.length;
-    var info=document.querySelector('[data-orb-info]');
+    var info=document.querySelector('[data-orb-info]'),say=document.querySelector('[data-orb-say]');
     var base=0,vel=0,R=340,KY=.34,running=false,hover=false,dragO=false,lastX=0,moved=0,front=-1,target=null,raf=0,visible=false;
     function size(){var m=innerWidth<700;KY=m?.5:.34;R=Math.min(orb.clientWidth*(m?.37:.38),380);orb.style.setProperty('--R',R+'px');orb.style.setProperty('--ky',KY)}
     function show(i){
@@ -72,6 +72,7 @@
     }
     function wake(){if(!raf&&visible)raf=requestAnimationFrame(tick)}
     function focusCard(i){
+      if(say)say.textContent=cards[i].dataset.n+': '+cards[i].dataset.d;
       var want=-i*Math.PI*2/n,k=Math.round((base-want)/(Math.PI*2));target=want+k*Math.PI*2;vel=0;wake();
     }
     size();layout();
@@ -82,7 +83,7 @@
     addEventListener('pointerup',function(){if(!dragO)return;dragO=false;orb.classList.remove('is-drag');wake()});
     cards.forEach(function(c,i){
       c.addEventListener('click',function(e){
-        if(moved>6){e.preventDefault();return}
+        if(moved>6&&e.detail!==0){e.preventDefault();return}
         if(i!==front){e.preventDefault();focusCard(i)}
       });
       c.addEventListener('focus',function(){focusCard(i)});

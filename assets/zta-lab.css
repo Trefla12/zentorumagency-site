@@ -109,3 +109,7 @@
 @media (max-width:1000px){.car{grid-template-columns:minmax(0,1fr)}.car__stage{aspect-ratio:4/3}}
 @media (max-width:560px){.car__stage{aspect-ratio:1/1}.car__ui{border-radius:22px}.sw{width:36px;height:36px}}
 .car__load[hidden],.car__go[hidden]{display:none}
+.sr{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.sw{position:relative}.sw::after{content:"";position:absolute;inset:-4px;border-radius:50%}
+.car__cv:focus-visible{outline:2px solid var(--gold);outline-offset:-3px}
+@media (max-width:700px){.chip{min-height:44px}}

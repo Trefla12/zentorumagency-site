@@ -29,7 +29,7 @@
     Promise.all([import('three'),import(A+'controls/OrbitControls.js'),import(A+'loaders/GLTFLoader.js'),import(A+'loaders/DRACOLoader.js'),import(A+'environments/RoomEnvironment.js')]).then(function(m){
       var T=m[0],OC=m[1].OrbitControls,GL=m[2].GLTFLoader,DL=m[3].DRACOLoader,RE=m[4].RoomEnvironment;
       var cv=document.createElement('canvas');cv.className='car__cv';
-      cv.setAttribute('role','img');cv.setAttribute('aria-label','Interactive 3D sports car. Drag to rotate, pinch or scroll to zoom. Use the buttons to change paint, finish and wheels.');
+      cv.tabIndex=0;cv.setAttribute('role','application');cv.setAttribute('aria-roledescription','3D viewer');cv.setAttribute('aria-label','Interactive 3D sports car. Drag or use the arrow keys to rotate, pinch, scroll or press plus and minus to zoom. Use the buttons to change paint, finish and wheels.');
       var r=new T.WebGLRenderer({canvas:cv,antialias:true,alpha:true,powerPreference:'high-performance'});
       r.setPixelRatio(Math.min(devicePixelRatio||1,innerWidth<700?1.75:2));r.toneMapping=T.ACESFilmicToneMapping;r.toneMappingExposure=.92;
       var sc=new T.Scene(),pm=new T.PMREMGenerator(r);sc.environment=pm.fromScene(new RE(),.04).texture;sc.environmentIntensity=.55;
@@ -64,7 +64,8 @@
       }
       var dl=new DL();dl.setDecoderPath('https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/libs/draco/gltf/');
       var gl=new GL();gl.setDRACOLoader(dl);
-      gl.load(stage.dataset.model,function(g){
+      function fail(){r.dispose();ctl.dispose();removeEventListener('resize',size);io.disconnect();vis=false;cv.remove();started=false;load.hidden=true;if(btn)btn.hidden=false}
+      gl.load(stage.dataset.model,function(g){try{
         g.scene.traverse(function(o){
           if(!o.isMesh)return;var mm=o.material;
           if(mm.name==='ZPaint')paint=mm;
@@ -76,18 +77,26 @@
         requestAnimationFrame(function(){cv.classList.add('on');load.hidden=true;stage.classList.add('is-3d')});
         api={apply:apply,reset:reset};apply();
         dl.dispose();
-      },function(e){if(e.total)bar.style.transform='scaleX('+(e.loaded/e.total)+')'},function(){started=false;load.hidden=true;if(btn)btn.hidden=false});
+      }catch(err){fail()}},function(e){if(e.total)bar.style.transform='scaleX('+(e.loaded/e.total)+')'},fail);
       ctl.addEventListener('change',function(){dirty=true});
       ctl.addEventListener('start',function(){stage.classList.add('touched')});
       addEventListener('resize',size);
-      new IntersectionObserver(function(es){vis=es[0].isIntersecting;if(vis)loop()}).observe(stage);
+      var io=new IntersectionObserver(function(es){vis=es[0].isIntersecting;if(vis)loop()});io.observe(stage);
+      cv.addEventListener('keydown',function(e){
+        var k=e.key,s=new T.Spherical().setFromVector3(cam.position.clone().sub(ctl.target));
+        if(k==='ArrowLeft')s.theta-=.2;else if(k==='ArrowRight')s.theta+=.2;
+        else if(k==='ArrowUp')s.phi=Math.max(ctl.minPolarAngle,s.phi-.12);else if(k==='ArrowDown')s.phi=Math.min(ctl.maxPolarAngle,s.phi+.12);
+        else if(k==='+'||k==='=')s.radius=Math.max(ctl.minDistance,s.radius*.9);else if(k==='-')s.radius=Math.min(ctl.maxDistance,s.radius*1.1);
+        else return;
+        e.preventDefault();cam.position.setFromSpherical(s).add(ctl.target);ctl.update();stage.classList.add('touched');dirty=true;loop();
+      });
       document.addEventListener('visibilitychange',function(){if(!document.hidden)loop()});
       var raf=0;
       function loop(){
         if(raf||!vis||document.hidden)return;
         raf=requestAnimationFrame(function t(){
           raf=0;if(!vis||document.hidden)return;
-          var a=ctl.update();if(step(.09))dirty=true;
+          ctl.update();if(step(.09))dirty=true;
           if(dirty||ctl.autoRotate){r.render(sc,cam);dirty=false}
           raf=requestAnimationFrame(t);
         });

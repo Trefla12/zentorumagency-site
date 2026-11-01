@@ -320,7 +320,7 @@ async function initGL() {
       gl.mouse = [((e.clientX / innerWidth) * 2 - 1) * hw, (-(e.clientY / innerHeight) * 2 + 1) * hh];
       gl.mouseOn = 1;
     }, { passive: true });
-    document.addEventListener('pointerleave', () => { gl.mouseOn = 0; });
+    document.documentElement.addEventListener('mouseleave', () => { gl.mouseOn = 0; });
   }
 
   const clock = new THREE.Clock();
