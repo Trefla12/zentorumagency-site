@@ -125,3 +125,16 @@
 .mkv__m video{opacity:0;transition:opacity .5s}.mkv__m video.on{opacity:1}
 .mkv .mk__bar span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.mkv__tag{flex:none;font-style:normal;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold,#e6c98c);opacity:.85}
 .ic:hover .mkv{transform:translateY(-4px);box-shadow:0 60px 110px -40px #000,0 0 0 1px rgba(230,201,140,.35)}
+/* case studies: story cards + detail notes beside a video */
+.cs-s{grid-template-columns:repeat(3,minmax(0,1fr))}
+.cs-s h3{margin:6px 0 8px}
+@media (max-width:860px){.cs-s{grid-template-columns:1fr}}
+.work>.cs-n{grid-column:span 6;align-self:stretch;display:flex;flex-direction:column;justify-content:center;padding:clamp(22px,3vw,36px);border:1px solid var(--line);border-radius:18px;background:linear-gradient(160deg,rgba(230,201,140,.07),rgba(255,255,255,.02) 60%)}
+.work>.cs-n--w{grid-column:span 9}
+.cs-n dl{margin:10px 0 0;display:grid;gap:0}
+.cs-n dl div{display:grid;grid-template-columns:minmax(90px,.35fr) 1fr;gap:16px;padding:14px 0;border-top:1px solid var(--line)}
+.cs-n dl div:first-child{border-top:0}
+.cs-n dt{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding-top:4px}
+.cs-n dd{margin:0;font:400 clamp(19px,2vw,23px)/1.25 var(--serif);color:var(--cream)}
+@media (max-width:900px){.work>.cs-n,.work>.cs-n--w{grid-column:span 12}}
+@media (min-width:600px) and (max-width:900px){.work>.pc--v+.cs-n--w{grid-column:span 6}}
