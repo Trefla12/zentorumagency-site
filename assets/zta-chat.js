@@ -82,7 +82,7 @@
     prices: ['Logos start at $300, websites at $1,250, video at $75. Use the quote builder for your range.', ['Build your quote', '/#quote']],
     time: ['Logos 1–4 days, 1–5 page websites 3–7 days, bigger sites or stores 7–11 days.'],
     process: ['1. You tell us your idea (the form takes about 2 minutes). 2. We reply by email or phone within 6 hours. 3. We agree the plan and price on a short call. 4. We build it, and you approve before launch.'],
-    contact: ['Call or text ' + PH + ', or leave a message below. Still unsure? Call ' + PH + '.'],
+    contact: ['Call or text ' + PH + ', or leave a message below.'],
     book: ['30 minutes, no pressure. Pick a time that suits you.', ['Book a call', BOOK, 1]]
   };
   const CHIPS = [['How much does a website cost?', 'cost'], ['How long does it take?', 'time'], ['Book a call', 'book'], ['Prices', 'prices'], ['Timing', 'time'], ['Process', 'process'], ['Contact', 'contact']];
