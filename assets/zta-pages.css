@@ -91,7 +91,7 @@ p{margin:0 0 1em}
 .js-ok .rv.in{opacity:1;transform:none}
 /* work */
 .filters{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 28px}
-.chip{min-height:44px;padding:0 20px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.03);cursor:pointer;font-size:13px;letter-spacing:.14em;text-transform:uppercase;transition:border-color .3s,background .3s,color .3s}
+.chip{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 20px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.03);cursor:pointer;font-size:13px;letter-spacing:.14em;text-transform:uppercase;transition:border-color .3s,background .3s,color .3s}
 .chip:hover{border-color:var(--gold)}
 .chip[aria-pressed=true]{background:var(--goldg);color:#1a0c1e;border-color:transparent}
 .work{display:grid;gap:28px 22px;grid-template-columns:repeat(auto-fill,minmax(min(100%,420px),1fr))}
