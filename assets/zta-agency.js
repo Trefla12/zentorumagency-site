@@ -15,6 +15,7 @@ root.classList.add('zta-ok');
 let lenis = null;
 if (!RM && window.Lenis) {
   lenis = new window.Lenis({ lerp: 0.1, smoothWheel: true });
+  window.lenis = lenis; // the phone menu pauses smooth scroll while it is open
   lenis.stop();
   if (gsap) {
     lenis.on('scroll', () => ST && ST.update());
