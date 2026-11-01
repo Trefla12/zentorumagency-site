@@ -7,7 +7,7 @@ if(c&&g){c.addEventListener('click',function(ev){var b=ev.target.closest('button
 var p=document.querySelector('.prog'),art=document.querySelector('.prose');
 if(p&&art){var links=[].slice.call(document.querySelectorAll('.toc a')),hs=links.map(function(a){return document.getElementById(a.getAttribute('href').slice(1))});
  var tick=0,u=function(){tick=0;var r=art.getBoundingClientRect(),t=Math.min(1,Math.max(0,-r.top/(r.height-innerHeight*.6)));p.style.transform='scaleX('+t+')';
-  var on=-1;hs.forEach(function(h,i){if(h&&h.getBoundingClientRect().top<140)on=i});links.forEach(function(a,i){a.classList.toggle('on',i===on)})};
+  };
  addEventListener('scroll',function(){if(!tick){tick=1;requestAnimationFrame(u)}},{passive:true});u()}
 var q=document.getElementById('gl-q'),gl=document.getElementById('gl');
 if(q&&gl){var none=document.getElementById('gl-none'),ds=[].slice.call(gl.children);
