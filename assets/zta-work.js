@@ -50,33 +50,28 @@
   cards.forEach(function(c){var v=c.querySelector('video');if(v)mk(c.querySelector('.pc__m'),v,(v.dataset.webm?[[v.dataset.webm,'video/webm; codecs="vp9"']]:[]).concat([[v.dataset.src,'video/mp4']]))});
   var reel=document.getElementById('reel-v');
   if(reel)mk(reel.parentNode,reel,[[reel.dataset.webm,'video/webm; codecs="vp9"'],[reel.dataset.mp4,'video/mp4']]);
-  var cur=null;
-  function snd(v,on){v.muted=!on;var b=v.parentNode.querySelector('.pc__snd');if(b){b.setAttribute('aria-pressed',on)}}
-  function stop(it){if(it&&it.vid){it.vid.pause();it.vid.classList.remove('on');if(!it.vid.muted)snd(it.vid,false)}}
+  /* every card in view loops like a gif; off-screen or filtered-out cards pause. Only one reel can have sound. */
+  var loud=null;
+  function snd(it,on){it.vid.muted=!on;var b=it.el.querySelector('.pc__snd');if(b)b.setAttribute('aria-pressed',on);if(on){if(loud&&loud!==it)snd(loud,false);loud=it}else if(loud===it)loud=null}
+  function stop(it){if(!it.vid.paused)it.vid.pause();it.vid.classList.remove('on');if(loud===it)snd(it,false)}
   function play(it){
-    if(cur===it)return;stop(cur);cur=it;
     var v=it.vid;
     if(!it.loaded){it.loaded=true;it.srcs.forEach(function(s){var e=document.createElement('source');e.src=s[0];e.type=s[1];v.appendChild(e)});v.load()}
-    var p=v.play();v.classList.add('on');
-    if(p&&p.catch)p.catch(function(){v.classList.remove('on')});
+    v.classList.add('on');if(!v.paused)return;
+    var p=v.play();if(p&&p.catch)p.catch(function(){v.classList.remove('on')});
   }
-  function pick(){
-    var best=null;
-    items.forEach(function(it){if(it.ratio>=.55&&!it.el.closest('[hidden]')&&(!best||it.ratio>best.ratio))best=it});
-    if(best)play(best);else{stop(cur);cur=null}
-  }
-  /* sound toggle on reels with a voiceover: a tap plays that card (even with reduced motion) and unmutes it */
+  function pick(){items.forEach(function(it){var hid=!!it.el.closest('[hidden]');if(!auto||hid||it.ratio<.15){if(hid||it.ratio===0||auto)stop(it)}else play(it)})}
+  var auto=!(calm||saver);
+  /* sound toggle on reels with a voiceover: a tap plays that card (even with reduced motion) and turns its sound on or off */
   document.addEventListener('click',function(e){
     var b=e.target.closest('.pc__snd');if(!b)return;
     var it=items.filter(function(x){return x.el===b.parentNode})[0];if(!it)return;
-    var on=it.vid.muted||cur!==it;play(it);snd(it.vid,on);
+    var on=it.vid.muted;play(it);snd(it,on);
   });
-  if(!('IntersectionObserver' in window))return;
-  /* reduced motion / data saver: no autoplay, but a video started with the sound button still stops once it scrolls away */
-  if(calm||saver){var off=new IntersectionObserver(function(es){es.forEach(function(e){if(cur&&cur.el===e.target&&!e.isIntersecting){stop(cur);cur=null}})});items.forEach(function(it){off.observe(it.el)});return}
+  if(!('IntersectionObserver' in window)){if(auto)items.forEach(play);return}
   var io=new IntersectionObserver(function(es){
     es.forEach(function(e){items.forEach(function(it){if(it.el===e.target)it.ratio=e.isIntersecting?e.intersectionRatio:0})});pick();
-  },{threshold:[0,.25,.55,.75,1]});
+  },{threshold:[0,.15,.5,1]});
   items.forEach(function(it){io.observe(it.el)});
-  document.addEventListener('visibilitychange',function(){if(document.hidden){stop(cur);cur=null}else pick()});
+  document.addEventListener('visibilitychange',function(){if(document.hidden)items.forEach(stop);else pick()});
 })();
