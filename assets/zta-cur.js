@@ -1,7 +1,7 @@
 /* Currency display switch. Fixed approximate rates, no network calls. HTML keeps USD. */
 (function(){
-  var ASOF='1 Nov 2026';
-  var C={USD:{r:1,n:'US dollar'},EUR:{r:0.92,n:'Euro'},GBP:{r:0.79,n:'British pound'},RON:{r:4.6,n:'Romanian leu'},CAD:{r:1.38,n:'Canadian dollar'},AUD:{r:1.52,n:'Australian dollar'}};
+  var ASOF='30 Oct 2026 (ECB reference)';
+  var C={USD:{r:1,n:'US dollar'},EUR:{r:0.895,n:'Euro'},GBP:{r:0.746,n:'British pound'},RON:{r:4.78,n:'Romanian leu'},CAD:{r:1.40,n:'Canadian dollar'},AUD:{r:1.42,n:'Australian dollar'}};
   var KEY='zta-cur',cur='USD';
   try{var s=localStorage.getItem(KEY);if(s&&C[s])cur=s}catch(e){}
   var RE=/\$\s?(\d[\d,]*(?:\.\d+)?)(\s?[Kk])?/g;
