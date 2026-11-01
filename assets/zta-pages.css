@@ -43,7 +43,7 @@ p{margin:0 0 1em}
 .nav__menu summary::-webkit-details-marker{display:none}
 .nav__menu div{position:absolute;right:0;top:calc(100% + 10px);min-width:220px;background:#140818;border:1px solid var(--line);border-radius:18px;padding:10px;display:grid}
 .nav__menu a{padding:12px 14px;border-radius:10px;font-size:15px}.nav__menu a:hover{background:rgba(230,201,140,.08)}
-@media (max-width:900px){.nav__links{display:none}.nav__menu{display:block}.nav__logo span{display:none}.nav__call{padding:9px 14px;font-size:13px}}
+@media (max-width:900px){.nav__links{display:none}.nav__menu{display:block}.nav__logo span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}.nav__call{padding:9px 14px;font-size:13px}}
 /* buttons */
 .btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:54px;padding:0 30px;border-radius:999px;border:1px solid transparent;font:500 14px var(--sans);letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:transform .35s var(--ease),box-shadow .35s,border-color .3s,background .3s;-webkit-tap-highlight-color:transparent;text-align:center}
 .btn:active{transform:scale(.97)}
