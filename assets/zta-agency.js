@@ -289,8 +289,9 @@ async function initGL() {
     ]);
   } catch {}
   resize(true);
-  let rt;
-  addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => resize(false), 150); });
+  // pause the particles while the window resizes (e.g. going full screen) so Chrome has the GPU to repaint at the new size
+  let rt, sizing = false;
+  addEventListener('resize', () => { sizing = true; clearTimeout(rt); rt = setTimeout(() => { resize(false); sizing = false; }, 150); });
 
   if (FINE) {
     addEventListener('pointermove', e => {
@@ -304,7 +305,7 @@ async function initGL() {
   const clock = new THREE.Clock();
   let mOn = 0;
   function frame() {
-    if (document.hidden) return;
+    if (document.hidden || sizing) return;
     const dt = Math.min(clock.getDelta(), 0.05);
     const e = 1 - Math.pow(0.001, dt);
     gl.T += (gl.target - gl.T) * (RM ? 1 : e * 0.9);
