@@ -18,7 +18,7 @@ document.querySelectorAll('.nav__dd').forEach(d => {
   const at = p => (home && p.startsWith('/#') ? p.slice(1) : p);
   const SVC = [['/#services', 'All services'], ['/services/web-design/', 'Web design'], ['/services/seo/', 'SEO'], ['/services/3d/', '3D'], ['/services/video-editing/', 'Video editing'], ['/services/logo-design/', 'Logo design'], ['/services/social-media/', 'Social media']];
   const PRJ = [['/projects/', 'All projects'], ['/projects/#web', 'Web'], ['/projects/#3d', '3D'], ['/projects/#video', 'Video'], ['/projects/#logo', 'Logo'], ['/projects/#scratch', 'Video from scratch']];
-  const TOP = [['/process/', 'Process'], ['/packages/', 'Prices'], ['/faq/', 'FAQ'], ['/tools/', 'Free tools'], ['/collab/', 'Work with us'], ['/#contact', 'Contact']];
+  const TOP = [['/process/', 'Process'], ['/packages/', 'Prices'], ['/faq/', 'FAQ'], ['/tools/', 'Free tools'], ['/collab/', 'Work with us'], ['/contact/', 'Contact']];
   const RN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX'];
   const here = p => (p === location.pathname ? ' aria-current="page"' : '');
   const link = (p, t, cls = '') => `<a${cls} href="${at(p)}"${here(p)}>${t}</a>`;
