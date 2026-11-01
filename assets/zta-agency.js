@@ -283,15 +283,16 @@ async function initGL() {
     }
   }
   const FONT = '"Cormorant Garamond", Georgia, serif';
-  function fillWords() {
-    sampleWord('dream', `italic 500 300px ${FONT}`, p1);
-    sampleWord('idea', `500 300px ${FONT}`, p2);
-    sampleWord('reality', `600 300px ${FONT}`, p3);
+  const tick = () => new Promise(r => setTimeout(r, 0)); // yield to the browser between the heavy steps so input and paint are not blocked
+  async function fillWords() {
+    sampleWord('dream', `italic 500 300px ${FONT}`, p1); await tick();
+    sampleWord('idea', `500 300px ${FONT}`, p2); await tick();
+    sampleWord('reality', `600 300px ${FONT}`, p3); await tick();
     sampleLogo(p4);
     geo.attributes.p1.needsUpdate = geo.attributes.p2.needsUpdate = geo.attributes.p3.needsUpdate = geo.attributes.p4.needsUpdate = true;
   }
   let lastW = 0, lastH = 0;
-  function resize(force) {
+  async function resize(force) {
     const w = innerWidth, h = innerHeight;
     renderer.setSize(w, h, false);
     cam.aspect = w / h;
@@ -299,7 +300,7 @@ async function initGL() {
     if (force || w !== lastW || Math.abs(h - lastH) > lastH * 0.2) {
       lastW = w; lastH = h;
       fillCloud();
-      fillWords();
+      await fillWords();
     }
   }
   try {
@@ -309,7 +310,7 @@ async function initGL() {
       document.fonts.load(`600 100px ${FONT}`)
     ]);
   } catch {}
-  resize(true);
+  await resize(true);
   // pause the particles while the window resizes (e.g. going full screen) so Chrome has the GPU to repaint at the new size
   let rt, sizing = false;
   addEventListener('resize', () => { sizing = true; clearTimeout(rt); rt = setTimeout(() => { resize(false); sizing = false; }, 150); });

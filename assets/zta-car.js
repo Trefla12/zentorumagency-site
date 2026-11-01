@@ -26,6 +26,8 @@
     if(started)return;started=true;
     if(btn)btn.hidden=true;load.hidden=false;
     var A='three/addons/';
+    /* warm the cache in parallel: model + Draco decoder download while Three.js itself is still loading */
+    try{var D='https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/libs/draco/gltf/';fetch(stage.dataset.model);fetch(D+'draco_wasm_wrapper.js');fetch(D+'draco_decoder.wasm')}catch(e){}
     Promise.all([import('three'),import(A+'controls/OrbitControls.js'),import(A+'loaders/GLTFLoader.js'),import(A+'loaders/DRACOLoader.js'),import(A+'environments/RoomEnvironment.js')]).then(function(m){
       var T=m[0],OC=m[1].OrbitControls,GL=m[2].GLTFLoader,DL=m[3].DRACOLoader,RE=m[4].RoomEnvironment;
       var cv=document.createElement('canvas');cv.className='car__cv';

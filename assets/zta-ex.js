@@ -132,6 +132,11 @@
       }
     }).catch(function(){started=false});
   }
-  if('IntersectionObserver' in window){var o=new IntersectionObserver(function(es){if(es[0].isIntersecting){o.disconnect();start()}},{rootMargin:'700px 0px'});o.observe(sec)}
-  else start();
+  /* start only once the section is near AND the visitor has interacted (or 6 s passed), so the heavy WebGL setup never competes with first load */
+  var seen=false,go=false;
+  function tryStart(){if(seen&&go)start()}
+  ['pointerdown','touchstart','scroll','keydown','pointermove'].forEach(function(ev){addEventListener(ev,function(){go=true;tryStart()},{once:true,passive:true})});
+  setTimeout(function(){go=true;tryStart()},6000);
+  if('IntersectionObserver' in window){var o=new IntersectionObserver(function(es){if(es[0].isIntersecting){o.disconnect();seen=true;tryStart()}},{rootMargin:'700px 0px'});o.observe(sec)}
+  else{seen=true;tryStart()}
 })();
