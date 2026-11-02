@@ -334,7 +334,7 @@ body.is-ready .real::after{transform:scaleX(1)}
 .foot__row{display:flex;flex-wrap:wrap;gap:16px 40px;margin:48px 0 30px;font-size:15px;letter-spacing:.06em}
 .foot__row a{border-bottom:1px solid rgba(230,201,140,.3);padding-bottom:3px}
 .foot__row a:hover{color:var(--gold)}
-.foot__legal{font-size:12px;color:var(--muted);margin:0}
+.foot__legal{font-size:12px;color:var(--muted);margin:10px 0 0}
 .foot__legal a{text-decoration:underline;text-underline-offset:3px}
 
 /* mobile sticky bar */
