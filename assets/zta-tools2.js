@@ -7,7 +7,7 @@
     var body=Object.assign({page:location.href.split('?')[0],referrer:d.referrer.slice(0,200),t:Math.max(4100,Date.now()-t0),contact:'Email'},data);
     return fetch(EP,{method:'POST',body:JSON.stringify(body),redirect:'follow'}).then(function(r){return r.json().catch(function(){return{}})}).then(function(j){if(!j.ok)throw new Error(j.error||'send');return j});
   }
-  function err(el,msg){el.textContent=msg;el.hidden=!msg}
+  function err(el,msg,fld){el.textContent=msg;el.hidden=!msg;var fm=el.closest('form');if(fm&&window.ZTA&&ZTA.flag)ZTA.flag(fm,msg?fld:null);if(fld&&msg)fld.focus()}
   var money=function(n){return '$'+Math.round(n).toLocaleString('en-US')};
 
   /* ---------- 1. Logo mockup ---------- */
@@ -87,9 +87,9 @@
   if(ig){
     ig.addEventListener('submit',function(e){
       e.preventDefault();var h=$('ig-h').value.trim().replace(/^@/,''),em=$('ig-e').value.trim(),nm=$('ig-n').value.trim(),er=$('ig-err');
-      if(!/^[A-Za-z0-9._]{1,30}$/.test(h))return err(er,'Please enter your Instagram handle, like @yourbrand.');
-      if(!okName(nm))return err(er,'Please add your first name.');
-      if(!okMail(em))return err(er,'Please check your email address.');
+      if(!/^[A-Za-z0-9._]{1,30}$/.test(h))return err(er,'Please enter your Instagram handle, like @yourbrand.',$('ig-h'));
+      if(!okName(nm))return err(er,'Please add your first name.',$('ig-n'));
+      if(!okMail(em))return err(er,'Please check your email address.',$('ig-e'));
       err(er,'');
       var v=function(n){var c=ig.querySelector('[name='+n+']:checked');return c?c.value:''},pf=v('ig1'),rl=v('ig2'),lk=v('ig3'),tips=[];
       if(pf==='0'||pf==='1')tips.push(['Post more often, on a schedule.','Aim for 3 posts a week on fixed days. A steady rhythm beats bursts. Batch-film once a week so it never feels like a chore.']);
@@ -110,8 +110,8 @@
   if(pd){
     pd.addEventListener('submit',function(e){
       e.preventDefault();var nm=$('pdf-n').value.trim(),em=$('pdf-e').value.trim(),er=$('pdf-err'),b=pd.querySelector('button');
-      if(!okName(nm))return err(er,'Please add your first name.');
-      if(!okMail(em))return err(er,'Please check your email address.');
+      if(!okName(nm))return err(er,'Please add your first name.',$('pdf-n'));
+      if(!okMail(em))return err(er,'Please check your email address.',$('pdf-e'));
       err(er,'');b.disabled=true;b.textContent='One moment…';
       var done=function(){pd.hidden=true;$('pdf-ok').hidden=false;$('pdf-ok').querySelector('a').focus()};
       send({name:nm,email:em,services:'Free PDF guide',dream:'Downloaded the guide: 10 things every small business website needs.',botcheck:$('pdf-bc').value}).then(done,done);

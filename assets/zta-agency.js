@@ -28,8 +28,9 @@ if (!RM && window.Lenis) {
 }
 function scrollToEl(el) {
   if (!el) return;
-  if (lenis) lenis.scrollTo(el, { offset: -60, duration: 1.4 });
-  else el.scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block: 'start' });
+  const hd = document.querySelector('header'); const off = Math.max(60, hd ? hd.getBoundingClientRect().bottom + 12 : 60);
+  if (lenis) lenis.scrollTo(el, { offset: -off, duration: 1.4 });
+  else window.scrollTo({ top: el.getBoundingClientRect().top + scrollY - off, behavior: RM ? 'auto' : 'smooth' });
 }
 document.addEventListener('click', e => {
   const a = e.target.closest('a[href^="#"]');
@@ -672,6 +673,7 @@ function setupForm(form) {
   let step = 1;
   const t0 = Date.now();
   const sid = Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
+  let busy = false;
   const EMAIL_RE = { test: e => (window.ZTA ? window.ZTA.isEmail(e) : /^\S+@\S+\.\S{2,}$/.test(e)) };
 
   // first-touch attribution (no personal data)
@@ -699,6 +701,7 @@ function setupForm(form) {
     const dir = n > step ? 1 : -1;
     steps.forEach(s => s.classList.remove('is-on', 'is-back'));
     step = n;
+    try { sessionStorage.setItem('zta_step', n); } catch {}
     const cur = steps[n - 1];
     cur.classList.add('is-on');
     if (dir < 0) cur.classList.add('is-back');
@@ -713,7 +716,9 @@ function setupForm(form) {
     const t = $('.qf__title', cur);
     if (t) { t.setAttribute('tabindex', '-1'); t.focus({ preventScroll: true }); }
     const top = form.getBoundingClientRect().top;
-    if (top < 60 || top > innerHeight * 0.5) scrollToEl(form);
+    const hb = (document.querySelector('header') || { getBoundingClientRect: () => ({ bottom: 60 }) }).getBoundingClientRect().bottom;
+    const tt = (t || form).getBoundingClientRect().top;
+    if (top < hb + 8 || tt < hb + 8 || top > innerHeight * 0.5) scrollToEl(form);
   }
 
   function check(n) {
@@ -785,6 +790,19 @@ function setupForm(form) {
   form.addEventListener('input', brief);
   form.addEventListener('change', brief);
   brief();
+  // Back/forward: browsers restore the typed values after our first brief(), so refresh it and return to the step the visitor was on
+  {
+    const nav = performance.getEntriesByType?.('navigation')[0];
+    const back = nav && nav.type === 'back_forward';
+    if (!back) { try { sessionStorage.removeItem('zta_step'); } catch {} }
+    const restore = () => {
+      brief();
+      let n = 0; try { n = +sessionStorage.getItem('zta_step') || 0; } catch {}
+      if (back && n > 1 && n <= 4 && step === 1 && !form.classList.contains('is-sent')) go(n);
+    };
+    addEventListener('pageshow', e => { if (e.persisted) brief(); });
+    if (document.readyState === 'complete') setTimeout(restore, 0); else addEventListener('load', () => setTimeout(restore, 0));
+  }
 
   $$('[data-spark]', form).forEach(b => b.addEventListener('click', () => {
     const t = b.dataset.spark;
@@ -798,6 +816,7 @@ function setupForm(form) {
   form.addEventListener('submit', async e => {
     e.preventDefault();
     if (step < 4) { next.click(); return; }
+    if (busy) return;
     const m = check(4);
     if (m) { setErr(m); shake(); return; }
     const data = {
@@ -809,6 +828,7 @@ function setupForm(form) {
     if (data.botcheck) { success(data.name); return; }
     const endpoint = form.dataset.endpoint;
     if (!endpoint) { fail(); return; }
+    busy = true;
     form.classList.add('is-sending');
     submit.disabled = true;
     setErr('');
@@ -822,12 +842,13 @@ function setupForm(form) {
       success(data.name);
     } catch (ex) {
       const code = ex && ex.message;
-      if (code === 'name' || code === 'email') { go(4); setErr(bad(code, code === 'name' ? 'What should we call you?' : 'That email doesn\'t look right.')); return; }
+      if (code === 'name' || code === 'email') { busy = false; go(4); setErr(bad(code, code === 'name' ? 'What should we call you?' : 'That email doesn\'t look right.')); return; }
+      busy = false;
       fail(code === 'rate' ? 'You\'ve already sent a few inquiries. We\'ll be in touch soon, or call ' : null);
     } finally {
       clearTimeout(to);
       form.classList.remove('is-sending');
-      submit.disabled = false;
+      if (!busy) submit.disabled = false;
     }
   });
 
@@ -836,7 +857,7 @@ function setupForm(form) {
   }
 
   function success(name) {
-    const first = (name || '').split(/\s+/)[0];
+    const first = (name || '').replace(/[<>{}]/g, '').split(/\s+/)[0];
     const dn = $('[data-done-name]', form);
     if (dn && first) dn.textContent = ', ' + first;
     const fly = document.createElement('i');

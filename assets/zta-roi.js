@@ -13,6 +13,8 @@
   function run(){
     var v=num('rc-v'),c=num('rc-c'),e=num('rc-e'),a=num('rc-a'),k=num('rc-cost');
     var out=$('rc-out'),bad=[v,c,e,a,k].some(function(x){return !isFinite(x)||x<0})||c>100||e>100||v===0||a===0||k===0;
+    var big0=v>1e9||a>1e7||k>1e7;
+    if(!bad&&big0){out.innerHTML='<p class="rc__empty">Those numbers are bigger than this calculator is built for. Try up to 1,000,000,000 visitors and $10,000,000 for value and cost.</p>';return}
     if(bad){out.innerHTML='<p class="rc__empty">Fill in all five numbers and your result appears here. The expected rate is the one only you can judge: be conservative.</p>';return}
     var cur=v*c/100, nw=v*e/100, xc=nw-cur, xr=xc*a, ret=xr*12-k, flag='';
     var big,sub,pay;

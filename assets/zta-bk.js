@@ -94,7 +94,7 @@
     st.name=n;st.contact=c;st.note=f.note.value;
     var okC=(window.ZTA&&ZTA.isEmail?ZTA.isEmail(c):/^\S+@\S+\.\S{2,}$/.test(c))||(/^\+?[\d\s().-]{7,20}$/.test(c)&&c.replace(/\D/g,'').length>=7&&c.replace(/\D/g,'').length<=15);
     var okN=window.ZTA&&ZTA.isName?ZTA.isName(n):n.length>=1;
-    if(!okN||!okC){er.textContent=!okN?'Please add your name.':'Please enter a real email address or phone number.';er.hidden=false;(!okN?f.name:f.contact).focus();return}
+    if(!okN||!okC){er.textContent=!okN?'Please add your name.':'Please enter a real email address or phone number.';er.hidden=false;var bf=!okN?f.name:f.contact;if(window.ZTA&&ZTA.flag)ZTA.flag(f,bf);bf.focus();return}
     go(4);
   });
   function go(n){st.step=n;render(true)}

@@ -252,10 +252,9 @@ main:focus{outline:0}
 
 /* batch 3: mobile tap targets (>=24px, mostly 36-44px) + floating buttons never cover the footer */
 .foot__big{padding-block:4px}
-.foot a{display:inline-flex;align-items:center;min-height:40px}
-.foot ul{gap:0}
-.foot__links{gap:0 22px}
-.foot__row{gap:0 40px}
+.foot a{display:inline-flex;align-items:center}
+/* the taller footer rows are for touch; on desktop with a mouse keep the original compact spacing */
+@media (max-width:900px),(pointer:coarse){.foot a{min-height:40px}.foot ul{gap:0}.foot__links{gap:0 22px}.foot__row{gap:0 40px}}
 .foot__legal a{display:inline-block;min-height:0;padding-block:6px;margin-block:-6px}
 .foot p a{display:inline-flex}
 .link{padding-top:12px;margin-top:-2px}

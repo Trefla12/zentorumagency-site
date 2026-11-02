@@ -1,3 +1,11 @@
+/* Cross-page view transitions can be aborted by a fast back/redirect; that is harmless, so swallow the rejection */
+(() => {
+  const quiet = vt => { if (vt) ['ready', 'finished', 'updateCallbackDone'].forEach(k => vt[k] && vt[k].catch && vt[k].catch(() => {})); };
+  addEventListener('pagereveal', e => quiet(e.viewTransition));
+  addEventListener('pageswap', e => quiet(e.viewTransition));
+  addEventListener('unhandledrejection', e => { const r = e.reason; if (r && r.name === 'InvalidStateError' && /Transition was aborted|view transition/i.test(r.message || '')) e.preventDefault(); });
+})();
+
 /* Mega menu: hover opens on desktop (short close delay), click/tap toggles, Esc or click outside closes.
    Thumbnails load on first intent; the current section is marked here so the markup stays identical on every page. */
 const HOVER = matchMedia('(hover: hover) and (pointer: fine)').matches;
@@ -74,10 +82,12 @@ dds.forEach(d => {
     if (!open) return;
     if (e.key === 'Escape') return set(false);
     if (e.key !== 'Tab') return;
-    const f = [...m.querySelectorAll('a,button,summary')].filter(el => el.offsetParent);
-    const first = f[0], last = f[f.length - 1];
-    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    // always cycle by hand: Safari skips links in Tab order, so the browser's own order can leave the menu
+    const f = [...m.querySelectorAll('a,button,summary')].filter(el => el.getClientRects().length);
+    if (!f.length) return;
+    const i = f.indexOf(document.activeElement);
+    e.preventDefault();
+    f[e.shiftKey ? (i <= 0 ? f.length - 1 : i - 1) : (i < 0 || i === f.length - 1 ? 0 : i + 1)].focus();
   });
   matchMedia('(min-width: 901px)').addEventListener('change', e => e.matches && set(false));
 })();
@@ -118,7 +128,7 @@ dds.forEach(d => {
     list.addEventListener('click', e => { if (e.target.closest('a')) close(true); });
     d.addEventListener('keydown', e => { if (e.key === 'Tab') { e.preventDefault(); inp.focus(); } });
   };
-  const load = () => idx || (idx = fetch('/assets/zta-search.json?v=20261102e').then(r => r.json()).then(a => a.map(x => ({ ...x, n: norm(x.t), hn: norm(x.h), b: norm(x.h + ' ' + x.d + ' ' + x.u) }))).catch(() => (idx = null, [])));
+  const load = () => idx || (idx = fetch('/assets/zta-search.json?v=20261102g').then(r => r.json()).then(a => a.map(x => ({ ...x, n: norm(x.t), hn: norm(x.h), b: norm(x.h + ' ' + x.d + ' ' + x.u) }))).catch(() => (idx = null, [])));
   // every word must match; when nothing does, fall back to results that match most of the words
   const score = (x, q, loose) => {
     let s = 0, miss = 0;
@@ -161,8 +171,9 @@ dds.forEach(d => {
   function open() {
     if (!d) build();
     if (!d.hidden) return;
+    document.querySelector('.mnav.is-open .mnav__x')?.click(); // closing the menu refocuses its burger
     last = document.activeElement;
-    document.querySelector('.mnav.is-open .mnav__x')?.click();
+    if (!last || last === document.body || !last.getClientRects().length) last = btn;
     d.hidden = false; requestAnimationFrame(() => d.classList.add('is-on'));
     document.documentElement.classList.add('srch-on');
     if (window.lenis) window.lenis.stop();

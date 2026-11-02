@@ -25,6 +25,7 @@
   function node(t){
     var r=recs.get(t),o=(r&&t.data===r.c)?r.o:t.data;
     if(!r&&o.indexOf('$')<0)return;
+    if(t.parentNode&&t.parentNode.closest&&t.parentNode.closest('[data-cur-skip]'))return;
     var c=cur==='USD'?o:conv(o);
     recs.set(t,{o:o,c:c});
     if(t.data!==c)t.data=c;
@@ -32,7 +33,7 @@
   function walk(root){
     var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:function(n){
       var p=n.parentNode;
-      return p&&/^(SCRIPT|STYLE|NOSCRIPT|TEXTAREA)$/.test(p.nodeName)?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT}});
+      return p&&(/^(SCRIPT|STYLE|NOSCRIPT|TEXTAREA)$/.test(p.nodeName)||p.closest('[data-cur-skip]'))?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT}});
     var a=[],n;while((n=w.nextNode()))a.push(n);a.forEach(node);
   }
   function all(){busy=true;roots.forEach(walk);mo.takeRecords();busy=false}
@@ -66,6 +67,8 @@
         cur=sel.value;try{localStorage.setItem(KEY,cur)}catch(e){}all();
       });
     }
+    /* another tab changed the currency: follow it */
+    addEventListener('storage',function(e){if(e.key!==KEY||!e.newValue||!C[e.newValue]||e.newValue===cur)return;cur=e.newValue;var sl=document.querySelector('#cur-sel');if(sl)sl.value=cur;all()});
     roots.forEach(function(r){mo.observe(r,{childList:true,subtree:true,characterData:true})});
     if(cur!=='USD')all();
   }

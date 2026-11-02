@@ -17,7 +17,9 @@
     if (l.length > 64 || l[0] === '.' || l.endsWith('.') || l.includes('..') || !/^[A-Za-z0-9!#$%&'*+\/=?^_`{|}~\u00A0-\uFFFF.-]+$/.test(l)) return false;
     return ls.length >= 2 && ls.every(x => /^[A-Za-z0-9\u00A0-\uFFFF](?:[A-Za-z0-9\u00A0-\uFFFF-]{0,61}[A-Za-z0-9\u00A0-\uFFFF])?$/.test(x)) && /^(?:[A-Za-z]{2,}|xn--[A-Za-z0-9-]+)$/.test(ls[ls.length - 1]);
   };
-  const isName = n => { n = String(n == null ? '' : n).trim(); return n.length >= 2 && /\p{L}/u.test(n); };
+  const isName = n => { n = String(n == null ? '' : n).trim(); return n.length >= 2 && /\p{L}/u.test(n) && !/[<>{}\\]/.test(n); };
+  // aria-invalid on the field that failed validation (cleared on input); flag(form) clears all
+  const flag = (f, el) => { [...f.elements].forEach(i => i.removeAttribute('aria-invalid')); if (el) { el.setAttribute('aria-invalid', 'true'); el.addEventListener('input', () => el.removeAttribute('aria-invalid'), { once: true }); } };
   const EMAIL = { test: isEmail };
   const t0 = Date.now();
   const utm = {};
@@ -41,7 +43,7 @@
         .finally(() => clearTimeout(to));
     });
   }
-  window.ZTA = { post, EMAIL, BOOK, isEmail, isName };
+  window.ZTA = { post, EMAIL, BOOK, isEmail, isName, flag };
   d.querySelectorAll('a[data-book]').forEach(a => { a.href = BOOK; });
 
   // Small form builder used by the chat message form and the exit offer.
@@ -65,9 +67,11 @@
     f.addEventListener('submit', async e => {
       e.preventDefault();
       const v = Object.fromEntries(new FormData(f));
+      const badK = !isName(v.name) ? 'name' : !EMAIL.test(v.email || '') ? 'email' : 'website' in v && !v.website.trim() ? 'website' : 'msg' in v && !v.msg.trim() ? 'msg' : '';
+      flag(f, badK && f.elements[badK]);
       const bad = !isName(v.name) ? 'Please add your first name.' : !EMAIL.test(v.email || '') ? 'That email doesn\'t look right.'
         : 'website' in v && !v.website.trim() ? 'Please add your website link.' : 'msg' in v && !v.msg.trim() ? 'Please write a short message.' : '';
-      if (bad) { s.textContent = bad; return; }
+      if (bad) { s.textContent = bad; f.elements[badK].focus(); return; }
       if (v.botcheck) { s.textContent = okText; return; }
       b.disabled = true; s.textContent = 'Sending…';
       try { await post(build(v), st || t0); f.reset(); s.textContent = okText; }

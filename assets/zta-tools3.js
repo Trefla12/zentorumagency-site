@@ -8,7 +8,7 @@
     var body=Object.assign({page:location.href.split('?')[0],referrer:d.referrer.slice(0,200),t:Math.max(4100,Date.now()-t0),contact:'Email'},data);
     return fetch(EP,{method:'POST',body:JSON.stringify(body),redirect:'follow'}).then(function(r){return r.json().catch(function(){return{}})}).then(function(j){if(!j.ok)throw new Error(j.error||'send');return j});
   }
-  function err(el,msg){el.textContent=msg;el.hidden=!msg}
+  function err(el,msg,fld){el.textContent=msg;el.hidden=!msg;var fm=el.closest('form');if(fm&&window.ZTA&&ZTA.flag)ZTA.flag(fm,msg?fld:null);if(fld&&msg)fld.focus()}
   function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 
   var f=$('td-f');if(!f)return;
@@ -38,7 +38,7 @@
     'meta-description':[7,'No Google description','Write a 150-character description for each page; it is the text people read on Google before they click.'],
     'document-title':[8,'Missing page title','Every page needs a title with your service and city.'],
     'image-alt':[5,'Images have no descriptions','Add short alt text to images. It helps Google and visitors who use screen readers.'],
-    'color-contrast':[5,'Some text is hard to read','Darken light-grey text or lighten the background so everyone can read it outdoors on a phone.'],
+    'color-contrast':[5,'Some text is hard to read','Darken light-gray text or lighten the background so everyone can read it outdoors on a phone.'],
     'target-size':[5,'Buttons are too small to tap','Make buttons and links at least 44px tall with space between them.'],
     'viewport':[12,'The site isn’t set up for phones','Add a mobile viewport tag and a responsive layout.']
   };
@@ -58,7 +58,7 @@
   f.addEventListener('submit',function(e){
     e.preventDefault();
     url=norm($('td-u').value);
-    if(!url)return err($('td-err'),'Please enter a website address, e.g. yourbusiness.com');
+    if(!url)return err($('td-err'),'Please enter a website address, e.g. yourbusiness.com',$('td-u'));
     err($('td-err'),'');psi=null;psiDone=false;out.hidden=true;log.innerHTML='';
     $('td-dom').textContent=url.replace(/^https?:\/\//,'').replace(/\/$/,'');
     run.hidden=false;run.classList.add('is-on');
@@ -124,8 +124,8 @@
   var m=$('td-m');
   m.addEventListener('submit',function(e){
     e.preventDefault();var nm=$('td-n').value.trim(),em=$('td-e').value.trim(),er=$('td-merr'),b=m.querySelector('button');
-    if(!okName(nm))return err(er,'Please add your first name.');
-    if(!okMail(em))return err(er,'Please check your email address.');
+    if(!okName(nm))return err(er,'Please add your first name.',$('td-n'));
+    if(!okMail(em))return err(er,'Please check your email address.',$('td-e'));
     err(er,'');b.disabled=true;b.querySelector('span').textContent='Sending…';
     send({name:nm,email:em,website:url,services:'Free website teardown',dream:out.dataset.sum||'',botcheck:$('td-bc').value})
       .then(function(){m.hidden=true;$('td-ok').hidden=false;$('td-ok').focus()})

@@ -76,7 +76,7 @@ section{position:relative;z-index:2}
 .nav__links a{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:#d9ccb6;position:relative;padding:6px 0}
 .nav__links a::after{content:"";position:absolute;left:0;right:100%;bottom:0;height:1px;background:var(--gold);transition:right .4s var(--ease)}
 .nav__links a:hover::after{right:0}
-.nav__call{display:flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--line);border-radius:999px;font-size:14px;letter-spacing:.06em;background:rgba(255,255,255,.03);transition:border-color .3s,background .3s}
+.nav__call{display:flex;align-items:center;gap:8px;white-space:nowrap;padding:10px 18px;border:1px solid var(--line);border-radius:999px;font-size:14px;letter-spacing:.06em;background:rgba(255,255,255,.03);transition:border-color .3s,background .3s}
 .nav__call:hover{border-color:var(--gold);background:rgba(230,201,140,.08)}
 .nav__call svg{width:16px;height:16px;fill:var(--gold)}
 .nav__acts{display:flex;align-items:center;gap:10px}

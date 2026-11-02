@@ -27,7 +27,7 @@
   };
 
   var UPS = [
-    { id: 'brand', name: 'Brand identity', benefit: 'Logo + voice. Every tap is worth ×2.', why: 'People follow brands they recognise in one glance.', cur: 'f', cost: 20, done: 'Brand identity live. Every tap now earns ×2.' },
+    { id: 'brand', name: 'Brand identity', benefit: 'Logo + voice. Every tap is worth ×2.', why: 'People follow brands they recognize in one glance.', cur: 'f', cost: 20, done: 'Brand identity live. Every tap now earns ×2.' },
     { id: 'web', name: 'Website that converts', benefit: 'Followers start turning into customers.', why: 'Attention without a destination is just applause.', cur: 'f', cost: 80, done: 'Website live. Followers now become customers.' },
     { id: 'seo', name: 'SEO', benefit: 'Found on Google: followers arrive by themselves.', why: 'Search brings people who are already looking to buy.', cur: 'm', cost: 60, done: 'Found on Google. Followers now arrive on their own.' },
     { id: 'blender', name: 'Blender & motion', benefit: 'Cinematic 3D animation. Tap value ×3.', why: 'Motion stops the scroll; stills get scrolled past.', cur: 'm', cost: 600, done: 'Motion design live. Every tap now earns ×3.' },

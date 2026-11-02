@@ -3,14 +3,23 @@
   var f=document.getElementById('collab');if(!f)return;
   var t0=Date.now(),msg=document.getElementById('c-msg'),btn=f.querySelector('button[type=submit]');
   function say(t,c){msg.textContent=t;msg.className='msg '+(c||'')}
+  function bad(t,el){say(t,'err');if(window.ZTA&&ZTA.flag)ZTA.flag(f,el);el.focus()}
+  function normUrl(v){
+    v=v.trim();if(!v||/\s/.test(v))return '';
+    if(!/^https?:\/\//i.test(v)){if(/^[a-z][a-z0-9+.-]*:/i.test(v)&&!/^[^/]+:\d+(\/|$)/.test(v))return '';v='https://'+v}
+    try{var u=new URL(v);if(!/^https?:$/.test(u.protocol)||!/^([a-z0-9\u00a0-\uffff]([a-z0-9\u00a0-\uffff-]*[a-z0-9\u00a0-\uffff])?\.)+([a-z]{2,}|xn--[a-z0-9-]+)$/i.test(u.hostname))return '';return u.href}catch(e){return ''}
+  }
   f.addEventListener('submit',function(e){
     e.preventDefault();
     var g=function(n){return (f.elements[n].value||'').trim()};
     var name=g('name'),email=g('email');
-    if(!(window.ZTA?ZTA.isName(name):name.length>=2)){say('Please tell us your name.','err');f.elements.name.focus();return}
-    if(!(window.ZTA?ZTA.isEmail(email):/^\S+@\S+\.\S{2,}$/.test(email))){say('That email does not look right.','err');f.elements.email.focus();return}
-    var what=g('what');
-    var data={name:name,email:email,website:g('portfolio').slice(0,120),services:('Collab: '+what).slice(0,200),dream:what,botcheck:f.elements.botcheck.value,page:location.href.split('?')[0],referrer:document.referrer.slice(0,200)};
+    if(!(window.ZTA?ZTA.isName(name):name.length>=2)){bad('Please tell us your name.',f.elements.name);return}
+    if(!(window.ZTA?ZTA.isEmail(email):/^\S+@\S+\.\S{2,}$/.test(email))){bad('That email does not look right.',f.elements.email);return}
+    var what=g('what'),site=g('portfolio');
+    if(site){site=normUrl(site);if(!site){bad('That link does not look right. Try yourportfolio.com, or leave it empty.',f.elements.portfolio);return}}
+    if(what.length<2||!/[A-Za-z\u00c0-\uffff]/.test(what)){bad('Please tell us what you do.',f.elements.what);return}
+    if(window.ZTA&&ZTA.flag)ZTA.flag(f);
+    var data={name:name,email:email,website:site.slice(0,120),services:('Collab: '+what).slice(0,200),dream:what,botcheck:f.elements.botcheck.value,page:location.href.split('?')[0],referrer:document.referrer.slice(0,200)};
     if(data.botcheck){done();return}
     btn.disabled=true;say('Sending...');
     var wait=Math.max(0,4100-(Date.now()-t0));

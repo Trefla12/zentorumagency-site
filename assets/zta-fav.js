@@ -78,7 +78,8 @@
     if(f.size>8*1024*1024){$('fv-msg').textContent='That file is over 8 MB. Please use a smaller image.'; return}
     if(imgUrl) URL.revokeObjectURL(imgUrl);
     imgUrl=URL.createObjectURL(f); var im=new Image();
-    im.onload=function(){img=im; form.elements.mode.value='image'; $('fv-msg').textContent=''; queue()};
+    im.onload=function(){if(!(im.naturalWidth||im.width)){img=null; $('fv-msg').textContent='That image has no readable size (an SVG needs a width and height or a viewBox). Try a PNG, JPG or another SVG.'; queue(); return}
+      img=im; form.elements.mode.value='image'; $('fv-msg').textContent=''; queue()};
     im.onerror=function(){img=null; $('fv-msg').textContent='We could not read that file. Try a PNG, JPG, SVG or WebP.'; queue()};
     im.src=imgUrl;
   });

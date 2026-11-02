@@ -4,7 +4,7 @@
   var pv=document.getElementById('fm-pv'),vp=document.getElementById('fm-vp'),rng=document.getElementById('fm-rng'),nw=pv.querySelector('.fm__new');
   var RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
   var IND={
-    salon:['Cuts · Colour · Shaves','Sharp cuts. Slow service.','Precision cuts and colour from people who listen. Book online in 30 seconds.','Book a chair','Online booking','Open late','Gift cards'],
+    salon:['Cuts · Colour · Shaves','Sharp cuts. Slow service.','Precision cuts and color from people who listen. Book online in 30 seconds.','Book a chair','Online booking','Open late','Gift cards'],
     cafe:['Fresh every morning','Good coffee. Better mornings.','Seasonal food, slow coffee and a table waiting for you.','Order ahead','Order ahead','Today’s menu','Private events'],
     dental:['New patients welcome','Healthy smiles, zero stress.','Gentle care, clear prices and same-week appointments.','Book a check-up','Same-week visits','Insurance accepted','Clear prices'],
     build:['Licensed · Insured','Built right. On time.','Kitchens, roofs and full renovations with a fixed quote up front.','Free estimate','Fixed quotes','Licensed & insured','Before & after'],
@@ -74,18 +74,20 @@
 
   /* send */
   var t0=Date.now(),msg=document.getElementById('fm-msg'),btn=f.querySelector('button[type=submit]');
+  function fl(el){if(window.ZTA&&ZTA.flag)ZTA.flag(f,el);el.focus()}
   function say(t,c){msg.textContent=t;msg.className='msg '+(c||'')}
   f.addEventListener('submit',function(e){
     e.preventDefault();
     var g=function(n){return (f.elements[n].value||'').trim()};
+    if(window.ZTA&&ZTA.flag)ZTA.flag(f);
     var biz=bizName(),name=g('name'),email=g('email');
-    if(biz.length<2){say('Please add your business name.','err');f.elements.biz.focus();return}
-    if(!(window.ZTA?ZTA.isName(name):name.length>=2)){say('Please tell us your name.','err');f.elements.name.focus();return}
-    if(!(window.ZTA?ZTA.isEmail(email):/^\S+@\S+\.\S{2,}$/.test(email))){say('That email does not look right.','err');f.elements.email.focus();return}
+    if(biz.length<2){say('Please add your business name.','err');fl(f.elements.biz);return}
+    if(!(window.ZTA?ZTA.isName(name):name.length>=2)){say('Please tell us your name.','err');fl(f.elements.name);return}
+    if(!(window.ZTA?ZTA.isEmail(email):/^\S+@\S+\.\S{2,}$/.test(email))){say('That email does not look right.','err');fl(f.elements.email);return}
     var site=g('site');
-    if(site){site=normUrl(site);if(!site){say('That website address does not look right. Try yourbusiness.com, or leave it empty.','err');f.elements.site.focus();return}f.elements.site.value=site}
+    if(site){site=normUrl(site);if(!site){say('That website address does not look right. Try yourbusiness.com, or leave it empty.','err');fl(f.elements.site);return}f.elements.site.value=site}
     var ind=f.querySelector('input[name=ind]:checked'),col=q('col');
-    var opt=[ind?ind.nextElementSibling.textContent:'',LBL[q('vibe')]||'',col==='auto'?'auto colour':(f.querySelector('input[name=col]:checked').getAttribute('aria-label')+' '+col)].join(' · ');
+    var opt=[ind?ind.nextElementSibling.textContent:'',LBL[q('vibe')]||'',col==='auto'?'auto color':(f.querySelector('input[name=col]:checked').getAttribute('aria-label')+' '+col)].join(' · ');
     var data={name:name,email:email,website:site.slice(0,120),services:('Free mockup: '+biz+' · '+opt).slice(0,200),dream:('FREE HOMEPAGE MOCKUP\nBusiness: '+biz+'\nPicked: '+opt+'\n\n'+g('note')).slice(0,900),botcheck:f.elements.botcheck.value,page:location.href.split(/[?#]/)[0],referrer:document.referrer.slice(0,200)};
     if(data.botcheck){done(biz);return}
     btn.disabled=true;say('Sending...');

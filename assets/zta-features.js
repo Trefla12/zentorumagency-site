@@ -127,9 +127,11 @@ function roast(form) {
     const z = window.ZTA, f = form.elements, btn = $('button', form);
     const name = f.name.value.trim(), site = f.website.value.trim(), mail = f.email.value.trim();
     msg.classList.remove('is-ok');
-    if (z ? !z.isName(name) : name.length < 2) { msg.textContent = 'Please add your first name.'; f.name.focus(); return; }
-    if (!site) { msg.textContent = 'Please add your website link.'; f.website.focus(); return; }
-    if (!z || !z.EMAIL.test(mail)) { msg.textContent = z ? 'That email doesn\'t look right.' : 'Chat is still loading. Please try again in a moment.'; if (z) f.email.focus(); return; }
+    const fl = el => { z && z.flag && z.flag(form, el); el.focus(); };
+    z && z.flag && z.flag(form);
+    if (z ? !z.isName(name) : name.length < 2) { msg.textContent = 'Please add your first name.'; fl(f.name); return; }
+    if (!site) { msg.textContent = 'Please add your website link.'; fl(f.website); return; }
+    if (!z || !z.EMAIL.test(mail)) { msg.textContent = z ? 'That email doesn\'t look right.' : 'Chat is still loading. Please try again in a moment.'; if (z) fl(f.email); return; }
     if (f.botcheck.value) { msg.textContent = 'Got it. Your video is coming by email.'; msg.classList.add('is-ok'); return; }
     btn.disabled = true; msg.textContent = 'Sending…';
     try {

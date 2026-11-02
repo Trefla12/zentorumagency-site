@@ -49,10 +49,12 @@
   specimens.forEach(function (s) {
     var parts = s[0].split('.'), e = el(parts[0]); if (parts[1]) e.className = parts[1]; e.textContent = s[2]; e.className += ' sg-ty__s';
     probe.appendChild(e); var c = getComputedStyle(e);
+    var heading = /^h[1-6]$/.test(parts[0]), look = heading ? ['fontFamily', 'fontSize', 'fontWeight', 'lineHeight', 'letterSpacing', 'margin'].map(function (k) { return k.replace(/[A-Z]/g, function (m) { return '-' + m.toLowerCase(); }) + ':' + c[k]; }).join(';') : '';
     var meta = c.fontFamily.split(',')[0].replace(/['"]/g, '') + ' · ' + px(c.fontSize) + ' / ' + (c.lineHeight === 'normal' ? 'normal' : px(c.lineHeight)) + ' · ' + c.fontWeight + (parseFloat(c.letterSpacing) ? ' · ' + px(c.letterSpacing) + ' tracking' : '');
     probe.removeChild(e);
     var row = el('div', 'sg-ty__r'), k = el('div', 'sg-ty__k', '<b>' + s[1] + '</b>' + meta);
-    var live = el(parts[0]); if (parts[1]) live.className = parts[1]; live.className += ' sg-ty__s'; live.textContent = s[2];
+    /* specimens must not be real headings: the page keeps a single h1 and a clean outline */
+    var live = el(heading ? 'div' : parts[0]); if (heading) live.style.cssText = look; if (parts[1]) live.className = parts[1]; live.className += ' sg-ty__s'; live.textContent = s[2];
     row.appendChild(k); row.appendChild(live); ty.appendChild(row);
   });
 
