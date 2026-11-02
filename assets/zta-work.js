@@ -53,11 +53,16 @@
   /* every card in view loops like a gif; off-screen or filtered-out cards pause. Only one reel can have sound. */
   var loud=null;
   function snd(it,on){it.vid.muted=!on;var b=it.el.querySelector('.pc__snd');if(b)b.setAttribute('aria-pressed',on);if(on){if(loud&&loud!==it)snd(loud,false);loud=it}else if(loud===it)loud=null}
-  function stop(it){if(!it.vid.paused)it.vid.pause();it.vid.classList.remove('on');if(loud===it)snd(it,false)}
+  function stop(it){var v=it.vid;it.want=false;if(!v.paused)v.pause();v.classList.remove('on');if(loud===it)snd(it,false);
+    /* a card scrolled past before its video buffered: cancel the download so it doesn't block the cards in view */
+    if(it.loaded&&v.readyState<3){while(v.firstChild)v.removeChild(v.firstChild);v.removeAttribute('src');v.load();it.loaded=false}}
   function play(it){
     var v=it.vid;
+    it.want=true;
+    /* keep the poster visible until the video actually has frames, so a card is never blank */
+    if(!it.hooked){it.hooked=true;v.addEventListener('playing',function(){if(it.want)v.classList.add('on')})}
     if(!it.loaded){it.loaded=true;it.srcs.forEach(function(s){var e=document.createElement('source');e.src=s[0];e.type=s[1];v.appendChild(e)});v.load()}
-    v.classList.add('on');if(!v.paused)return;
+    if(!v.paused){if(v.readyState>2)v.classList.add('on');return}
     var p=v.play();if(p&&p.catch)p.catch(function(){v.classList.remove('on')});
   }
   function pick(){items.forEach(function(it){var hid=!!it.el.closest('[hidden]');if(!auto||hid||it.ratio<.15){if(hid||it.ratio===0||auto)stop(it)}else play(it)})}
@@ -69,8 +74,11 @@
     var on=it.vid.muted;play(it);snd(it,on);
   });
   if(!('IntersectionObserver' in window)){if(auto)items.forEach(play);return}
+  var pt=0;
   var io=new IntersectionObserver(function(es){
-    es.forEach(function(e){items.forEach(function(it){if(it.el===e.target)it.ratio=e.isIntersecting?e.intersectionRatio:0})});pick();
+    es.forEach(function(e){items.forEach(function(it){if(it.el===e.target)it.ratio=e.isIntersecting?e.intersectionRatio:0})});
+    /* wait for scrolling to settle so cards flicked past don't start downloads */
+    clearTimeout(pt);pt=setTimeout(pick,180);
   },{threshold:[0,.15,.5,1]});
   items.forEach(function(it){io.observe(it.el)});
   document.addEventListener('visibilitychange',function(){if(document.hidden)items.forEach(stop);else pick()});
