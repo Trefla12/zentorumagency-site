@@ -183,7 +183,7 @@
 
   function setBar(v, label) { bar.style.width = (v * 100) + '%'; barBox.setAttribute('aria-valuenow', Math.round(v * 100)); cnt.textContent = label; }
   function show(i, focus) {
-    step = i; stage.hidden = false; res.hidden = true; top.hidden = false; stage.textContent = '';
+    step = i; root.classList.add('qz--on'); stage.hidden = false; res.hidden = true; top.hidden = false; stage.textContent = '';
     var d = C.qs[i];
     setBar(i / n, 'Question ' + (i + 1) + ' of ' + n);
     back.hidden = i === 0;

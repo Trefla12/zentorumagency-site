@@ -7,9 +7,10 @@
   --bg:#0b050e; --bg2:#140818; --plum:#22102a; --cream:#F7ECD6; --muted:#a99c88; --gold:#e6c98c; --gold2:#c9a565;
   --lilac:rgba(214,170,255,.55); --line:rgba(230,201,140,.18);
   --goldg:linear-gradient(100deg,#c9a565 0%,#e6c98c 38%,#fff6df 50%,#e6c98c 62%,#b8924c 100%);
-  --serif:'Cormorant Garamond',Corm,Georgia,serif; --sans:Inter,system-ui,-apple-system,sans-serif;
+  --serif:'Cormorant Garamond',Corm,Georgia,serif; --sans:Inter,'Inter Fallback',system-ui,-apple-system,sans-serif;
   --pad:clamp(20px,5vw,72px); --ease:cubic-bezier(.22,1,.36,1);
 }
+@font-face{font-family:'Inter Fallback';src:local('Arial'),local('Helvetica Neue'),local('Helvetica');size-adjust:107.4%;ascent-override:90.2%;descent-override:22.5%;line-gap-override:0%}
 @font-face{font-family:Corm;src:local('Cormorant Garamond SemiBold'),local('CormorantGaramond-SemiBold')}
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scroll-behavior:auto}

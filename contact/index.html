@@ -23,7 +23,7 @@
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/cg.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/cg-italic.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter.woff2" crossorigin>
-<link rel="stylesheet" href="/assets/zta-agency.css?v=20261102t">
+<link rel="stylesheet" href="/assets/zta-agency.css?v=20261102z">
 <link rel="stylesheet" href="/assets/zta-chat.css?v=20261102c" media="print" onload="this.media='all'">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"ContactPage","name":"Contact Zentorum Agency","url":"https://zentorumagency.com/contact/","mainEntity":{"@type":"ProfessionalService","name":"Zentorum Agency","url":"https://zentorumagency.com/","telephone":"+1-512-241-5531","email":"zentorum1@gmail.com"}}</script>
 <link rel="stylesheet" href="/assets/zta-x.css?v=20261102s">
@@ -49,7 +49,7 @@
 </header>
 
 <main id="main" data-cur-scope>
-<div class="wrap"><div class="cur" data-cur-bar></div></div>
+<div class="wrap"><div class="cur" data-cur-bar><label for="cur-sel">Show prices in</label><select id="cur-sel" class="cur__s"><option value="USD">USD (US dollar)</option><option value="EUR">EUR (Euro)</option><option value="GBP">GBP (British pound)</option><option value="RON">RON (Romanian leu)</option><option value="CAD">CAD (Canadian dollar)</option><option value="AUD">AUD (Australian dollar)</option></select><p class="cur__n">Approximate &mdash; invoiced in USD. Fixed rates as of 30 Oct 2026 (ECB reference).</p></div></div>
   <section class="chero" aria-labelledby="c-title">
     <p class="eyebrow">Contact</p>
     <h1 id="c-title" class="chero__t">Let's talk about <em>your</em> <span class="gold">dream</span>.</h1>
@@ -205,13 +205,8 @@
 </aside>
 
 <script type="importmap">{"imports":{"three":"/assets/vendor/three/build/three.module.min.js"}}</script>
-<script src="/assets/vendor/gsap.min.js" defer></script>
-<script src="/assets/vendor/ScrollTrigger.min.js" defer></script>
-<script src="/assets/vendor/lenis.min.js" defer></script>
-<script type="module" src="/assets/zta-agency.js?v=20261102u"></script>
-<script type="module" src="/assets/zta-features.js?v=20261102w"></script>
-<script src="/assets/zta-chat.js?v=20261102g" defer></script>
-<script src="/assets/zta-nav.js?v=20261102i" defer></script>
+<script>(function(){var A=[['/assets/vendor/gsap.min.js'],['/assets/vendor/ScrollTrigger.min.js'],['/assets/vendor/lenis.min.js'],['/assets/zta-agency.js?v=20261102z',1],['/assets/zta-features.js?v=20261102z',1],['/assets/zta-chat.js?v=20261102z']];function go(){if(go.d)return;go.d=1;A.forEach(function(a){var e=document.createElement('script');e.src=a[0];if(a[1])e.type='module';e.async=false;document.body.appendChild(e)})}/* the animation/3D scripts start right after the first paint, so the loader and text are never held up by them */try{new PerformanceObserver(function(l,o){if(l.getEntriesByName('first-contentful-paint').length){o.disconnect();setTimeout(go,0)}}).observe({type:'paint',buffered:true})}catch(e){go()}setTimeout(go,1500)})()</script>
+<script src="/assets/zta-nav.js?v=20261102z" defer></script>
 <script src="/assets/zta-x.js?v=20261102e" defer></script>
 <script src="/assets/zta-cur.js?v=20261102g" defer></script>
 </body>

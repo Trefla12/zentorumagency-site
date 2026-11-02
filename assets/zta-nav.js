@@ -198,4 +198,4 @@ dds.forEach(d => {
 })();
 
 /* installable app + offline page (service worker at /sw.js) */
-if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) { const reg = () => navigator.serviceWorker.register('/sw.js').catch(() => {}); document.readyState === 'complete' ? reg() : addEventListener('load', reg); }

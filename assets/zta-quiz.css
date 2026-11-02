@@ -43,3 +43,8 @@
 .qz__fixes{display:grid;gap:10px;margin:0;padding:0;list-style:none}
 @media (prefers-reduced-motion:reduce){.qz__bar i,.qz__o{transition:none}}
 .qz__res{scroll-margin-top:90px}
+
+/* reserve the first question's height so the page below doesn't jump when the quiz script renders it */
+.qz:not(.qz--on) .qz__stage{min-height:384px}.qz[data-quiz=out]:not(.qz--on) .qz__stage{min-height:298px}
+@media(max-width:900px){.qz:not(.qz--on) .qz__stage{min-height:375px}.qz[data-quiz=out]:not(.qz--on) .qz__stage{min-height:280px}}
+@media(max-width:600px){.qz:not(.qz--on) .qz__stage{min-height:411px}.qz[data-quiz=out]:not(.qz--on) .qz__stage{min-height:296px}}
