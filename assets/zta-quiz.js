@@ -247,7 +247,7 @@
   });
 
   function fromHash() {
-    var m = /^#r=([\d.]+)$/.exec(location.hash), start = m && m[1].split('.').map(Number);
+    var m = /^#r=(\d+(?:\.\d+)*)$/.exec(location.hash), start = m && m[1].split('.').map(Number);
     if (start && C.valid(start)) { ans = start; finish(false); return true; }
     return false;
   }

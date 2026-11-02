@@ -88,6 +88,9 @@
         api={apply:apply,reset:reset};apply();
         dl.dispose();
       }catch(err){fail()}},function(e){if(e.total)bar.style.transform='scaleX('+(e.loaded/e.total)+')'},fail);
+      var lost=false;
+      cv.addEventListener('webglcontextlost',function(e){e.preventDefault();lost=true;cv.classList.remove('on');stage.classList.remove('is-3d')});
+      cv.addEventListener('webglcontextrestored',function(){lost=false;cv.classList.add('on');stage.classList.add('is-3d');dirty=true;size();loop()});
       ctl.addEventListener('change',function(){dirty=true});
       ctl.addEventListener('start',function(){stage.classList.add('touched')});
       addEventListener('resize',size);
@@ -106,6 +109,7 @@
         if(raf||!vis||document.hidden)return;
         raf=requestAnimationFrame(function t(){
           raf=0;if(!vis||document.hidden)return;
+          if(lost){raf=requestAnimationFrame(t);return}
           ctl.update();if(step(.09))dirty=true;
           if(dirty||ctl.autoRotate){r.render(sc,cam);dirty=false}
           raf=requestAnimationFrame(t);

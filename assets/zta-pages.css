@@ -128,10 +128,10 @@ textarea.in-t{min-height:120px;resize:vertical}
 .q label span{display:inline-flex;align-items:center;min-height:46px;padding:0 20px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.03);cursor:pointer;transition:border-color .3s,background .3s}
 .q input:checked+span{background:var(--goldg);color:#1a0c1e;border-color:transparent}
 .q input:focus-visible+span{outline:2px solid var(--gold);outline-offset:3px}
-.sw{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:18px 0}
+.sw{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:18px 0}
 .sw button{display:flex;flex-direction:column;justify-content:flex-end;aspect-ratio:1/1.15;padding:10px;border-radius:16px;border:1px solid rgba(255,255,255,.2);cursor:pointer;text-align:left;font:500 12px var(--sans);letter-spacing:.04em}
 .sw small{display:block;font-weight:300;opacity:.85}
-@media (max-width:600px){.sw{grid-template-columns:repeat(5,1fr);gap:6px}.sw button{font-size:10px;padding:6px;border-radius:12px}}
+@media (max-width:600px){.sw{grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}.sw button{font-size:9px;letter-spacing:0;padding:5px;border-radius:12px;min-width:0;overflow:hidden;overflow-wrap:anywhere}}
 .two{display:grid;gap:24px;grid-template-columns:1fr}
 @media (min-width:900px){.two--s{grid-template-columns:1fr 1fr;align-items:center}}
 /* playground */

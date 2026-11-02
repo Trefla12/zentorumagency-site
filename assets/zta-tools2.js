@@ -8,6 +8,8 @@
     return fetch(EP,{method:'POST',body:JSON.stringify(body),redirect:'follow'}).then(function(r){return r.json().catch(function(){return{}})}).then(function(j){if(!j.ok)throw new Error(j.error||'send');return j});
   }
   function err(el,msg,fld){el.textContent=msg;el.hidden=!msg;var fm=el.closest('form');if(fm&&window.ZTA&&ZTA.flag)ZTA.flag(fm,msg?fld:null);if(fld&&msg)fld.focus()}
+  var SPM={'ø':'o','æ':'ae','œ':'oe','ß':'ss','đ':'d','ð':'d','þ':'th','ł':'l','ı':'i'};
+  function slug(v){return String(v).trim().toLowerCase().replace(/[øæœßđðþłı]/g,function(c){return SPM[c]}).normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}
   var money=function(n){return '$'+Math.round(n).toLocaleString('en-US')};
 
   /* ---------- 1. Logo mockup ---------- */
@@ -15,11 +17,12 @@
   if(cv){
     var x=cv.getContext('2d'),W=cv.width,H=cv.height,inp=$('lg-n'),st='serif',col='#e6c98c';
     var SERIF="'Cormorant Garamond','CG Fallback',Georgia,serif",SANS="Inter,system-ui,sans-serif";
+    function gfirst(w){if(window.Intl&&Intl.Segmenter){try{var it=new Intl.Segmenter(undefined,{granularity:'grapheme'}).segment(w)[Symbol.iterator]().next();if(!it.done)return it.value.segment}catch(e){}}return Array.from(w)[0]||''}
     function rr(px,py,w,h,r){x.beginPath();x.moveTo(px+r,py);x.arcTo(px+w,py,px+w,py+h,r);x.arcTo(px+w,py+h,px,py+h,r);x.arcTo(px,py+h,px,py,r);x.arcTo(px,py,px+w,py,r);x.closePath()}
     function fit(txt,font,max,size){x.font=font.replace('S',size+'px');while(x.measureText(txt).width>max&&size>10){size-=2;x.font=font.replace('S',size+'px')}return size}
     function ink(px,py,w,h){if(col!=='gold')return col;var g=x.createLinearGradient(px,py,px+w,py+h);g.addColorStop(0,'#b8924c');g.addColorStop(.45,'#e6c98c');g.addColorStop(.5,'#fff6df');g.addColorStop(.55,'#e6c98c');g.addColorStop(1,'#c9a565');return g}
     function mark(name,cx,cy,max,big){
-      var ini=name.split(/\s+/).filter(Boolean).map(function(w){return w[0]}).join('').slice(0,2).toUpperCase()||'Z';
+      var ini=name.split(/\s+/).filter(Boolean).map(function(w){return gfirst(w)}).slice(0,2).join('').toUpperCase()||'Z';
       x.textAlign='center';x.textBaseline='middle';x.fillStyle=ink(cx-max/2,cy-big,max,big*2);x.strokeStyle=x.fillStyle;
       if(st==='serif'){var s=fit(name,'400 S '+SERIF,max,big);x.fillText(name,cx,cy-s*.12);x.font='500 '+Math.round(s*.2)+'px '+SANS;x.letterSpacing=Math.round(s*.08)+'px';x.fillText('EST. '+new Date().getFullYear(),cx,cy+s*.62);x.letterSpacing='0px'}
       else if(st==='modern'){x.letterSpacing=Math.round(big*.14)+'px';var s2=fit(name.toUpperCase(),'600 S '+SANS,max,Math.round(big*.62));x.fillText(name.toUpperCase(),cx,cy);x.letterSpacing='0px';x.fillRect(cx-s2*.9,cy+s2*.95,s2*1.8,Math.max(2,s2*.08))}
@@ -52,7 +55,7 @@
     [].forEach.call(d.querySelectorAll('[name=lg-s]'),function(r){r.addEventListener('change',function(){st=r.value;go()})});
     [].forEach.call(d.querySelectorAll('[name=lg-c]'),function(r){r.addEventListener('change',function(){col=r.value;go()})});
     $('lg-dl').addEventListener('click',function(){
-      var a=d.createElement('a'),n=(inp.value||'brand').trim().toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'brand';
+      var a=d.createElement('a'),n=slug(inp.value||'brand').replace(/^-|-$/g,'')||'brand';
       a.download=n+'-logo-mockup.png';a.href=cv.toDataURL('image/png');d.body.appendChild(a);a.click();a.remove();
       $('lg-cta').hidden=false;
     });
@@ -87,7 +90,7 @@
   if(ig){
     ig.addEventListener('submit',function(e){
       e.preventDefault();var h=$('ig-h').value.trim().replace(/^@/,''),em=$('ig-e').value.trim(),nm=$('ig-n').value.trim(),er=$('ig-err');
-      if(!/^[A-Za-z0-9._]{1,30}$/.test(h))return err(er,'Please enter your Instagram handle, like @yourbrand.',$('ig-h'));
+      if(!/^(?!\.)(?!.*\.\.)(?!.*\.$)[A-Za-z0-9._]{1,30}$/.test(h))return err(er,'Please enter your Instagram handle, like @yourbrand.',$('ig-h'));
       if(!okName(nm))return err(er,'Please add your first name.',$('ig-n'));
       if(!okMail(em))return err(er,'Please check your email address.',$('ig-e'));
       err(er,'');

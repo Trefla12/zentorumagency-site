@@ -6,7 +6,7 @@ const money = n => '$' + n.toLocaleString('en-US');
 const span = (a, b, f = money) => (a === b ? f(a) : `${f(a)}–${f(b)}`);
 
 // Fill the main inquiry form (the form's own listeners pick up the events)
-function prefill({ services, budget, dream, brand, append }) {
+function prefill({ services, budget, dream, brand, append, replace }) {
   const f = $('#zta-form');
   if (!f) return;
   if (services) $$('input[name="services"]', f).forEach(i => { i.checked = services.includes(i.value); i.dispatchEvent(new Event('change', { bubbles: true })); });
@@ -14,6 +14,7 @@ function prefill({ services, budget, dream, brand, append }) {
   if (brand != null && brand) { f.elements.brand.value = brand.slice(0, 60); f.elements.brand.dispatchEvent(new Event('input', { bubbles: true })); }
   if (dream) {
     const t = f.elements.dream;
+    if (replace) t.value = t.value.replace(replace, '').trim();
     t.value = (append && t.value && !t.value.includes(dream) ? t.value.trim() + ' ' : '') + dream;
     t.value = t.value.slice(0, 1500);
     t.dispatchEvent(new Event('input', { bubbles: true }));
@@ -69,6 +70,13 @@ function quote(root) {
   });
 }
 
+// first user-perceived character (grapheme-safe)
+function firstChar(str) {
+  str = String(str || '');
+  if (window.Intl && Intl.Segmenter) { try { const it = new Intl.Segmenter(undefined, { granularity: 'grapheme' }).segment(str)[Symbol.iterator]().next(); if (!it.done) return it.value.segment; } catch (e) {} }
+  return Array.from(str)[0] || '';
+}
+
 // ---------- B. brand in 10 seconds ----------
 function brand(root) {
   const card = $('[data-bcard]', root), nameEl = $('[data-b-name]', card), init = $('[data-b-init]', card), font = $('[data-b-font]', card), ring = $('[data-b-ring]', card);
@@ -78,7 +86,7 @@ function brand(root) {
   function draw(bump) {
     const n = input.value.trim().replace(/\s+/g, ' ') || 'Moonlight Candles';
     nameEl.textContent = n;
-    init.textContent = n.charAt(0).toUpperCase();
+    init.textContent = firstChar(n).toUpperCase();
     card.style.setProperty('--k', Math.max(0.5, Math.min(1, 13 / n.length)).toFixed(2));
     card.dataset.vibe = vibe;
     font.textContent = FONTS[vibe];
@@ -89,7 +97,7 @@ function brand(root) {
   $$('input[name="vibe"]', root).forEach(r => r.addEventListener('change', () => { vibe = r.value; draw(true); }));
   $('[data-brand-cta]', root).addEventListener('click', () => {
     const n = input.value.trim();
-    prefill({ brand: n, dream: `Brand sketch vibe: ${vibe}.`, append: true });
+    prefill({ brand: n, dream: `Brand sketch vibe: ${vibe}.`, append: true, replace: /Brand sketch vibe: \w+\.\s*/g });
   });
   draw(false);
 }
@@ -117,6 +125,20 @@ function ba(root) {
   }
 }
 
+// valid website -> normalized https URL, or '' (per-label hostname check, TLD letters >= 2)
+function normSite(v) {
+  v = String(v || '').trim();
+  if (!v || /\s/.test(v)) return '';
+  if (!/^https?:\/\//i.test(v)) v = 'https://' + v;
+  try {
+    const u = new URL(v), h = u.hostname.replace(/\.$/, '');
+    const labels = h.split('.');
+    if (labels.length < 2 || !labels.every(l => /^[a-z0-9\u00a1-\uffff]([a-z0-9\u00a1-\uffff-]{0,61}[a-z0-9\u00a1-\uffff])?$/i.test(l))) return '';
+    if (!/^([a-z]{2,}|xn--[a-z0-9-]{2,})$/i.test(labels[labels.length - 1])) return '';
+    return u.origin + (u.pathname === '/' ? '' : u.pathname);
+  } catch (e) { return ''; }
+}
+
 // ---------- E. site roast ----------
 function roast(form) {
   const msg = $('[data-roast-msg]', form);
@@ -125,12 +147,16 @@ function roast(form) {
   form.addEventListener('submit', async e => {
     e.preventDefault();
     const z = window.ZTA, f = form.elements, btn = $('button', form);
-    const name = f.name.value.trim(), site = f.website.value.trim(), mail = f.email.value.trim();
+    const name = f.name.value.trim(), mail = f.email.value.trim();
+    let site = f.website.value.trim();
     msg.classList.remove('is-ok');
     const fl = el => { z && z.flag && z.flag(form, el); el.focus(); };
     z && z.flag && z.flag(form);
     if (z ? !z.isName(name) : name.length < 2) { msg.textContent = 'Please add your first name.'; fl(f.name); return; }
     if (!site) { msg.textContent = 'Please add your website link.'; fl(f.website); return; }
+    const url = normSite(site);
+    if (!url) { msg.textContent = 'That website address doesn\'t look right. Try something like yourbrand.com.'; fl(f.website); return; }
+    site = url;
     if (!z || !z.EMAIL.test(mail)) { msg.textContent = z ? 'That email doesn\'t look right.' : 'Chat is still loading. Please try again in a moment.'; if (z) fl(f.email); return; }
     if (f.botcheck.value) { msg.textContent = 'Got it. Your video is coming by email.'; msg.classList.add('is-ok'); return; }
     btn.disabled = true; msg.textContent = 'Sending…';

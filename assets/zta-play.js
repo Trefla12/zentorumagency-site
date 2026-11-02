@@ -26,6 +26,9 @@
         loop();
       },undefined,function(){started=false});
       ctl.addEventListener('change',function(){dirty=true});
+      var lost=false;
+      cv.addEventListener('webglcontextlost',function(e){e.preventDefault();lost=true;cv.classList.remove('on');var h=document.getElementById('hint');if(h)h.hidden=true});
+      cv.addEventListener('webglcontextrestored',function(){lost=false;cv.classList.add('on');var h=document.getElementById('hint');if(h)h.hidden=false;dirty=true;size();loop()});
       addEventListener('resize',size);
       new IntersectionObserver(function(es){vis=es[0].isIntersecting;if(vis)loop()}).observe(stage);
       document.addEventListener('visibilitychange',function(){if(!document.hidden)loop()});
@@ -34,6 +37,7 @@
         if(raf||!vis||document.hidden)return;
         raf=requestAnimationFrame(function t(){
           raf=0;if(!vis||document.hidden)return;
+          if(lost){raf=requestAnimationFrame(t);return}
           ctl.update();
           if(!calm||dirty){r.render(sc,cam);dirty=false}
           raf=requestAnimationFrame(t);

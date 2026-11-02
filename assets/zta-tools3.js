@@ -51,7 +51,7 @@
   function norm(v){
     v=v.trim();if(!v||/\s/.test(v))return '';
     if(!/^https?:\/\//i.test(v))v='https://'+v;
-    try{var u=new URL(v);if(!/\.[a-z]{2,}$/i.test(u.hostname))return '';return u.origin+u.pathname}catch(e){return ''}
+    try{var u=new URL(v);var hl=u.hostname.replace(/\.$/,'').split('.');if(hl.length<2||!hl.every(function(l){return /^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$/i.test(l)})||!/^([a-z]{2,}|xn--[a-z0-9-]{2,})$/i.test(hl[hl.length-1]))return '';return u.origin+u.pathname}catch(e){return ''}
   }
   function line(t,cls){var li=d.createElement('li');li.textContent=t;if(cls)li.className=cls;log.appendChild(li);while(log.children.length>4)log.removeChild(log.firstChild)}
 
