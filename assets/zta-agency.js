@@ -355,7 +355,20 @@ async function initGL() {
 const pctEl = $('[data-pct]');
 const loaderEl = $('.loader');
 const fontsReady = (document.fonts?.ready || Promise.resolve()).catch(() => {});
-const glReady = initGL().catch(() => {});
+// The homepage builds the particle field before it reveals. Pages without the hero (/contact/) only paint it
+// as a background, so it starts after the page is interactive and fades in then (no long task during load).
+const HOME = !!$('.hero');
+const glReady = HOME ? initGL().catch(() => {}) : Promise.resolve();
+if (!HOME && $('[data-gl]')) {
+  const go = () => initGL().catch(() => {}).then(() => {
+    if (!gl.ready || !gsap || RM) return;
+    gsap.killTweensOf(gl);
+    gl.intro = 0;
+    gsap.to(gl, { intro: 1, duration: 2.4, ease: 'expo.out' });
+  });
+  const later = () => ('requestIdleCallback' in window ? requestIdleCallback(go, { timeout: 2500 }) : setTimeout(go, 1200));
+  document.readyState === 'complete' ? later() : addEventListener('load', later, { once: true });
+}
 const minTime = new Promise(r => setTimeout(r, RM ? 200 : 1700));
 let shown = 0;
 const counter = setInterval(() => {

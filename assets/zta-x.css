@@ -271,3 +271,27 @@ main:focus{outline:0}
 /* WebKit draws a native currency select ~22px tall and ignores min-height: draw our own chevron so it keeps the 44px box */
 select.cur__s{-webkit-appearance:none;appearance:none;min-height:44px;padding:8px 34px 8px 12px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23e6c98c' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:10px 6px}
 @media (max-width:900px){.foot ul a,.foot__links a,.foot__row a{min-width:44px}}
+
+/* round 3A: placeholder contrast (>=4.5:1), footer link target size, text-spacing overflow, tiny phones */
+input::placeholder,textarea::placeholder{color:#8f8f8f;opacity:1}
+.foot__links a{display:inline-flex;align-items:center;min-height:24px}
+.foot__links{row-gap:5px}
+.foot__big,.pc__t,.pc h3{overflow-wrap:anywhere}
+.shr,.shr>*{max-width:100%}
+@media (max-width:330px){.nav .nav__call{display:none}}
+
+/* print: dark text on white, no chrome, link addresses shown in the text */
+@media print{
+  html,body{background:#fff!important;color:#000!important}
+  body::after{display:none!important}
+  .skip,.nav,.mnav,.mbar,.loader,.cursor,.grain,.gl,.prog,.toc,.toc-m,.shr,.cur,.srch,.mm-dim,.sg-toast,
+  .zc,.zc-launch,.zc-p,.zc-ov,.zx-sms,.zx-spot,.zx-cf,.zx-egg,canvas,video,iframe{display:none!important}
+  *,*::before,*::after{background:transparent!important;color:#000!important;text-shadow:none!important;box-shadow:none!important;-webkit-text-fill-color:#000!important;animation:none!important;transition:none!important}
+  h1,h2,h3,h4{break-after:avoid}
+  img{max-width:100%;break-inside:avoid}
+  a{text-decoration:underline}
+  main :is(p,li,dd,td,blockquote) a[href^="http"]::after{content:" (" attr(href) ")";font-size:.85em;word-break:break-all}
+  main :is(p,li,dd,td,blockquote) a[href^="/"]::after{content:" (https://zentorumagency.com" attr(href) ")";font-size:.85em;word-break:break-all}
+  .reveal-up,.rv,.split .ch{opacity:1!important;transform:none!important}
+}
+.prose li,.prose p,.prose td{overflow-wrap:anywhere}

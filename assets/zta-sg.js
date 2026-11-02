@@ -25,14 +25,14 @@
   colors.forEach(function (c) {
     var raw = cs.getPropertyValue(c[0]).trim(); if (!raw) return;
     probe.style.background = 'var(' + c[0] + ')'; var h = toHex(getComputedStyle(probe).backgroundColor);
-    var b = el('button', 'sg-sw__b'); b.type = 'button'; b.setAttribute('aria-label', 'Copy ' + c[1] + ' ' + h);
+    var b = el('button', 'sg-sw__b'); b.type = 'button';
     b.innerHTML = '<span class="sg-sw__c"><i style="background:var(' + c[0] + ')"></i></span><span class="sg-sw__m"><b>' + c[1] + '</b><code>' + h + '</code><code>var(' + c[0] + ')</code><small>' + c[2] + ' · tap to copy</small></span>';
     b.addEventListener('click', function () { copy(h); b.classList.add('is-c'); setTimeout(function () { b.classList.remove('is-c'); }, 1200); });
     sw.appendChild(b);
   });
   var g = cs.getPropertyValue('--goldg').trim();
   if (g) {
-    var gb = el('button', 'sg-sw__b'); gb.type = 'button'; gb.setAttribute('aria-label', 'Copy gold gradient');
+    var gb = el('button', 'sg-sw__b'); gb.type = 'button';
     gb.innerHTML = '<span class="sg-sw__c"><i style="background:var(--goldg)"></i></span><span class="sg-sw__m"><b>Gold gradient</b><code>var(--goldg)</code><small>Buttons and highlights · tap to copy</small></span>';
     gb.addEventListener('click', function () { copy(g); }); sw.appendChild(gb);
   }

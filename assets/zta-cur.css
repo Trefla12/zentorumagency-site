@@ -1,9 +1,9 @@
 .cur{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;min-height:48px;margin:0 0 18px;font-size:.9rem;color:var(--muted,#c9bfcb)}
 .cur label{font-weight:600}
-.cur__s{width:auto;min-width:0;max-width:100%;padding:8px 12px;font-size:.9rem}
+.cur__s{width:auto;min-width:0;max-width:100%;padding:8px 12px;font-size:16px}
 .cur__n{flex-basis:100%;margin:0;font-size:.8rem;opacity:.8}
 @media(min-width:640px){.cur__n{flex-basis:auto}}
-.cur__s{min-height:44px;border-radius:12px;border:1px solid rgba(230,201,140,.3);background:rgba(255,255,255,.05);color:inherit;font:inherit;font-size:.9rem}
+.cur__s{min-height:44px;border-radius:12px;border:1px solid rgba(230,201,140,.3);background:rgba(255,255,255,.05);color:inherit;font:inherit;font-size:16px}
 .cur__s option{color:#111}
 
 /* contact page: the fixed header is out of flow, so clear it above the currency bar and shorten the hero's own top space */
