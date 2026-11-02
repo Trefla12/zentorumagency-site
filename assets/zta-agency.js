@@ -371,7 +371,7 @@ if (!HOME && $('[data-gl]')) {
   const later = () => ('requestIdleCallback' in window ? requestIdleCallback(go, { timeout: 2500 }) : setTimeout(go, 1200));
   document.readyState === 'complete' ? later() : addEventListener('load', later, { once: true });
 }
-const minTime = new Promise(r => setTimeout(r, RM ? 200 : 1700));
+const minTime = new Promise(r => setTimeout(r, RM ? 200 : 1100));
 let shown = 0;
 const counter = setInterval(() => {
   shown = Math.min(shown + (shown < 80 ? 3 : 1), 99);
