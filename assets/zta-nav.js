@@ -3,7 +3,7 @@
   const quiet = vt => { if (vt) ['ready', 'finished', 'updateCallbackDone'].forEach(k => vt[k] && vt[k].catch && vt[k].catch(() => {})); };
   addEventListener('pagereveal', e => quiet(e.viewTransition));
   addEventListener('pageswap', e => quiet(e.viewTransition));
-  addEventListener('unhandledrejection', e => { const r = e.reason; if (r && r.name === 'InvalidStateError' && /Transition was aborted|view transition/i.test(r.message || '')) e.preventDefault(); });
+  addEventListener('unhandledrejection', e => { const r = e.reason; if (r && r.name === 'InvalidStateError' && /Transition was aborted/i.test(r.message || '')) e.preventDefault(); });
 })();
 
 /* Mega menu: hover opens on desktop (short close delay), click/tap toggles, Esc or click outside closes.
