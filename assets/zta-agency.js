@@ -358,7 +358,9 @@ const fontsReady = (document.fonts?.ready || Promise.resolve()).catch(() => {});
 // The homepage builds the particle field before it reveals. Pages without the hero (/contact/) only paint it
 // as a background, so it starts after the page is interactive and fades in then (no long task during load).
 const HOME = !!$('.hero');
-const glReady = HOME ? initGL().catch(() => {}) : Promise.resolve();
+// let the browser paint the loader + hero text first, then build the particle field (a long task on slow phones)
+const afterPaint = () => new Promise(r => requestAnimationFrame(() => setTimeout(r, 0)));
+const glReady = HOME ? afterPaint().then(() => initGL()).catch(() => {}) : Promise.resolve();
 if (!HOME && $('[data-gl]')) {
   const go = () => initGL().catch(() => {}).then(() => {
     if (!gl.ready || !gsap || RM) return;
