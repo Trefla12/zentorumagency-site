@@ -1,4 +1,4 @@
-// Set this to the external booking/ticket page (https://...). While empty, buttons use the local booking.html.
+// External booking/ticket page: every [data-book] link opens it in a new tab.
 var BOOKING_URL='https://www.eventbrite.com/e/luis-gabriel-live-a-night-above-chicago-tickets-2004410465660';
 (function(){
   if(BOOKING_URL){document.querySelectorAll('[data-book]').forEach(function(a){a.href=BOOKING_URL;a.target='_blank';a.rel='noopener';});}
