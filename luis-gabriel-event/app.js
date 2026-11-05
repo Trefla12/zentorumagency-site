@@ -5,7 +5,7 @@ var DOORS=Date.UTC(2027,0,24,1,0,0);
 (function(){
   var calm=matchMedia('(prefers-reduced-motion:reduce)').matches;
   var fine=matchMedia('(hover:hover) and (pointer:fine)').matches;
-  document.querySelectorAll('[data-book]').forEach(function(a){a.href=BOOKING_URL;a.target='_blank';a.rel='noopener';});
+  document.querySelectorAll('[data-book]').forEach(function(a){a.href=BOOKING_URL;a.target='_blank';a.rel='noopener';a.setAttribute('aria-label','Book now on Eventbrite (opens in a new tab)');});
 
   // Headline: split into letters for the blur-in reveal.
   var n=0;
@@ -21,7 +21,8 @@ var DOORS=Date.UTC(2027,0,24,1,0,0);
     var p=function(v){return v<10?'0'+v:''+v;};
     var tick=function(){
       var r=DOORS-Date.now();
-      if(r<=0){box.hidden=true;box.style.display='none';clearInterval(id);return;}
+      if(r<=0){box.hidden=true;clearInterval(id);return;}
+      box.hidden=false;
       f.d.textContent=p(Math.floor(r/864e5));f.h.textContent=p(Math.floor(r/36e5)%24);
       f.m.textContent=p(Math.floor(r/6e4)%60);f.s.textContent=p(Math.floor(r/1e3)%60);
     };
@@ -71,7 +72,7 @@ var DOORS=Date.UTC(2027,0,24,1,0,0);
   if(cv&&!calm){
     var cx=cv.getContext('2d'),W,H,D=Math.min(devicePixelRatio||1,2),ps=[],mx=-999,my=-999;
     var size=function(){W=innerWidth;H=innerHeight;cv.width=W*D;cv.height=H*D;cx.setTransform(D,0,0,D,0,0);};
-    size();addEventListener('resize',size);
+    size();addEventListener('resize',function(){if(innerWidth!==W)size();});
     if(fine)addEventListener('pointermove',function(e){mx=e.clientX;my=e.clientY;},{passive:true});
     for(var i=0,c=W<820?34:70;i<c;i++)ps.push({x:Math.random()*W,y:Math.random()*H,r:.5+Math.random()*1.7,v:.12+Math.random()*.4,a:.15+Math.random()*.5,o:Math.random()*6.28});
     var draw=function(){
