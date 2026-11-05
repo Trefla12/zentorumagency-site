@@ -2,59 +2,100 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Luis Gabriel Live — 23 January 2027 · Chez Hotel Chicago Rooftop</title>
 <meta name="description" content="Luis Gabriel live in concert (manele) on the Chez Hotel Chicago rooftop. Saturday, 23 January 2027. Doors 7 PM. Entry $70. Casual dress code.">
+<meta name="theme-color" content="#050505">
 <meta property="og:title" content="Luis Gabriel — Live on the Chicago Rooftop">
 <meta property="og:description" content="Saturday, 23 January 2027 · Doors 7 PM · Chez Hotel Chicago Rooftop · Entry $70">
-<meta property="og:image" content="https://zentorumagency.com/luis-gabriel-event/img/share.jpg">
+<meta property="og:image" content="https://zentorumagency.com/luis-gabriel-event/img/share-wide.jpg">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://zentorumagency.com/luis-gabriel-event/">
 <meta name="twitter:card" content="summary_large_image">
+<script>document.documentElement.className='js'</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;1,6..96,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=2">
 </head>
 <body>
-<header class="hero">
-  <img class="logo-top" src="img/zentorum-logo.png" alt="Zentorum Agency">
-  <div class="lights" aria-hidden="true"></div>
-  <div class="hero-in">
-    <p class="eyebrow">Live · Manele</p>
-    <h1>Luis Gabriel</h1>
-    <p class="date">Saturday · 23 January 2027</p>
-    <p class="where">Chez Hotel Chicago · Rooftop</p>
-    <a class="btn" data-book href="booking.html">Reserve your spot</a>
+<div class="progress" aria-hidden="true"></div>
+<canvas class="dust" aria-hidden="true"></canvas>
+<div class="aura" aria-hidden="true"><i></i><i></i></div>
+<div class="grain" aria-hidden="true"></div>
+
+<nav class="nav">
+  <a class="nav-logo" href="#top"><img src="img/zentorum-logo.png" alt="Zentorum Agency"></a>
+  <div class="nav-links"><a href="#details">The night</a><a href="#mood">The mood</a><a href="#book">Booking</a></div>
+  <a class="pill" data-book data-magnet href="booking.html">Book now</a>
+</nav>
+
+<header class="hero" id="top">
+  <div class="hero-txt">
+    <p class="eyebrow up"><span class="dot"></span>Live · Manele</p>
+    <h1 aria-label="Luis Gabriel"><span class="ln">Luis</span><span class="ln it">Gabriel</span></h1>
+    <p class="date up" style="--dl:.7s">Saturday · 23 January 2027</p>
+    <p class="where up" style="--dl:.8s">Chez Hotel Chicago Rooftop · Doors 7 PM</p>
+    <div class="cta up" style="--dl:.95s">
+      <a class="btn solid" data-book data-magnet href="booking.html">Book now <span class="arr">→</span></a>
+      <span class="price">Entry $70</span>
+    </div>
+    <div class="count up" style="--dl:1.1s" role="timer" aria-label="Countdown to doors">
+      <div><b data-c="d">00</b><span>Days</span></div>
+      <div><b data-c="h">00</b><span>Hours</span></div>
+      <div><b data-c="m">00</b><span>Min</span></div>
+      <div><b data-c="s">00</b><span>Sec</span></div>
+    </div>
+  </div>
+  <div class="hero-pic up" style="--dl:.4s">
+    <div class="frame" data-tilt>
+      <img src="img/portrait.jpg" width="760" height="943" alt="Luis Gabriel smiling in a white jacket, gold lights behind him">
+      <div class="shine" aria-hidden="true"></div>
+    </div>
   </div>
 </header>
 
+<div class="ticker" aria-hidden="true"><div class="track">
+  <span>Luis Gabriel Live</span><span>23 January 2027</span><span>Chez Hotel Chicago Rooftop</span><span>Doors 7 PM</span><span>Entry $70</span>
+  <span>Luis Gabriel Live</span><span>23 January 2027</span><span>Chez Hotel Chicago Rooftop</span><span>Doors 7 PM</span><span>Entry $70</span>
+</div></div>
+
 <section id="details">
   <p class="eyebrow rv">The night</p>
-  <h2 class="rv" style="--dl:.1s">An evening above the Chicago skyline</h2>
-  <div class="rule"></div>
-  <div class="grid">
-    <div class="rv"><h3>Date</h3><p>Saturday<br>23 January 2027</p></div>
-    <div class="rv" style="--dl:.12s"><h3>Doors</h3><p>7 PM</p></div>
-    <div class="rv" style="--dl:.24s"><h3>Location</h3><p>Chez Hotel Chicago<br>Rooftop</p></div>
-    <div class="rv" style="--dl:.36s"><h3>Entry</h3><p>$70</p></div>
-    <div class="rv" style="--dl:.48s"><h3>Dress code</h3><p>Casual</p><p class="small">Everybody can impress</p></div>
+  <h2 class="rv" style="--dl:.1s">An evening above the <em>Chicago skyline</em></h2>
+  <div class="bento">
+    <div class="tile wide rv"><h3>Date</h3><p class="big">Saturday<br>23 January 2027</p></div>
+    <div class="tile rv" style="--dl:.1s"><h3>Doors</h3><p class="big">7 PM</p></div>
+    <div class="tile rv" style="--dl:.2s"><h3>Entry</h3><p class="big">$70</p></div>
+    <div class="tile wide rv" style="--dl:.1s"><h3>Location</h3><p class="big">Chez Hotel Chicago<br>Rooftop</p></div>
+    <div class="tile full rv" style="--dl:.2s"><h3>Dress code</h3><p class="big">Casual</p><p class="small">Everybody can impress</p></div>
   </div>
+</section>
+
+<section id="mood">
+  <p class="eyebrow rv">The mood</p>
+  <div class="gallery">
+    <figure class="shot" data-par=".05"><img loading="lazy" src="img/g-blue.jpg" width="800" height="716" alt="Luis Gabriel on a rooftop sofa at blue hour with the Chicago skyline behind him"></figure>
+    <figure class="shot" data-par="-.05"><img loading="lazy" src="img/g-sunset.jpg" width="800" height="716" alt="Luis Gabriel on a rooftop at sunset beside a champagne tower"></figure>
+    <figure class="shot" data-par=".05"><img loading="lazy" src="img/g-bw.jpg" width="800" height="716" alt="Black and white portrait of Luis Gabriel with a champagne flute above the skyline"></figure>
+  </div>
+  <p class="note rv">Artistic visuals, not photos of the venue.</p>
 </section>
 
 <section id="book" class="book">
   <p class="eyebrow rv">Booking</p>
   <h2 class="rv" style="--dl:.1s">Reserve your spot</h2>
   <div class="rule"></div>
+  <a class="btn solid xl rv" style="--dl:.2s" data-book data-magnet href="booking.html">Book now <span class="arr">→</span></a>
+  <p class="or rv" style="--dl:.25s">Or call</p>
   <div class="contacts">
-    <a class="contact rv" href="tel:+16304088338"><b>Constantin</b><span>630-408-8338</span></a>
-    <a class="contact rv" style="--dl:.15s" href="tel:+17736160070"><b>Branco</b><span>773-616-0070</span></a>
+    <a class="contact tile rv" href="tel:+16304088338"><b>Constantin</b><span>630-408-8338</span></a>
+    <a class="contact tile rv" style="--dl:.15s" href="tel:+17736160070"><b>Branco</b><span>773-616-0070</span></a>
   </div>
-  <a class="btn solid rv" style="--dl:.3s" data-book href="booking.html">Book your tickets</a>
 </section>
 
 <section class="partner">
   <p class="eyebrow rv">Partner / Sponsor</p>
-  <h2 class="rv" style="--dl:.1s;margin-bottom:.8rem">Gentleman's Cocktail Bar</h2>
+  <h2 class="rv" style="--dl:.1s">Gentleman's Cocktail Bar</h2>
   <a class="ig rv" style="--dl:.2s" href="https://www.instagram.com/gentlemanscocktailbar/" target="_blank" rel="noopener">@gentlemanscocktailbar</a>
 </section>
 
@@ -63,6 +104,8 @@
   <p>Website and creative by Zentorum Agency</p>
   <p><a href="https://www.instagram.com/zentorumagency/" target="_blank" rel="noopener">@zentorumagency</a></p>
 </footer>
-<script src="app.js"></script>
+
+<div class="bar"><span><b>Luis Gabriel</b> · 23 Jan · $70</span><a class="pill" data-book href="booking.html">Book now</a></div>
+<script src="app.js?v=2"></script>
 </body>
 </html>
